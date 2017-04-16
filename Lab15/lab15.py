@@ -16,9 +16,6 @@ def craps():
   firstroll = 0
   newroll = 0
   
-  firstWin = "Congrats! You Rolled %d! You Win" % firstroll
-  firstLose = "Sorry, you rolled %d... You lose" % firstroll
-  
   response = requestString("Are you ready to play craps (y/n)?")
   if response == "y":
     showInformation(instruction)
@@ -27,11 +24,11 @@ def craps():
     firstroll = random.randint(1, 7) + random.randint(1, 7)
     
     if firstroll == 7 or firstroll == 11:
-      showInformation(firstWin)
+      showInformation("Congrats! You Rolled %d! You Win" % firstroll)
       return
       
     if firstroll == 2 or firstroll == 3 or firstroll == 12:
-      showInformation(firstLose)
+      showInformation("Sorry, you rolled %d... You lose" % firstroll)
       return
       
     else:
@@ -61,7 +58,7 @@ def craps():
 def birthdayMonth():
   year = int(raw_input("Enter the year you were born: "))
   month = int(raw_input("Enter the month in number form that you were born: "))
-  print(calendar.prmonth(year,month))
+  calendar.prmonth(year,month)
  
 def daysTilBirthday():
   today = date.today()
