@@ -4,25 +4,25 @@
 import urllib
 
 # open the website and assign it to a variable, then create a list
-url = urllib.urlopen("https://calbusinesstech.com/services/")
+url = urllib.urlopen("http://calbusinesstech.com/services/")
 urlFile = url.readlines()
 
 
 # parse through the data to extract only the services
-services = []
+cbtservices = []
 def services(list):
-  print "---CBT Services!---"
   for line in list:
     if "<td class=" in line:
-      start = line.find(">")
+      start = line.find(">") + 1
       end = line.find("</td>")
-      print line[start:end]
+      cbtservices.append(line[start:end])      
+ 
 
 # html function to create the html page with the services
 def html():
     services(urlFile)
-
-    file = open("/Users/hudhuddd/Desktop/CST205/Python Code/silicon-bay-csumb/Lab16/ham.html", "wt")
+    servicesString =  "<br>".join(cbtservices)
+    file = open("/Users/alejandro/ham.html", "w")
 
     file.write("""<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transition//EN" "http://www.w3.org/TR/html4/loose.dtd">
   
@@ -35,11 +35,11 @@ def html():
     <body>
 
     <h1>CBT SERVICES!!</h1>
-
-    # ***************need to insert the list here somehow***************
+    
+    %s
 
     </body>
 
-    </html>""")
+    </ht>""" % servicesString)
 
     file.close()
