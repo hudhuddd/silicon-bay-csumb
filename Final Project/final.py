@@ -1,5 +1,8 @@
+import os
+import math
+
 # Final Project
-# Huda Mutwakil, Andrea Weiland, Alejandro Guzman-Vega & Brandon Lewis
+# Huda Mutwakil, Andrea Weiland, Alejandro Guzman Vega & Brandon Lewis
 
 """
 ********* PROGRAM START *********
@@ -13,20 +16,25 @@ If select is valid, then the respective function is called.
 """
 def mainMenu():
   showInformation("Welcome to OtterShop!")
-  choice = requestString("Please make one of the following selections.[1-7]\n 1.Mirror\n 2.Add Text\n 3.Scale\n 4.Crop\n 5.Menu5\n 6.Menu6\n 7.Quit")
-  if choice == "1":
-    Mirror()
-  if choice == "3":
-    crop()
-  if choice == "4":
-    scale()
-    
-  elif choice == "7":
-    return
-    
-  else:
-    showInformation("Invalid Selection. Please Try Again")
-    
+  while (true):
+    choice = requestString(
+      "Please make one of the following selections.[1-7]\n 1.Mirror\n 2.Add Text\n 3.Scale\n 4.Crop\n 5.Filters\n 6.Menu6\n 7.Quit")
+    if choice == "1":
+      Mirror()
+    elif choice == "2":
+      pass
+    elif choice == "3":
+      crop()
+    elif choice == "4":
+      scale()
+    elif choice == "5":
+      filters()
+    elif choice == "6":
+      pass
+    elif choice == "7":
+      return
+    else:
+      showInformation("Invalid Selection. Please Try Again")
 
 def Mirror():
   choice = requestString("What kind of mirror would you like to perform?[1-4]\n 1.Vertical\n 2.Top To Bottom\n 3.Bottom To Top\n 4.Crazy Quad Mirror")
@@ -45,6 +53,119 @@ def Mirror():
   else:
     showInformation("Invalid input. Please make an appropriate selection.")
 
+def filters():
+  choice = requestString(
+    "What kind of filter would you like to apply?[1-1]\n 1.PixelFocus\n 2.Black and White\n 3.Sepia\n 4.Artify")
+  if choice == "1":
+    pixelfocus()
+  elif choice == "2":
+    betterBnW()
+  elif choice == "3":
+    sepia()
+  elif choice == "4":
+    artify()
+  else:
+    showInformation("Invalid input. Please make an appropriate selection.")
+
+def savephoto(source, tag):
+  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
+  if choice == "y":
+    originalImagePath = source.getFileName()
+    newImagePath = os.path.splitext(originalImagePath)[0] + "-" + tag + ".png"
+    writePictureTo(source, newImagePath)
+    showInformation("Your Photo Has Been Saved To %s" % newImagePath)
+
+# Filters
+def pixelfocus():
+  showInformation("Please Choose A Picture To Manipulate.")
+  source = makePicture(pickAFile())
+  for y in range(getHeight(source)):
+    mirrorColor = white
+    pixelsToCopy = 25.0
+    rePaint = 0;
+    for x in range(getWidth(source)):
+      if rePaint > 0:
+        setColor(getPixel(source, x, y), mirrorColor)
+        rePaint = rePaint - 1
+      else:
+        mirrorColor = getColor(getPixel(source, x, y))
+        rePaint = int(pixelsToCopy * ((cos(((x * 1.0) / getWidth(source)) * 2 * pi) + 1) / 2))
+  show(source)
+  savephoto(source, "pixelfocus")
+
+def betterBnW():
+  showInformation("Please Choose A Picture To Manipulate.")
+  source = makePicture(pickAFile())
+  pixels = getPixels(source)
+  for p in pixels:
+    lum = ((getRed(p) * .299) + (getBlue(p) * .114) + (getGreen(p) * .587))
+    setRed(p, lum)
+    setBlue(p, lum)
+    setGreen(p, lum)
+  show(source)
+  savephoto(source, "blackandwhite")
+
+def sepia():
+  showInformation("Please Choose A Picture To Manipulate.")
+  source = makePicture(pickAFile())
+  for p in pixels:
+    lum = ((getRed(p) * .299) + (getBlue(p) * .114) + (getGreen(p) * .587))
+    setRed(p, lum)
+    setBlue(p, lum)
+    setGreen(p, lum)
+  for pix in getPixels(source):
+    redValue = getRed(pix)
+    if redValue < 63:
+      setRed(pix, getRed(pix) * 1.1)
+      setBlue(pix, getBlue(pix) * .9)
+    elif 62 < redValue < 192:
+      setRed(pix, getRed(pix) * 1.15)
+      setBlue(pix, getBlue(pix) * .85)
+    else:
+      if getRed(pix) * 1.08 > 255:
+        setRed(pix, 255)
+      else:
+        setRed(pix, getRed(pix) * 1.08)
+      setBlue(pix, getBlue(pix) * .93)
+  show(source)
+  savephoto(source, "sepia")
+
+def artify():
+  showInformation("Please Choose A Picture To Manipulate.")
+  source = makePicture(pickAFile())
+  for pix in getPixels(source):
+    redValue = getRed(pix)
+    if redValue < 64:
+      setRed(pix, 31)
+    elif 63 < redValue < 128:
+      setRed(pix, 95)
+    elif 127 < redValue < 192:
+      setRed(pix, 159)
+    else:
+      setRed(pix, 223)
+
+    blueValue = getBlue(pix)
+    if blueValue < 64:
+      setBlue(pix, 31)
+    elif 63 < blueValue < 128:
+      setBlue(pix, 95)
+    elif 127 < blueValue < 192:
+      setBlue(pix, 159)
+    else:
+      setBlue(pix, 223)
+
+    greenValue = getGreen(pix)
+    if greenValue < 64:
+      setGreen(pix, 31)
+    elif 63 < greenValue < 128:
+      setGreen(pix, 95)
+    elif 127 < greenValue < 192:
+      setGreen(pix, 159)
+    else:
+      setGreen(pix, 223)
+  show(source)
+  savephoto(source, "artify")
+
 # Begin Mirror Functions
 
 def vertical():
@@ -60,13 +181,8 @@ def vertical():
       color = getColor(rightPixel)
       setColor(leftPixel, color) 
   show(source)
-  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
-  if choice == "y":
-    writePictureTo(source, "/Users/hudhuddd/Desktop/verticalMirror.jpg")
-    showInformation("Your Photo Has Been Saved To Your Desktop as verticalmirror.jpg")
-  elif choice == "n":
-    return
-  
+  savephoto(source, "vertical")
+
 def topToBottomMirror():
   showInformation("Please Choose A Picture To Manipulate.")
   source = makePicture(pickAFile())
@@ -80,13 +196,8 @@ def topToBottomMirror():
       color = getColor(topPixel)
       setColor(bottomPixel, color)
   show(source)
-  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
-  if choice == "y":
-    writePictureTo(source, "/Users/hudhuddd/Desktop/toptobottom.jpg")
-    showInformation("Your Photo Has Been Saved To Your Desktop as toptobottom.jpg")
-  elif choice == "n":
-    return
-      
+  savephoto(source, "toptobottom")
+
 def bottomToTopMirror():
   showInformation("Please Choose A Picture To Manipulate.")
   source = makePicture(pickAFile())
@@ -100,13 +211,8 @@ def bottomToTopMirror():
       color = getColor(topPixel)
       setColor(bottomPixel, color)
   show(source)
-  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
-  if choice == "y":
-    writePictureTo(source, "/Users/hudhuddd/Desktop/bottomtotop.jpg")
-    showInformation("Your Photo Has Been Saved To Your Desktop as bottomtotop.jpg")
-  elif choice == "n":
-    return
-      
+  savephoto(source, "bottomtotop")
+
 def crazyQuadMirror():
   showInformation("Please Choose A Picture To Manipulate.")
   source = makePicture(pickAFile())
@@ -126,14 +232,8 @@ def crazyQuadMirror():
       color = getColor(topPixel)
       setColor(bottomPixel, color)
   show(source)
-  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
-  if choice == "y":
-    writePictureTo(source, "/Users/hudhuddd/Desktop/crazyquad.jpg")
-    showInformation("Your Photo Has Been Saved To Your Desktop as crazyquad.jpg")
-  elif choice == "n":
-    return
-    
-    
+  savephoto(source, "quad")
+  
 """
 ************* ANDREAS CROP & SCALE FUNCTIONS *************
 """
@@ -152,12 +252,7 @@ def crop():
       color = getColor(getPixel(pic, (x + (getWidth(pic)-smallestDim)/2), y + (getHeight(pic)-smallestDim)/2))
       setColor(getPixel(croppedPic, x, y), color)
   show(pic)
-  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
-  if choice == "y":
-    writePictureTo(pic, "/Users/hudhuddd/Desktop/crazyquad.jpg")
-    showInformation("Your Photo Has Been Saved To Your Desktop as crazyquad.jpg")
-  elif choice == "n":
-    return   
+  savephoto(pic, "crop")
 
 #scales the picture down to given pixel dimension. based on shrink function, 
 #but instead of 
@@ -180,12 +275,7 @@ def scale():
         targety = round(y * ratio)
         setColor(getPixel(newpic, x, y), getColor(getPixel(pic, int(targetx), int(targety))))
   show(pic)
-  choice = requestString("Would You Like To Save Your New Photo? (y/n)")
-  if choice == "y":
-    writePictureTo(pic, "/Users/hudhuddd/Desktop/crazyquad.jpg")
-    showInformation("Your Photo Has Been Saved To Your Desktop as crazyquad.jpg")
-  elif choice == "n":
-    return 
+  savephoto(pic, "scale")
 
 def main():
   mainMenu()
