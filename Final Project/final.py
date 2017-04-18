@@ -18,7 +18,7 @@ def mainMenu():
   showInformation("Welcome to OtterShop!")
   while (true):
     choice = requestString(
-      "Please make one of the following selections.[1-7]\n 1.Mirror\n 2.Add Text\n 3.Scale\n 4.Crop\n 5.Filters\n 6.Menu6\n 7.Quit")
+      "Please make one of the following selections.[1-7]\n 1.Mirror\n 2.Add Text\n 3.Scale\n 4.Crop\n 5.Filters\n 6.Transform between media types\n 7.Quit")
     if choice == "1":
       Mirror()
     elif choice == "2":
@@ -30,11 +30,17 @@ def mainMenu():
     elif choice == "5":
       filters()
     elif choice == "6":
-      pass
+      transformMedia()
     elif choice == "7":
       return
     else:
       showInformation("Invalid Selection. Please Try Again")
+
+def transformMedia():
+  choice = requestString("How would you like to transform your media[1-1]\n 1.Picture to Audio")
+  if choice == "1":
+    transformPictureToAudio()
+
 
 def Mirror():
   choice = requestString("What kind of mirror would you like to perform?[1-4]\n 1.Vertical\n 2.Top To Bottom\n 3.Bottom To Top\n 4.Crazy Quad Mirror")
@@ -74,6 +80,14 @@ def savephoto(source, tag):
     newImagePath = os.path.splitext(originalImagePath)[0] + "-" + tag + ".png"
     writePictureTo(source, newImagePath)
     showInformation("Your Photo Has Been Saved To %s" % newImagePath)
+
+def savesoundFromPicture(pictureSource, sound):
+  choice = requestString("Would You Like To Save Your New Sound? (y/n)")
+  if choice == "y":
+    originalImagePath = pictureSource.getFileName()
+    newSoundPath = os.path.splitext(originalImagePath)[0] + ".wav"
+    writeSoundTo(sound, newSoundPath)
+    showInformation("Your Sound Has Been Saved To %s" % newSoundPath)
 
 # Filters
 def pixelfocus():
@@ -166,6 +180,31 @@ def artify():
   show(source)
   savephoto(source, "artify")
 
+# Transform
+def median(lst):
+    lst = sorted(lst)
+    if len(lst) < 1:
+            return None
+    if len(lst) %2 == 1:
+            return lst[((len(lst)+1)/2)-1]
+    else:
+            return float(sum(lst[(len(lst)/2)-1:(len(lst)/2)+1]))/2.0
+
+def transformPictureToAudio():
+  showInformation("Please Choose A Picture To Transform Into A Sound.")
+  source = makePicture(pickAFile())
+  pixels = getPixels(source)
+  pixelValues = []
+  for p in pixels:
+    pixelValues.append((getRed(p) + getBlue(p) + getGreen(p)) * 10)
+  sound = makeEmptySound(len(pixelValues))
+  shift = median(pixelValues)
+  i = 0
+  for pv in pixelValues:
+    setSampleValueAt(sound, i, pv - shift)
+    i += 1
+  explore(sound)
+  savesoundFromPicture(source, sound)
 # Begin Mirror Functions
 
 def vertical():
