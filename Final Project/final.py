@@ -37,10 +37,11 @@ def mainMenu():
       showInformation("Invalid Selection. Please Try Again")
 
 def transformMedia():
-  choice = requestString("How would you like to transform your media[1-1]\n 1.Picture to Audio")
+  choice = requestString("How would you like to transform your media[1-2]\n 1.Picture to Audio\n 2.Audio to Picture")
   if choice == "1":
     transformPictureToAudio()
-
+  elif choice == "2":
+    transformAudioToPicture()
 
 def Mirror():
   choice = requestString("What kind of mirror would you like to perform?[1-4]\n 1.Vertical\n 2.Top To Bottom\n 3.Bottom To Top\n 4.Crazy Quad Mirror")
@@ -81,13 +82,21 @@ def savephoto(source, tag):
     writePictureTo(source, newImagePath)
     showInformation("Your Photo Has Been Saved To %s" % newImagePath)
 
-def savesoundFromPicture(pictureSource, sound):
+def saveSoundFromPicture(pictureSource, sound):
   choice = requestString("Would You Like To Save Your New Sound? (y/n)")
   if choice == "y":
     originalImagePath = pictureSource.getFileName()
     newSoundPath = os.path.splitext(originalImagePath)[0] + ".wav"
     writeSoundTo(sound, newSoundPath)
     showInformation("Your Sound Has Been Saved To %s" % newSoundPath)
+
+def savePictureFromSound(soundSource, picture):
+  choice = requestString("Would You Like To Save Your New Picture? (y/n)")
+  if choice == "y":
+    originalSoundPath = soundSource.getFileName()
+    newImagePath = os.path.splitext(originalSoundPath)[0] + ".png"
+    writePictureTo(picture, newImagePath)
+    showInformation("Your Sound Has Been Saved To %s" % newImagePath)
 
 # Filters
 def pixelfocus():
@@ -204,7 +213,28 @@ def transformPictureToAudio():
     setSampleValueAt(sound, i, pv - shift)
     i += 1
   explore(sound)
-  savesoundFromPicture(source, sound)
+  saveSoundFromPicture(source, sound)
+
+
+def transformAudioToPicture():
+  showInformation("Please Choose A Sound To Transform Into A Picture.")
+  source = makeSound(pickAFile())
+  samples = getSamples(source)
+  minSample = min(samples, key=lambda p: p.getValue())
+  maxSample = max(samples, key=lambda p: p.getValue())
+  handw = int(math.sqrt(len(samples)))
+  pic = makeEmptyPicture(handw, handw)
+  i = 0
+  for x in range(handw):
+    for y in range(handw):
+      norm = (getSampleValueAt(source, i) - minSample.getValue()) / float(maxSample.getValue() - minSample.getValue())
+      i += 1
+      setRed(getPixelAt(pic, x, y), int(255 * norm))
+      setBlue(getPixelAt(pic, x, y), int(255 * norm))
+      setGreen(getPixelAt(pic, x, y), int(255 * norm))
+  explore(pic)
+  savePictureFromSound(source, pic)
+
 # Begin Mirror Functions
 
 def vertical():
