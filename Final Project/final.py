@@ -24,9 +24,9 @@ def mainMenu():
     elif choice == "2":
       addTextToPic()
     elif choice == "3":
-      crop()
-    elif choice == "4":
       scale()
+    elif choice == "4":
+      crop()
     elif choice == "5":
       filters()
     elif choice == "6":
@@ -63,6 +63,7 @@ def addTextToPic():
   myFont = makeStyle(sansSerif, bold, 24)
   addTextWithStyle(source, xcoord, ycoord, text, myFont)
   show(source)
+  savephoto(source, "addedtext")
   
 def transformMedia():
   choice = requestString("How would you like to transform your media[1-2]\n 1.Picture to Audio\n 2.Audio to Picture")
@@ -159,6 +160,7 @@ def betterBnW():
 def sepia():
   showInformation("Please Choose A Picture To Manipulate.")
   source = makePicture(pickAFile())
+  pixels = getPixels(source)
   for p in pixels:
     lum = ((getRed(p) * .299) + (getBlue(p) * .114) + (getGreen(p) * .587))
     setRed(p, lum)
@@ -348,8 +350,8 @@ def crop():
     for y in range(0, getHeight(croppedPic)):
       color = getColor(getPixel(pic, (x + (getWidth(pic)-smallestDim)/2), y + (getHeight(pic)-smallestDim)/2))
       setColor(getPixel(croppedPic, x, y), color)
-  show(pic)
-  savephoto(pic, "crop")
+  show(croppedPic)
+  savephoto(croppedPic, "crop")
 
 #scales the picture down to given pixel dimension. based on shrink function, 
 #but instead of 
@@ -358,7 +360,7 @@ def crop():
 def scale():
   showInformation("Please Choose A Picture To Manipulate.")
   pic = makePicture(pickAFile())
-  dimension = requestString("Enter the dimension you would like.")
+  dimension = int(requestString("Enter the dimension you would like."))
   if getWidth(pic) < dimension:
     showInformation("Error! Your picture must be larger.")
   elif getWidth(pic) == dimension:
@@ -366,13 +368,14 @@ def scale():
   else:
     ratio = getWidth(pic)/float(dimension)
     newpic = makeEmptyPicture(dimension, dimension)
-    for x in range(0, dimension-1):
-      for y in range(0, dimension-1):
+    for x in range(0, dimension):
+      for y in range(0, dimension):
         targetx = round(x * ratio)
         targety = round(y * ratio)
-        setColor(getPixel(newpic, x, y), getColor(getPixel(pic, int(targetx), int(targety))))
-  show(pic)
-  savephoto(pic, "scale")
+        if targetx < getWidth(pic) and targety < getHeight(pic):
+          setColor(getPixel(newpic, x, y), getColor(getPixel(pic, int(targetx), int(targety))))
+  show(newpic)
+  savephoto(newpic, "scale")
 
 def main():
   mainMenu()
