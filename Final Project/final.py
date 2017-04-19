@@ -2,7 +2,7 @@ import os
 import math
 
 # Final Project
-# Huda Mutwakil, Andrea Weiland, Alejandro Guzman Vega & Brandon Lewis
+# Huda Mutwakil, Andrea Wieland, Alejandro Guzman Vega & Brandon Lewis
 
 """
 ********* PROGRAM START *********
@@ -22,7 +22,7 @@ def mainMenu():
     if choice == "1":
       Mirror()
     elif choice == "2":
-      pass
+      addTextToPic()
     elif choice == "3":
       crop()
     elif choice == "4":
@@ -36,6 +36,34 @@ def mainMenu():
     else:
       showInformation("Invalid Selection. Please Try Again")
 
+def addTextToPic():
+  showInformation("Please Choose A Picture To Manipulate.")
+  source = makePicture(pickAFile())
+  text = requestString("What text do you want to add to your picture?")
+  choice = requestString("How would do you want to align your text vertically? \n1.Top\n2.Center\n3.Bottom")
+  if choice == '1':
+    ycoord = 20
+  elif choice == '2':
+    ycoord = (getHeight(source)/2) - 16
+  elif choice == '3':
+    ycoord = getHeight(source) - 32
+  else:
+    showInformation("Invalid Selection. Please Try Again")
+  
+  choice = requestString("How would do you want to align your text horizontally? \n1.Left\n2.Center\n3.Right")
+  if choice == '1':
+    xcoord = 20
+  elif choice == '2':
+    xcoord = (getWidth(source)/2) - 7*len(text)
+  elif choice == '3':
+    xcoord = getWidth(source) - 14*len(text)
+  else:
+    showInformation("Invalid Selection. Please Try Again")
+  
+  myFont = makeStyle(sansSerif, bold, 24)
+  addTextWithStyle(source, xcoord, ycoord, text, myFont)
+  show(source)
+  
 def transformMedia():
   choice = requestString("How would you like to transform your media[1-2]\n 1.Picture to Audio\n 2.Audio to Picture")
   if choice == "1":
