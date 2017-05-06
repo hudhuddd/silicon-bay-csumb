@@ -1,3 +1,16 @@
+/*
+***********************************
+* Alejandro Guzman-Vega
+* Andrea Wieland
+* Huda Mutwakil
+* Brandon Lewis
+* CST 338
+* Casino
+* Professor Cecil
+***********************************
+*/
+
+import java.util.Scanner;
 
 public class Assig2
 {
@@ -7,15 +20,49 @@ public class Assig2
       TripleString tp = new TripleString();
       tp.setString1("Who");
       tp.setString2("Why");
-      tp.setString3("Wha");
+      tp.setString3("What");
+     
       for (int i = 0; i <= 100; i++)
       {
          System.out.println(tp.saveWinnings(i));
       }
+      
       System.out.println(tp.displayWinnings());
       System.out.println(tp.toString());
+      getBet();
+   }
+   
+   public static int getBet()
+   {
+      @SuppressWarnings("resource")
+      Scanner scanner = new Scanner(System.in);
+      
+      String message = "Enter your bet amount in dollars. (0 to 100)";
+      
+      String error_message = "Error: input must be a positive integer between 0 and 100.";
+
+      System.out.println(message);
+
+      // Check that input is integer and positive
+      while (!scanner.hasNextInt() || (scanner.nextInt() > 100) || (scanner.nextInt() < 0) ) 
+      {
+          System.out.println(error_message + "\n" + message);
+          scanner.next();
+      }
+
+      int bet = scanner.nextInt();
+      if (bet == 0)
+      {
+         System.out.println("Exit");
+         System.exit(0);
+      }
+      scanner.nextLine();
+
+      return bet;
    }
 }
+
+
 
 class TripleString
 {
