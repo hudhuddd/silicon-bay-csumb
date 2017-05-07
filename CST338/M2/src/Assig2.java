@@ -36,32 +36,35 @@ public class Assig2
    {
       @SuppressWarnings("resource")
       Scanner scanner = new Scanner(System.in);
-      
-      String message = "Enter your bet amount in dollars. (0 to 100)";
-      
-      String error_message = "Error: input must be a positive integer between 0 and 100.";
-
+      String message = "Enter your bet amount in dollars. ( 0 to 100 ).";
+      String errorMessage = "Error: input must be a positive integer between 0 and 100.";
+      int bet = -1;
+      boolean isBetValid = false;
       System.out.println(message);
-
-      // Check that input is integer and positive
-      while (!scanner.hasNextInt() || (scanner.nextInt() > 100) || (scanner.nextInt() < 0) ) 
+      
+      while(!isBetValid)
       {
-          System.out.println(error_message + "\n" + message);
-          scanner.next();
+         bet = scanner.nextInt();
+         if(0 <= bet && bet <= 100)
+         {
+            System.out.println("Thank you for entering your bet.");
+            isBetValid = true;
+         }
+         else
+         {
+            System.out.println(errorMessage + "\n" + message);
+            isBetValid = false;
+         }
+               
+         
+         if(bet == 0)
+            System.out.println("Goodbye.");
+            System.exit(0);
       }
-
-      int bet = scanner.nextInt();
-      if (bet == 0)
-      {
-         System.out.println("Exit");
-         System.exit(0);
-      }
-      scanner.nextLine();
-
+      
       return bet;
    }
 }
-
 
 
 class TripleString
