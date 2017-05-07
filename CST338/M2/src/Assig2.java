@@ -1,3 +1,4 @@
+
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -17,21 +18,22 @@ public class Assig2
 
    public static void main(String[] args)
    {
-      TripleString tp = new TripleString();
-      tp.setString1("Who");
-      tp.setString2("Why");
-      tp.setString3("What");
-     
-      for (int i = 0; i <= 100; i++)
+      int bet = getBet();
+      while (bet != 0)
       {
-         System.out.println(tp.saveWinnings(i));
+         TripleString pullString = pull();
+         int payMultiplier = getPayMultiplier(pullString);
+         int winnings = bet * payMultiplier;
+         if(!TripleString.saveWinnings(winnings)) {
+            System.out.println("Winnings array is full");
+            break;
+         }
+         display(pullString, winnings);
+         bet = getBet();
       }
-      
-      System.out.println(tp.displayWinnings());
-      System.out.println(tp.toString());
-      getBet();
+      TripleString.displayWinnings();
    }
-   
+
    public static int getBet()
    {
       @SuppressWarnings("resource")
@@ -41,31 +43,51 @@ public class Assig2
       int bet = -1;
       boolean isBetValid = false;
       System.out.println(message);
-      
-      while(!isBetValid)
+
+      while (!isBetValid)
       {
          bet = scanner.nextInt();
-         if(0 <= bet && bet <= 100)
+         if (0 <= bet && bet <= 100)
          {
             System.out.println("Thank you for entering your bet.");
             isBetValid = true;
-         }
-         else
+         } else
          {
             System.out.println(errorMessage + "\n" + message);
             isBetValid = false;
          }
-               
-         
-         if(bet == 0)
+
+         if (bet == 0)
             System.out.println("Goodbye.");
-            System.exit(0);
+         System.exit(0);
       }
-      
+
       return bet;
    }
-}
 
+   public static TripleString pull()
+   {
+      return null;
+
+   }
+
+   public static void display(TripleString thePull, int winnings)
+   {
+
+   }
+
+   private String randString()
+   {
+      return null;
+
+   }
+
+   private static int getPayMultiplier(TripleString thePull)
+   {
+      return 0;
+
+   }
+}
 
 class TripleString
 {
@@ -152,10 +174,9 @@ class TripleString
    {
       return "String 1: " + string1 + ", String 2:  " + string2 + ", String 3: "
             + string3;
-
    }
 
-   public boolean saveWinnings(int winnings)
+   public static boolean saveWinnings(int winnings)
    {
       if (numPulls < MAX_PULLS)
       {
@@ -168,7 +189,7 @@ class TripleString
       }
    }
 
-   public String displayWinnings()
+   public static String displayWinnings()
    {
       String returnString = "";
       int totalWinnings = 0;
