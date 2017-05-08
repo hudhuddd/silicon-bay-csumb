@@ -1,4 +1,3 @@
-
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -73,7 +72,16 @@ public class Assig2
 
    public static void display(TripleString thePull, int winnings)
    {
-
+   	String string1 = thePull.getString1();
+   	String string2 = thePull.getString2();
+   	String string3 = thePull.getString3();
+   	
+   	System.out.println(string1 + "  " + string2 + "  " + string3);
+   	if (winnings == 0)
+   		System.out.println("Sorry, looks like you lost.");
+   	else
+   		System.out.println("Congrats, you won: $" + winnings);
+   	continue;
    }
 
    private String randString()
@@ -84,8 +92,21 @@ public class Assig2
 
    private static int getPayMultiplier(TripleString thePull)
    {
+   	String string1 = thePull.getString1();
+   	String string2 = thePull.getString2();
+   	String string3 = thePull.getString3();
+   	
+   	if (string1 == "cherries" && string2 != "cherries")
+   		return 5;
+   	else if (string1 == "cherries" && string2 == "cherries")
+   		return 15;
+   	else if (string1 == "cherries" && string2 == "cherries" && string3 == "cherries")
+   		return 30;
+   	else if (string1 == "BAR" && string2 == "BAR" && string3 == "BAR")
+   		return 50;
+   	else if (string1 == "7" && string2 == "7" && string3 == "7")
+   		return 100;
       return 0;
-
    }
 }
 
