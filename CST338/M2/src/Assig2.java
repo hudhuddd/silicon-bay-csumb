@@ -33,34 +33,22 @@ public class Assig2
       TripleString.displayWinnings();
    }
 
-   public static int getBet()
-   {
-      @SuppressWarnings("resource")
+  public static int getBet()
+  {
       Scanner scanner = new Scanner(System.in);
+      
       String message = "Enter your bet amount in dollars. ( 0 to 100 ).";
       String errorMessage = "Error: input must be a positive integer between 0 and 100.";
       int bet = -1;
-      boolean isBetValid = false;
-      System.out.println(message);
-
-      while (!isBetValid)
-      {
-         bet = scanner.nextInt();
-         if (0 <= bet && bet <= 100)
-         {
-            System.out.println("Thank you for entering your bet.");
-            isBetValid = true;
-         } else
-         {
-            System.out.println(errorMessage + "\n" + message);
-            isBetValid = false;
-         }
-
-         if (bet == 0)
-            System.out.println("Goodbye.");
-         System.exit(0);
+      
+      while (bet <= 0 || bet >=100){
+        System.out.println(message);
+        bet = scanner.nextInt();
+        if(bet >= 0 && bet <=100)
+      	  break;
+      	else
+      	  System.out.println(errorMessage);
       }
-
       return bet;
    }
 
