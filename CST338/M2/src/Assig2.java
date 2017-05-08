@@ -77,7 +77,7 @@ public class Assig2
    	continue;
    }
 
-   private String randString()
+   private static String randString()
    {
       int randomNum = (int)(Math.random() * 1000) + 1;
       String output = "";
