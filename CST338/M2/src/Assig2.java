@@ -66,8 +66,13 @@ public class Assig2
 
    public static TripleString pull()
    {
-      return null;
-
+      TripleString ts = new TripleString();
+      
+      ts.setString1(randString());
+      ts.setString2(randString());
+      ts.setString3(randString());
+      
+      return ts;
    }
 
    public static void display(TripleString thePull, int winnings)
@@ -86,8 +91,19 @@ public class Assig2
 
    private String randString()
    {
-      return null;
+      int randomNum = (int)(Math.random() * 1000) + 1;
+      String output = "";
 
+      if(randomNum <= 125)
+      	output = "7";
+      else if(randomNum <= 250)
+      	output = "space";
+      else if(randomNum <= 500)
+      	output = "cherries";
+      else
+      	output = "BAR";
+      
+      return output;
    }
 
    private static int getPayMultiplier(TripleString thePull)
@@ -193,7 +209,7 @@ class TripleString
 
    public String toString()
    {
-      return "String 1: " + string1 + ", String 2:  " + string2 + ", String 3: "
+      return string1 + "   " + string2 + "   "
             + string3;
    }
 
