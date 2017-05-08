@@ -65,16 +65,12 @@ public class Assig2
 
    public static void display(TripleString thePull, int winnings)
    {
-   	String string1 = thePull.getString1();
-   	String string2 = thePull.getString2();
-   	String string3 = thePull.getString3();
-   	
-   	System.out.println(string1 + "  " + string2 + "  " + string3);
+   	  	
+   	System.out.println(thePull.toString());
    	if (winnings == 0)
    		System.out.println("Sorry, looks like you lost.");
    	else
    		System.out.println("Congrats, you won: $" + winnings);
-   	continue;
    }
 
    private static String randString()
