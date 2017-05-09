@@ -96,15 +96,15 @@ public class Assig2
    	String string2 = thePull.getString2();
    	String string3 = thePull.getString3();
    	
-   	if (string1 == "cherries" && string2 != "cherries")
+   	if (string1.equals("cherries") && !string2.equals("cherries"))
    		return 5;
-   	else if (string1 == "cherries" && string2 == "cherries")
+   	else if (string1.equals("cherries") && string2.equals("cherries") && !string3.equals("cherries"))
    		return 15;
-   	else if (string1 == "cherries" && string2 == "cherries" && string3 == "cherries")
+   	else if (string1.equals("cherries") && string2.equals("cherries") && string3.equals("cherries"))
    		return 30;
-   	else if (string1 == "BAR" && string2 == "BAR" && string3 == "BAR")
+   	else if (string1.equals("BAR") && string2.equals("BAR") && string3.equals("BAR"))
    		return 50;
-   	else if (string1 == "7" && string2 == "7" && string3 == "7")
+   	else if (string1.equals("7") && string2.equals("7") && string3.equals("7"))
    		return 100;
       return 0;
    }
