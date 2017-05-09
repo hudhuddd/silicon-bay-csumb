@@ -119,6 +119,18 @@ public class Assig2
    }
 }
 
+
+/*
+The TripleString class has three private String data members initialized to an empty
+String, two public ints to limit the max length of a String and max number of pulls
+the user may do, a private array to track winnings and a private int to track
+the number of pulls. The class contains an empty constructor method, a private 
+boolean method to test the validity of the input String, three accessors to see each 
+member strings, and three public mutators to set them. The public toString() method 
+returns one long string that contains all the member strings, saveWinnings() stores
+the winnings from each pull in an array, and displayWinnings() prints them at the
+end of the program run
+*/
 class TripleString
 {
    private String string1;
@@ -131,6 +143,8 @@ class TripleString
    private static int[] pullWinnings = new int[40];
    private static int numPulls = 0;
 
+   
+//TripleString constructor. Creates class object and initiates member strings to empty
    public TripleString()
    {
       string1 = "";
@@ -138,6 +152,9 @@ class TripleString
       string3 = "";
    }
 
+   
+//Accepts String parameter and tests that it is shorter than the max length and non-
+//null. If String is valid, returns true, else false
    private boolean validString(String str)
    {
       if (str.length() <= MAX_LEN & str != null)
@@ -149,11 +166,15 @@ class TripleString
       }
    }
 
+//Accessor. Returns string value of first String member
    public String getString1()
    {
       return string1;
    }
 
+//Mutator. Receives a String as a parameter from the client and sets the first
+//String member to that value. Tests for String validity by calling validString
+//and returns false if String is invalid. Else sets value and returns true
    public boolean setString1(String string1)
    {
       if (validString(string1))
@@ -166,11 +187,15 @@ class TripleString
       }
    }
 
+//Accessor. Returns string value of second String member
    public String getString2()
    {
       return string2;
    }
 
+//Mutator. Receives a String as a parameter from the client and sets the first
+//String member to that value. Tests for String validity by calling validString
+//and returns false if String is invalid. Else sets value and returns true
    public boolean setString2(String string2)
    {
       if (validString(string2))
@@ -183,11 +208,15 @@ class TripleString
       }
    }
 
+//Accessor. Returns string value of third String member
    public String getString3()
    {
       return string3;
    }
 
+//Mutator. Receives a String as a parameter from the client and sets the first
+//String member to that value. Tests for String validity by calling validString
+//and returns false if String is invalid. Else sets value and returns true
    public boolean setString3(String string3)
    {
       if (validString(string3))
@@ -200,11 +229,14 @@ class TripleString
       }
    }
 
+//Combines the three private String members into one String with spaces and returns it
    public String toString()
    {
       return string1 + "   " + string2 + "   " + string3;
    }
 
+   
+//
    public static boolean saveWinnings(int winnings)
    {
       if (numPulls < MAX_PULLS)
@@ -217,6 +249,7 @@ class TripleString
          return false;
       }
    }
+
 
    public static String displayWinnings()
    {
