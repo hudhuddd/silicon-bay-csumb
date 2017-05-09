@@ -1,3 +1,4 @@
+
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -14,6 +15,7 @@ import java.util.Scanner;
 
 public class Assig2
 {
+   static Scanner scanner = new Scanner(System.in);
 
    public static void main(String[] args)
    {
@@ -23,31 +25,34 @@ public class Assig2
          TripleString pullString = pull();
          int payMultiplier = getPayMultiplier(pullString);
          int winnings = bet * payMultiplier;
-         if(!TripleString.saveWinnings(winnings)) {
-            System.out.println("Winnings array is full");
+         if (!TripleString.saveWinnings(winnings))
+         {
+            System.out.println("You broke the machine! Out of memory!");
             break;
          }
          display(pullString, winnings);
          bet = getBet();
       }
-      TripleString.displayWinnings();
+      System.out.println(TripleString.displayWinnings());
+      scanner.close();
    }
 
-  public static int getBet()
-  {
-      Scanner scanner = new Scanner(System.in);
-      
-      String message = "Enter your bet amount in dollars. ( 0 to 100 ).";
-      String errorMessage = "Error: input must be a positive integer between 0 and 100.";
+   public static int getBet()
+   {
+      String message = "Enter your bet amount in dollars. ( 1 to 100 ) or 0 "
+            + "to quit";
+      String errorMessage = "Error: input must be a positive integer between "
+            + "1 and 100.";
       int bet = -1;
-      
-      while (bet <= 0 || bet >=100){
-        System.out.println(message);
-        bet = scanner.nextInt();
-        if(bet >= 0 && bet <=100)
-      	  break;
-      	else
-      	  System.out.println(errorMessage);
+
+      while (bet <= 0 || bet >= 100)
+      {
+         System.out.println(message);
+         bet = scanner.nextInt();
+         if (bet >= 0 && bet <= 100)
+            break;
+         else
+            System.out.println(errorMessage);
       }
       return bet;
    }
@@ -55,57 +60,61 @@ public class Assig2
    public static TripleString pull()
    {
       TripleString ts = new TripleString();
-      
+
       ts.setString1(randString());
       ts.setString2(randString());
       ts.setString3(randString());
-      
+
       return ts;
    }
 
    public static void display(TripleString thePull, int winnings)
    {
-   	  	
-   	System.out.println(thePull.toString());
-   	if (winnings == 0)
-   		System.out.println("Sorry, looks like you lost.");
-   	else
-   		System.out.println("Congrats, you won: $" + winnings);
+
+      System.out.println(thePull.toString());
+      if (winnings == 0)
+         System.out.println("Sorry, looks like you lost.");
+      else
+         System.out.println("Congrats, you won: $" + winnings);
    }
 
    private static String randString()
    {
-      int randomNum = (int)(Math.random() * 1000) + 1;
+      int randomNum = (int) (Math.random() * 1000) + 1;
       String output = "";
 
-      if(randomNum <= 125)
-      	output = "7";
-      else if(randomNum <= 250)
-      	output = "space";
-      else if(randomNum <= 500)
-      	output = "cherries";
+      if (randomNum <= 125)
+         output = "7";
+      else if (randomNum <= 250)
+         output = "space";
+      else if (randomNum <= 500)
+         output = "cherries";
       else
-      	output = "BAR";
-      
+         output = "BAR";
+
       return output;
    }
 
    private static int getPayMultiplier(TripleString thePull)
    {
-   	String string1 = thePull.getString1();
-   	String string2 = thePull.getString2();
-   	String string3 = thePull.getString3();
-   	
-   	if (string1.equals("cherries") && !string2.equals("cherries"))
-   		return 5;
-   	else if (string1.equals("cherries") && string2.equals("cherries") && !string3.equals("cherries"))
-   		return 15;
-   	else if (string1.equals("cherries") && string2.equals("cherries") && string3.equals("cherries"))
-   		return 30;
-   	else if (string1.equals("BAR") && string2.equals("BAR") && string3.equals("BAR"))
-   		return 50;
-   	else if (string1.equals("7") && string2.equals("7") && string3.equals("7"))
-   		return 100;
+      String string1 = thePull.getString1();
+      String string2 = thePull.getString2();
+      String string3 = thePull.getString3();
+
+      if (string1.equals("cherries") && !string2.equals("cherries"))
+         return 5;
+      else if (string1.equals("cherries") && string2.equals("cherries")
+            && !string3.equals("cherries"))
+         return 15;
+      else if (string1.equals("cherries") && string2.equals("cherries")
+            && string3.equals("cherries"))
+         return 30;
+      else if (string1.equals("BAR") && string2.equals("BAR")
+            && string3.equals("BAR"))
+         return 50;
+      else if (string1.equals("7") && string2.equals("7")
+            && string3.equals("7"))
+         return 100;
       return 0;
    }
 }
@@ -193,8 +202,7 @@ class TripleString
 
    public String toString()
    {
-      return string1 + "   " + string2 + "   "
-            + string3;
+      return string1 + "   " + string2 + "   " + string3;
    }
 
    public static boolean saveWinnings(int winnings)
@@ -212,12 +220,13 @@ class TripleString
 
    public static String displayWinnings()
    {
-      String returnString = "";
+      String returnString = "Thanks for playing at the Casino!\n"
+            + "Your individual winnings were:\n";
       int totalWinnings = 0;
-      for (int i = 0; i < pullWinnings.length; i++)
+      for (int i = 0; i < numPulls; i++)
       {
          int val = pullWinnings[i];
-         returnString = returnString + " " + val + " ";
+         returnString = returnString.concat(val + " ");
          totalWinnings = totalWinnings + val;
       }
       returnString = returnString + "\nYour total winnings were: "
