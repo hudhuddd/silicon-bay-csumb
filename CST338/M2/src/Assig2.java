@@ -121,15 +121,16 @@ public class Assig2
 
 
 /*
-The TripleString class has three private String data members initialized to an empty
-String, two public ints to limit the max length of a String and max number of pulls
-the user may do, a private array to track winnings and a private int to track
-the number of pulls. The class contains an empty constructor method, a private 
-boolean method to test the validity of the input String, three accessors to see each 
-member strings, and three public mutators to set them. The public toString() method 
-returns one long string that contains all the member strings, saveWinnings() stores
-the winnings from each pull in an array, and displayWinnings() prints them at the
-end of the program run
+The TripleString class has three private String data members initialized to an 
+empty String, two public ints to limit the max length of a String and max 
+number of pulls the user may do, a private array to track winnings and a 
+private int to track the number of pulls. The class contains an empty 
+constructor method, a private  boolean method to test the validity of the 
+input String, three accessors to see each  member strings, and three public
+mutators to set them. The public toString() method  returns one long string 
+that contains all the member strings, saveWinnings() stores the winnings from
+each pull in an array, and displayWinnings() prints them at the end of the 
+program run
 */
 class TripleString
 {
@@ -144,7 +145,8 @@ class TripleString
    private static int numPulls = 0;
 
    
-//TripleString constructor. Creates class object and initiates member strings to empty
+//TripleString constructor. Creates class object and initiates member 
+//strings to empty
    public TripleString()
    {
       string1 = "";
@@ -153,8 +155,8 @@ class TripleString
    }
 
    
-//Accepts String parameter and tests that it is shorter than the max length and non-
-//null. If String is valid, returns true, else false
+//Accepts String parameter and tests that it is shorter than the max 
+//length and non-null. If String is valid, returns true, else false
    private boolean validString(String str)
    {
       if (str.length() <= MAX_LEN & str != null)
@@ -172,8 +174,8 @@ class TripleString
       return string1;
    }
 
-//Mutator. Receives a String as a parameter from the client and sets the first
-//String member to that value. Tests for String validity by calling validString
+//Mutator. Receives a String as a parameter from the client and sets first
+//String member to that value. Tests for String validity by call validString
 //and returns false if String is invalid. Else sets value and returns true
    public boolean setString1(String string1)
    {
@@ -193,8 +195,8 @@ class TripleString
       return string2;
    }
 
-//Mutator. Receives a String as a parameter from the client and sets the first
-//String member to that value. Tests for String validity by calling validString
+//Mutator. Receives a String as a parameter from the client and sets 2nd
+//String member to that value. Tests for String validity by call validString
 //and returns false if String is invalid. Else sets value and returns true
    public boolean setString2(String string2)
    {
@@ -214,8 +216,8 @@ class TripleString
       return string3;
    }
 
-//Mutator. Receives a String as a parameter from the client and sets the first
-//String member to that value. Tests for String validity by calling validString
+//Mutator. Receives a String as a parameter from the client and sets third
+//String member to that value. Tests for String validity by call validString
 //and returns false if String is invalid. Else sets value and returns true
    public boolean setString3(String string3)
    {
@@ -229,14 +231,17 @@ class TripleString
       }
    }
 
-//Combines the three private String members into one String with spaces and returns it
+//Combines the three private String members into one String with spaces 
+//and returns it
    public String toString()
    {
       return string1 + "   " + string2 + "   " + string3;
    }
 
    
-//
+//Receives int winnings from client. Test that max pulls have not been 
+//exceeded. If they have, returns false. Else stores winnings in next
+//array location, increments pulls tracker numPulls, and returns true
    public static boolean saveWinnings(int winnings)
    {
       if (numPulls < MAX_PULLS)
@@ -250,12 +255,20 @@ class TripleString
       }
    }
 
-
+   
+//Returns String message to summarize winnings to the user. returnString
+//is initialized with standard message, then array values are 
+//concatenated onto the String while the total winnings are added and
+//stored in totalWinnings. A message and the value of totalWinnings
+//are concatenated last, and returnString is returned to client
    public static String displayWinnings()
    {
       String returnString = "Thanks for playing at the Casino!\n"
             + "Your individual winnings were:\n";
       int totalWinnings = 0;
+   //Loops through pullWinnings array until numPulls is reached.
+   //The value at each index is displayed in the String, and added to
+   //the total winnings int
       for (int i = 0; i < numPulls; i++)
       {
          int val = pullWinnings[i];
