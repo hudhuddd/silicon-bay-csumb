@@ -1,4 +1,5 @@
 
+
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -59,8 +60,10 @@ public class Assig2
  */
    public static int getBet()
    {
-      String message = "Enter your bet amount in dollars. ( 1 to 100 ) or 0 " + "to quit";
-      String errorMessage = "Error: input must be a positive integer between " + "1 and 100.";
+      String message = "Enter your bet amount in dollars. ( 1 to 100 ) or 0 " 
+         + "to quit";
+      String errorMessage = "Error: input must be a positive integer between " 
+         + "1 and 100.";
       int bet = -1;
 
       while (bet <= 0 || bet >= 100)
@@ -145,13 +148,17 @@ public class Assig2
 
       if (string1.equals("cherries") && !string2.equals("cherries"))
          return 5;
-      else if (string1.equals("cherries") && string2.equals("cherries") && !string3.equals("cherries"))
+      else if (string1.equals("cherries") && string2.equals("cherries") 
+            && !string3.equals("cherries"))
          return 15;
-      else if (string1.equals("cherries") && string2.equals("cherries") && string3.equals("cherries"))
+      else if (string1.equals("cherries") && string2.equals("cherries") 
+            && string3.equals("cherries"))
          return 30;
-      else if (string1.equals("BAR") && string2.equals("BAR") && string3.equals("BAR"))
+      else if (string1.equals("BAR") && string2.equals("BAR") 
+            && string3.equals("BAR"))
          return 50;
-      else if (string1.equals("7") && string2.equals("7") && string3.equals("7"))
+      else if (string1.equals("7") && string2.equals("7") 
+            && string3.equals("7"))
          return 100;
       return 0;
    }
@@ -197,7 +204,8 @@ class TripleString
       if (str.length() <= MAX_LEN & str != null)
       {
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
@@ -218,7 +226,8 @@ class TripleString
       {
          this.string1 = string1;
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
@@ -239,7 +248,8 @@ class TripleString
       {
          this.string2 = string2;
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
@@ -260,7 +270,8 @@ class TripleString
       {
          this.string3 = string3;
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
@@ -283,7 +294,8 @@ class TripleString
          pullWinnings[numPulls] = winnings;
          numPulls++;
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
@@ -296,7 +308,8 @@ class TripleString
 // are concatenated last, and returnString is returned to client
    public static String displayWinnings()
    {
-      String returnString = "Thanks for playing at the Casino!\n" + "Your individual winnings were:\n";
+      String returnString = "Thanks for playing at the Casino!\n" 
+         + "Your individual winnings were:\n";
       int totalWinnings = 0;
       
 // Loops through pullWinnings array until numPulls is reached.
@@ -308,7 +321,8 @@ class TripleString
          returnString = returnString.concat(val + " ");
          totalWinnings = totalWinnings + val;
       }
-      returnString = returnString + "\nYour total winnings were: $" + totalWinnings;
+      returnString = returnString + "\nYour total winnings were: $" 
+         + totalWinnings;
       return returnString;
    }
 }
