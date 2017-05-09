@@ -204,7 +204,8 @@ class TripleString
       {
          this.string2 = string2;
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
@@ -225,7 +226,8 @@ class TripleString
       {
          this.string3 = string3;
          return true;
-      } else
+      }
+      else
       {
          return false;
       }
@@ -249,7 +251,8 @@ class TripleString
          pullWinnings[numPulls] = winnings;
          numPulls++;
          return true;
-      } else
+      } 
+      else
       {
          return false;
       }
