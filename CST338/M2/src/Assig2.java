@@ -21,7 +21,7 @@ public class Assig2
 	 * main() is the engine for the slots game. Here the first step is to receive
 	 * the bet by calling getBet(). As long as the bet is not 0, the game will be
 	 * played. The new TripleString pullString will be pulled resulting in the
-	 * three random string being chosen. getPayMultiplier will then determine the
+	 * three random strings being chosen. getPayMultiplier will then determine the
 	 * proper multiplier based on the strings and this will be used to calculate
 	 * the winnings of the player. These winnings will then be added to the array
 	 * of previous winnings so long as they do not exceed the maximum number of
@@ -307,7 +307,184 @@ class TripleString
 			returnString = returnString.concat(val + " ");
 			totalWinnings = totalWinnings + val;
 		}
-		returnString = returnString + "\nYour total winnings were: " + totalWinnings;
+		returnString = returnString + "\nYour total winnings were: $" + totalWinnings;
 		return returnString;
 	}
 }
+
+/*
+**********************************************************************
+*                         TEST RUN
+*Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+5
+7   BAR   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+7
+space   BAR   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+30
+cherries   BAR   BAR
+Congrats, you won: $150
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+40
+BAR   BAR   BAR
+Congrats, you won: $2000
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+50
+7   space   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+4
+BAR   cherries   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+30
+BAR   BAR   space
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+20
+cherries   7   cherries
+Congrats, you won: $100
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+66
+cherries   BAR   cherries
+Congrats, you won: $330
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+50
+BAR   space   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+55
+space   BAR   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+39
+cherries   7   space
+Congrats, you won: $195
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+90
+space   BAR   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+29
+BAR   BAR   BAR
+Congrats, you won: $1450
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+34
+cherries   BAR   BAR
+Congrats, you won: $170
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+23
+BAR   BAR   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+22
+cherries   7   BAR
+Congrats, you won: $110
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+66
+BAR   BAR   BAR
+Congrats, you won: $3300
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+90
+7   cherries   space
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+58
+BAR   space   space
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+69
+BAR   cherries   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+90
+BAR   cherries   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+58
+BAR   cherries   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+44
+BAR   BAR   BAR
+Congrats, you won: $2200
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+22
+BAR   7   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+34
+cherries   cherries   cherries
+Congrats, you won: $1020
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+43
+7   cherries   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+45
+BAR   cherries   space
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+65
+cherries   7   cherries
+Congrats, you won: $325
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+76
+cherries   cherries   space
+Congrats, you won: $1140
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+32
+BAR   BAR   BAR
+Congrats, you won: $1600
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+34
+BAR   space   BAR
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+56
+cherries   BAR   BAR
+Congrats, you won: $280
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+-1
+Error: input must be a positive integer between 1 and 100.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+93
+BAR   BAR   BAR
+Congrats, you won: $4650
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+58
+7   BAR   space
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+69
+cherries   BAR   BAR
+Congrats, you won: $345
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+03
+BAR   cherries   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+83
+BAR   cherries   cherries
+Sorry, looks like you lost.
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+77
+cherries   BAR   BAR
+Congrats, you won: $385
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+93
+cherries   BAR   7
+Congrats, you won: $465
+Enter your bet amount in dollars. ( 1 to 100 ) or 0 to quit
+90
+You broke the machine! Out of memory!
+Thanks for playing at the Casino!
+Your individual winnings were:
+0 0 150 2000 0 0 0 100 330 0 0 195 0 1450 170 0 110 3300 0 0 0 0 0 2200 0 1020 0 0 325 1140 1600 0 
+280 4650 0 345 0 0 385 465 
+Your total winnings were: $20215
+**********************************************************************
+*/
