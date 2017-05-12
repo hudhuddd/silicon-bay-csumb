@@ -16,18 +16,17 @@ public class Assig3
  */
 class Card
 {
-
-   private char value;
-   private Suit suit;
-   private boolean errorFlag;
-
    /**
-    *
-    */
+   *
+   */
    public enum Suit
    {
       CLUBS, DIAMONDS, HEARTS, SPADES;
    }
+
+   private char value;
+   private Suit suit;
+   private boolean errorFlag;
 
    /**
     * @param value
@@ -101,11 +100,11 @@ class Card
     */
    public boolean equals(Card card)
    {
-      return errorFlag;
+      return false;
    }
 
    /**
-    * a private helper method that returns true or false, depending on the
+    * A private helper method that returns true or false, depending on the
     * legality of the parameters. Note that, although it may be impossible for
     * suit to be illegal (due to its enum-ness), we pass it, anyway, in
     * anticipation of possible changes to the type from enum to, say, char or
@@ -126,7 +125,71 @@ class Card
  */
 class Hand
 {
+   public static int MAX_CARDS = 52;
+   private Card[] myCards;
+   private int numCards;
 
+   /**
+    * 
+    */
+   public Hand()
+   {
+      myCards = new Card[MAX_CARDS];
+      numCards = 0;
+   }
+
+   /**
+    * 
+    */
+   public void resetHand()
+   {
+
+   }
+
+   /**
+    * @return
+    */
+   public int getNumCards()
+   {
+      return numCards;
+   }
+
+   /**
+    * @param card
+    * @return
+    */
+   public boolean takeCard(Card card)
+   {
+      return false;
+   }
+
+   /**
+    * @return
+    */
+   public Card playCard()
+   {
+      Card card = myCards[numCards];
+      numCards--;
+      return card;
+   }
+
+   /**
+    * @return
+    */
+   public String toString()
+   {
+      return null;
+   }
+
+   /**
+    * @param k
+    * @return
+    */
+   public Card inspectCard(int k)
+   {
+      return null;
+
+   }
 }
 
 /**
@@ -134,5 +197,68 @@ class Hand
  */
 class Deck
 {
+   public final int MAX_CARDS = 6 * 52;
+   private static Card[] masterPack;
 
+   private Card[] cards;
+   private int topCard;
+   private int numPacks;
+
+   /**
+    * @param numPacks
+    */
+   public Deck(int numPacks)
+   {
+      this.numPacks = numPacks;
+      topCard = numPacks * 52;
+      cards = new Card[topCard];
+   }
+
+   /**
+    * @param numPacks
+    */
+   public void init(int numPacks)
+   {
+
+   }
+
+   /**
+    * 
+    */
+   public void shuffle()
+   {
+
+   }
+
+   /**
+    * @return
+    */
+   public Card dealCard()
+   {
+      return null;
+
+   }
+
+   /**
+    * @return
+    */
+   public int getTopCard()
+   {
+      return topCard;
+   }
+
+   /**
+    * @param k
+    * @return
+    */
+   public Card inspectCard(int k)
+   {
+      return null;
+
+   }
+
+   private static void allocateMasterPack()
+   {
+
+   }
 }
