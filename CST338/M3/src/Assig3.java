@@ -45,16 +45,15 @@ class Card
     * @param suit
     * @param SPADES 
     */
-   public Card(char theValue, Suit theSuit)
+   
+   Card(char theValue, Suit theSuit)
    {
-      value = theValue;
-      suit = theSuit;
+      set(theValue, theSuit);
    }
    
-   public Card()
+   Card()
    {
-      value = 'A';
-      suit = SPADES;
+      set('A', Suit.valueOf("SPADES"));
    }
 
    /**
@@ -69,8 +68,11 @@ class Card
     */
    public String toString()
    {
-      return null;
-
+      if (errorFlag == false)
+      {
+         return value + "   " + suit;
+      }
+      
    }
 
    /**
@@ -86,6 +88,8 @@ class Card
     */
    public boolean set(char value, Suit suit)
    {
+      
+      errorFlag = true;
 
       return errorFlag;
    }
