@@ -1,3 +1,15 @@
+/*
+***********************************
+* Alejandro Guzman-Vega
+* Andrea Wieland
+* Huda Mutwakil
+* Brandon Lewis
+* CST 338
+* Deck of Cards
+* Professor Cecil
+***********************************
+*/
+
 import java.util.Scanner;
 
 public class Assig3
@@ -31,10 +43,18 @@ class Card
    /**
     * @param value
     * @param suit
+    * @param SPADES 
     */
-   public Card(char value, Suit suit)
+   public Card(char theValue, Suit theSuit)
    {
-
+      value = theValue;
+      suit = theSuit;
+   }
+   
+   public Card()
+   {
+      value = 'A';
+      suit = SPADES;
    }
 
    /**
@@ -42,6 +62,9 @@ class Card
     * provides a clean representation of the card. If errorFlag == true, it
     * should return correspondingly reasonable reflection of this fact
     * (something like "[ invalid ]" rather than a suit and value).
+    * @param value
+    * @param suit
+    * @return
     * 
     */
    public String toString()
@@ -59,7 +82,7 @@ class Card
     * 
     * @param value
     * @param suit
-    * @return
+    * @return errorFlag
     */
    public boolean set(char value, Suit suit)
    {
@@ -68,7 +91,7 @@ class Card
    }
 
    /**
-    * @return
+    * @return value
     */
    public char getValue()
    {
@@ -76,7 +99,7 @@ class Card
    }
 
    /**
-    * @return
+    * @return suit
     */
    public Suit getSuit()
    {
@@ -84,7 +107,7 @@ class Card
    }
 
    /**
-    * @return
+    * @return errorFlag
     */
    public boolean getErrorFlag()
    {
@@ -96,7 +119,7 @@ class Card
     * otherwise.
     * 
     * @param card
-    * @return
+    * @return true or false
     */
    public boolean equals(Card card)
    {
@@ -112,7 +135,7 @@ class Card
     * 
     * @param value
     * @param suit
-    * @return
+    * @return errorFlag
     */
    private boolean isValid(char value, Suit suit)
    {
