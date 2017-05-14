@@ -19,32 +19,88 @@ public class Assig3
 
    public static void main(String[] args)
    {
-      //Test of Card class
+      // Test of Card class
+      System.out.println("*************** TEST OF CARD CLASS ***************");
       Card aceOfSpades = new Card();
       System.out.println(aceOfSpades.toString());
       assert !aceOfSpades.getErrorFlag();
-      
+
       Card illegal = new Card('R', Card.Suit.spades);
       System.out.println(illegal.toString());
       assert illegal.getErrorFlag();
-      
+
       Card jOfClubs = new Card('J', Card.Suit.clubs);
       System.out.println(jOfClubs.toString());
       assert !jOfClubs.getErrorFlag();
-      
+
       System.out.println("");
-      
+
       aceOfSpades.set('R', Card.Suit.spades);
       System.out.println(aceOfSpades.toString());
       assert aceOfSpades.getErrorFlag();
-      
+
       illegal.set('Q', Card.Suit.spades);
       System.out.println(illegal.toString());
       assert !illegal.getErrorFlag();
-      
+
       System.out.println(jOfClubs.toString());
       assert !jOfClubs.getErrorFlag();
 
+      System.out.println("*************** TEST OF HAND CLASS ***************");
+      Card fiveOfHearts = new Card('5', Card.Suit.hearts);
+      Card sevenOfHearts = new Card('7', Card.Suit.hearts);
+      Card queenOfDiamonds = new Card('Q', Card.Suit.diamonds);
+      Card fourOfDiamonds = new Card('4', Card.Suit.diamonds);
+      Card jackOfSpades = new Card('J', Card.Suit.spades);
+
+      Hand hand = new Hand();
+
+      System.out.println("****Testing takeCard()****");
+      for (int i = 0; true; i++)
+      {
+         Card cardToAdd = null;
+         switch (i % 5)
+         {
+         case 0:
+            cardToAdd = fiveOfHearts;
+            break;
+         case 1:
+            cardToAdd = sevenOfHearts;
+            break;
+         case 2:
+            cardToAdd = queenOfDiamonds;
+            break;
+         case 3:
+            cardToAdd = fourOfDiamonds;
+            break;
+         case 4:
+            cardToAdd = jackOfSpades;
+            break;
+         }
+         if (!hand.takeCard(cardToAdd))
+         {
+            System.out.println("Hand full");
+            break;
+         }
+      }
+      System.out.println("****Testing hand.toString() when full****");
+      System.out.println(hand.toString());
+
+      System.out.println("****Testing inspectCard()****");
+      System.out.println(hand.inspectCard(0).toString());
+      System.out.println(hand.inspectCard(1).toString());
+      System.out.println(hand.inspectCard(-1).toString());
+      System.out.println(hand.inspectCard(10000).toString());
+
+      System.out.println("****Testing playCard()****");
+
+      while (hand.getNumCards() > 0)
+      {
+         Card playCard = hand.playCard();
+         System.out.println(playCard.toString());
+      }
+      System.out.println("****Testing hand.toString() when empty****");
+      System.out.println(hand.toString());
    }
 }
 
@@ -196,6 +252,12 @@ class Card
       }
       return false;
    }
+
+   public boolean setErrorFlag(boolean errorFlag)
+   {
+      this.errorFlag = errorFlag;
+      return true;
+   }
 }
 
 /**
@@ -221,7 +283,8 @@ class Hand
     */
    public void resetHand()
    {
-
+      myCards = new Card[MAX_CARDS];
+      numCards = 0;
    }
 
    /**
@@ -238,7 +301,15 @@ class Hand
     */
    public boolean takeCard(Card card)
    {
-      return false;
+      if (numCards < MAX_CARDS)
+      {
+         myCards[numCards] = new Card(card.getValue(), card.getSuit());
+         numCards++;
+         return true;
+      } else
+      {
+         return false;
+      }
    }
 
    /**
@@ -246,8 +317,8 @@ class Hand
     */
    public Card playCard()
    {
-      Card card = myCards[numCards];
       numCards--;
+      Card card = myCards[numCards];
       return card;
    }
 
@@ -256,7 +327,19 @@ class Hand
     */
    public String toString()
    {
-      return null;
+      String returnString = "Hand = ( ";
+      for (int i = 0; i < numCards; i++)
+      {
+         if (i != numCards - 1)
+         {
+            returnString = returnString + myCards[i].toString() + ", ";
+         } else
+         {
+            returnString = returnString + myCards[i].toString();
+         }
+      }
+      returnString = returnString + " )";
+      return returnString;
    }
 
    /**
@@ -265,8 +348,15 @@ class Hand
     */
    public Card inspectCard(int k)
    {
-      return null;
-
+      if (k < numCards && k >= 0)
+      {
+         return myCards[k];
+      } else
+      {
+         Card errorCard = new Card();
+         errorCard.setErrorFlag(true);
+         return errorCard;
+      }
    }
 }
 
