@@ -1,3 +1,4 @@
+
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -18,9 +19,33 @@ public class Assig3
 
    public static void main(String[] args)
    {
+      //Test of Card class
+      Card aceOfSpades = new Card();
+      System.out.println(aceOfSpades.toString());
+      assert !aceOfSpades.getErrorFlag();
+      
+      Card illegal = new Card('R', Card.Suit.spades);
+      System.out.println(illegal.toString());
+      assert illegal.getErrorFlag();
+      
+      Card jOfClubs = new Card('J', Card.Suit.clubs);
+      System.out.println(jOfClubs.toString());
+      assert !jOfClubs.getErrorFlag();
+      
+      System.out.println("");
+      
+      aceOfSpades.set('R', Card.Suit.spades);
+      System.out.println(aceOfSpades.toString());
+      assert aceOfSpades.getErrorFlag();
+      
+      illegal.set('Q', Card.Suit.spades);
+      System.out.println(illegal.toString());
+      assert !illegal.getErrorFlag();
+      
+      System.out.println(jOfClubs.toString());
+      assert !jOfClubs.getErrorFlag();
 
    }
-
 }
 
 /**
@@ -33,8 +58,11 @@ class Card
    */
    public enum Suit
    {
-      CLUBS, DIAMONDS, HEARTS, SPADES;
+      clubs, diamonds, hearts, spades;
    }
+
+   char[] validValues =
+   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
 
    private char value;
    private Suit suit;
@@ -43,17 +71,17 @@ class Card
    /**
     * @param value
     * @param suit
-    * @param SPADES 
+    * @param SPADES
     */
-   
+
    Card(char theValue, Suit theSuit)
    {
       set(theValue, theSuit);
    }
-   
+
    Card()
    {
-      set('A', Suit.valueOf("SPADES"));
+      set('A', Suit.spades);
    }
 
    /**
@@ -61,6 +89,7 @@ class Card
     * provides a clean representation of the card. If errorFlag == true, it
     * should return correspondingly reasonable reflection of this fact
     * (something like "[ invalid ]" rather than a suit and value).
+    * 
     * @param value
     * @param suit
     * @return
@@ -68,11 +97,14 @@ class Card
     */
    public String toString()
    {
-      if (errorFlag == false)
+      if (errorFlag)
       {
-         return value + "   " + suit;
+         return "** illegal **";
+      } else
+      {
+         return value + " of " + suit;
       }
-      
+
    }
 
    /**
@@ -84,14 +116,20 @@ class Card
     * 
     * @param value
     * @param suit
-    * @return errorFlag
     */
    public boolean set(char value, Suit suit)
    {
-      
-      errorFlag = true;
-
-      return errorFlag;
+      if (isValid(value, suit))
+      {
+         this.value = value;
+         this.suit = suit;
+         errorFlag = false;
+         return true;
+      } else
+      {
+         errorFlag = true;
+         return false;
+      }
    }
 
    /**
@@ -127,7 +165,13 @@ class Card
     */
    public boolean equals(Card card)
    {
-      return false;
+      if (this.suit == card.suit && this.value == card.value)
+      {
+         return true;
+      } else
+      {
+         return false;
+      }
    }
 
    /**
@@ -143,7 +187,14 @@ class Card
     */
    private boolean isValid(char value, Suit suit)
    {
-      return errorFlag;
+      for (char validValue : validValues)
+      {
+         if (validValue == value)
+         {
+            return true;
+         }
+      }
+      return false;
    }
 }
 
