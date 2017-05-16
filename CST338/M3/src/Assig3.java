@@ -1,3 +1,4 @@
+
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -10,7 +11,7 @@
 ***********************************
 */
 
-import java.util.Random; 
+import java.util.Random;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -102,6 +103,23 @@ public class Assig3
       }
       System.out.println("****Testing hand.toString() when empty****");
       System.out.println(hand.toString());
+
+      System.out.println("*************** TEST OF DECK CLASS ***************");
+      System.out.println("****Dealing Cards****");
+      Deck deck = new Deck(2);
+      while (deck.getTopCard() > 0)
+      {
+         Card playCard = deck.dealCard();
+         System.out.println(playCard.toString());
+      }
+      System.out.println("****Dealing Cards after shuffle****");
+      deck.init(2);
+      deck.shuffle();
+      while (deck.getTopCard() > 0)
+      {
+         Card playCard = deck.dealCard();
+         System.out.println(playCard.toString());
+      }
    }
 }
 
@@ -351,7 +369,7 @@ class Hand
    {
       if (k < numCards && k >= 0)
       {
-         return myCards[k];
+         return new Card(myCards[k].getValue(), myCards[k].getSuit());
       } else
       {
          Card errorCard = new Card();
@@ -367,7 +385,7 @@ class Hand
 class Deck
 {
    public final int MAX_CARDS = 6 * 52;
-   private static Card[] masterPack;
+   private static Card[] masterPack = new Card[52];
 
    private Card[] cards;
    private int topCard;
@@ -378,15 +396,15 @@ class Deck
     */
    public Deck(int numPacks)
    {
-   	allocateMasterPack();
+      allocateMasterPack();
       this.numPacks = numPacks;
       topCard = numPacks * 52;
       cards = new Card[topCard];
       for (int i = 0; i < topCard; i++)
       {
-      	cards[i] = masterPack[i % 52];
+         cards[i] = masterPack[i % 52];
       }
-      
+
    }
 
    /*
@@ -396,6 +414,7 @@ class Deck
    {
       this(1);
    }
+
    /**
     * @param numPacks
     */
@@ -404,7 +423,10 @@ class Deck
       this.numPacks = numPacks;
       topCard = numPacks * 52;
       cards = new Card[topCard];
-      allocateMasterPack();
+      for (int i = 0; i < topCard; i++)
+      {
+         cards[i] = masterPack[i % 52];
+      }
    }
 
    /**
@@ -412,13 +434,13 @@ class Deck
     */
    public void shuffle()
    {
-   	Random rndGenerator = new Random();
+      Random rndGenerator = new Random();
       for (int i = cards.length - 1; i > 0; i--)
       {
-        int index = rndGenerator.nextInt(i + 1);
-        Card card = cards[index];
-        cards[index] = cards[i];
-        cards[i] = card;
+         int index = rndGenerator.nextInt(i + 1);
+         Card card = cards[index];
+         cards[index] = cards[i];
+         cards[i] = card;
       }
    }
 
@@ -427,8 +449,9 @@ class Deck
     */
    public Card dealCard()
    {
-   	Card card = cards[-1];
-   	cards = Arrays.copyOf(cards, cards.length-1);
+      Card card = cards[topCard - 1];
+      topCard--;
+      cards = Arrays.copyOf(cards, cards.length - 1);
       return card;
    }
 
@@ -446,33 +469,31 @@ class Deck
     */
    public Card inspectCard(int k)
    {
-   	if (k >= cards.length)
-   	{
-   		Card card = new Card();
-   		card.setErrorFlag(true);
-   		return card;  		
-   	}
-   	return cards[k];
+      if (k >= topCard || k < 0)
+      {
+         Card card = new Card();
+         card.setErrorFlag(true);
+         return card;
+      } else
+      {
+         return new Card(cards[k].getValue(), cards[k].getSuit());
+
+      }
    }
 
    private static void allocateMasterPack()
    {
-   	if (masterPack != null)
-   	{
-   		return;
-   	}
-   	
       char[] validValues =
       { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
-      
+
       int i = 0;
       for (Card.Suit suit : Card.Suit.values())
       {
-      	for (char value : validValues)
-      	{
-      		masterPack[i] = new Card (value, suit);
-      		i++;
-      	}
+         for (char value : validValues)
+         {
+            masterPack[i] = new Card(value, suit);
+            i++;
+         }
       }
    }
 }
