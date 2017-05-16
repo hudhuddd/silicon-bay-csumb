@@ -142,16 +142,8 @@ public class Assig3
          }
       } 
       //print all hands
-      System.out.println("Here are our hands, from unshuffled deck:");
-      for (int i = 0; i < gameHands.length; i++){
-    	  System.out.println("Hand:\n");
-    	  String handString = "";
-    	  for (int k = 0; k < gameHands[i].getNumCards(); k++){
-    	     handString += gameHands[i].inspectCard(k).toString();
-    	  	 handString += ", ";
-    	  }
-    	  System.out.println(handString + "\n");
-      }
+      System.out.println("Here are our hands, from unshuffled deck:\n");
+      showHands(gameHands);
       
       //reset deck and hands
       cardDeck.init(1);
@@ -170,20 +162,22 @@ public class Assig3
          }
       } 
       
-      System.out.println("Here are our hands, from shuffled deck:");
-      for (int i = 0; i < gameHands.length; i++){
-    	  System.out.println("Hand:\n");
-    	  String handString = "";
-    	  for (int k = 0; k < gameHands[i].getNumCards(); k++){
-    	     handString += gameHands[i].inspectCard(k).toString();
-    	  	 handString += ", ";
-    	  }
-    	  System.out.println(handString + "\n");
-      }
-      
-      
+      System.out.println("Here are our hands, from shuffled deck:\n");
+      showHands(gameHands);      
    }
    
+   
+   public static void showHands(Hand[] gameHands){
+	   for (int i = 0; i < gameHands.length; i++){
+	      System.out.println("Hand:\n");
+	      String handString = "";
+	      for (int k = 0; k < gameHands[i].getNumCards(); k++){
+	         handString += gameHands[i].inspectCard(k).toString();
+	      	 handString += ", ";
+	      }
+	      System.out.println(handString + "\n");
+	   }
+   }
    
    public static int getPlayers()
    {
