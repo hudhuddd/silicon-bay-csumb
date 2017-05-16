@@ -121,16 +121,17 @@ public class Assig3
          System.out.println(playCard.toString());
       }
       */
-      
-      int players = getPlayers();
-      System.out.println(players);
-      
-      Hand[] gameHands = new Hand[players];
+            
       Deck cardDeck = new Deck(1);
       
+      int players = getPlayers();
+
+      Hand[] gameHands = new Hand[players];
+      //initialize hands array
       for ( int i = 0; i < gameHands.length; i++)
          gameHands[i] = new Hand( ); 
-         
+      
+      //deal all hands         
       int n = 0;
       while (cardDeck.getTopCard() > 0){
          if (n < players){
@@ -139,7 +140,48 @@ public class Assig3
             if (n == players)
                n = 0;
          }
-      }    
+      } 
+      //print all hands
+      System.out.println("Here are our hands, from unshuffled deck:");
+      for (int i = 0; i < gameHands.length; i++){
+    	  System.out.println("Hand:\n");
+    	  String handString = "";
+    	  for (int k = 0; k < gameHands[i].getNumCards(); k++){
+    	     handString += gameHands[i].inspectCard(k).toString();
+    	  	 handString += ", ";
+    	  }
+    	  System.out.println(handString + "\n");
+      }
+      
+      //reset deck and hands
+      cardDeck.init(1);
+      for (int i = 0; i < gameHands.length; i++)
+          gameHands[i].resetHand();   
+      
+      //shuffle, re-deal, re-print
+      cardDeck.shuffle();
+      n = 0;
+      while (cardDeck.getTopCard() > 0){
+         if (n < players){
+            gameHands[n].takeCard(cardDeck.dealCard());
+            n++;
+            if (n == players)
+               n = 0;
+         }
+      } 
+      
+      System.out.println("Here are our hands, from shuffled deck:");
+      for (int i = 0; i < gameHands.length; i++){
+    	  System.out.println("Hand:\n");
+    	  String handString = "";
+    	  for (int k = 0; k < gameHands[i].getNumCards(); k++){
+    	     handString += gameHands[i].inspectCard(k).toString();
+    	  	 handString += ", ";
+    	  }
+    	  System.out.println(handString + "\n");
+      }
+      
+      
    }
    
    
