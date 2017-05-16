@@ -1,4 +1,3 @@
-
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -11,6 +10,8 @@
 ***********************************
 */
 
+import java.util.Random; 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Assig3
@@ -377,17 +378,33 @@ class Deck
     */
    public Deck(int numPacks)
    {
+   	allocateMasterPack();
       this.numPacks = numPacks;
       topCard = numPacks * 52;
       cards = new Card[topCard];
+      for (int i = 0; i < topCard; i++)
+      {
+      	cards[i] = masterPack[i % 52];
+      }
+      
    }
 
+   /*
+    * 
+    */
+   public Deck()
+   {
+      this(1);
+   }
    /**
     * @param numPacks
     */
    public void init(int numPacks)
    {
-
+      this.numPacks = numPacks;
+      topCard = numPacks * 52;
+      cards = new Card[topCard];
+      allocateMasterPack();
    }
 
    /**
@@ -395,16 +412,24 @@ class Deck
     */
    public void shuffle()
    {
-
+   	Random rndGenerator = new Random();
+      for (int i = cards.length - 1; i > 0; i--)
+      {
+        int index = rndGenerator.nextInt(i + 1);
+        Card card = cards[index];
+        cards[index] = cards[i];
+        cards[i] = card;
+      }
    }
 
    /**
-    * @return
+    * @return card
     */
    public Card dealCard()
    {
-      return null;
-
+   	Card card = cards[-1];
+   	cards = Arrays.copyOf(cards, cards.length-1);
+      return card;
    }
 
    /**
@@ -421,12 +446,33 @@ class Deck
     */
    public Card inspectCard(int k)
    {
-      return null;
-
+   	if (k >= cards.length)
+   	{
+   		Card card = new Card();
+   		card.setErrorFlag(true);
+   		return card;  		
+   	}
+   	return cards[k];
    }
 
    private static void allocateMasterPack()
    {
-
+   	if (masterPack != null)
+   	{
+   		return;
+   	}
+   	
+      char[] validValues =
+      { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
+      
+      int i = 0;
+      for (Card.Suit suit : Card.Suit.values())
+      {
+      	for (char value : validValues)
+      	{
+      		masterPack[i] = new Card (value, suit);
+      		i++;
+      	}
+      }
    }
 }
