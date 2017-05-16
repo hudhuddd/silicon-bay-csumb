@@ -1,4 +1,3 @@
-
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -21,6 +20,7 @@ public class Assig3
 
    public static void main(String[] args)
    {
+   /*
       // Test of Card class
       System.out.println("*************** TEST OF CARD CLASS ***************");
       Card aceOfSpades = new Card();
@@ -120,6 +120,45 @@ public class Assig3
          Card playCard = deck.dealCard();
          System.out.println(playCard.toString());
       }
+      */
+      
+      int players = getPlayers();
+      System.out.println(players);
+      
+      Hand[] gameHands = new Hand[players];
+      Deck cardDeck = new Deck(1);
+      
+      for ( int i = 0; i < gameHands.length; i++)
+         gameHands[i] = new Hand( ); 
+         
+      int n = 0;
+      while (cardDeck.getTopCard() > 0){
+         if (n < players){
+            gameHands[n].takeCard(cardDeck.dealCard());
+            n++;
+            if (n == players)
+               n = 0;
+         }
+      }    
+   }
+   
+   
+   public static int getPlayers()
+   {
+      String message = "Enter number of players (1 to 10):";
+      String errorMessage = "Error: enter number from 1 to 10";
+      int players = -1;
+
+      while (players <= 0 || players >= 10)
+      {
+         System.out.println(message);
+         players = scanner.nextInt();
+         if (players >= 0 && players <= 10)
+            break;
+         else
+            System.out.println(errorMessage);
+      }
+      return players;
    }
 }
 
