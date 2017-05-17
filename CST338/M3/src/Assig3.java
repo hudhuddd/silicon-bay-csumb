@@ -488,7 +488,10 @@ class Hand
 }
 
 /**
- *
+ * The Deck class is where the dealer gets cards to deal. It consists
+ * of an array of card objects, which is a single pack that consists of
+ * four suits with 13 cards each. dealCard returns and removes the card on 
+ * the top of the deck and shuffle randomly reorders the cards in the deck.
  */
 class Deck
 {
