@@ -191,11 +191,11 @@ public class Assig3
       String errorMessage = "Error: enter number from 1 to 10";
       int players = -1;
 
-      while (players <= 0 || players >= 10)
+      while (players <= 0 || players > 10)
       {
          System.out.println(message);
          players = scanner.nextInt();
-         if (players >= 0 && players <= 10)
+         if (players > 0 && players <= 10)
             break;
          else
             System.out.println(errorMessage);
@@ -205,18 +205,23 @@ public class Assig3
 }
 
 /**
- *
+ *Card objects contain chars for the face value
+ *and suit strings. the class contains accessors, mutators
+ *toString to display the card values, equals() to check
+ *card equivalence, and private helpers methods
  */
 class Card
 {
    /**
-   *
+   *array of constants for suit values
    */
    public enum Suit
    {
       clubs, diamonds, hearts, spades;
    }
-
+   /*
+    * Array of card face values
+    */
    char[] validValues =
    { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
 
@@ -235,6 +240,7 @@ class Card
       set(theValue, theSuit);
    }
 
+   //default constructor
    Card()
    {
       set('A', Suit.spades);
@@ -370,7 +376,7 @@ class Hand
    private int numCards;
 
    /**
-    * 
+    * default constructor
     */
    public Hand()
    {
@@ -379,7 +385,7 @@ class Hand
    }
 
    /**
-    * 
+    * resets entire array of cards in hand to new Cards
     */
    public void resetHand()
    {
@@ -388,7 +394,7 @@ class Hand
    }
 
    /**
-    * @return
+    * @return numCards
     */
    public int getNumCards()
    {
@@ -396,8 +402,10 @@ class Hand
    }
 
    /**
+    * adds a card to the next available position 
+    * in the myCards array
     * @param card
-    * @return
+    * @returns bool value
     */
    public boolean takeCard(Card card)
    {
@@ -413,7 +421,7 @@ class Hand
    }
 
    /**
-    * @return
+    * @return card and remove from hand
     */
    public Card playCard()
    {
@@ -423,7 +431,9 @@ class Hand
    }
 
    /**
-    * @return
+    *  a stringizer that the client can use prior to displaying 
+    *  the entire hand.
+    * @return string
     */
    public String toString()
    {
@@ -443,8 +453,10 @@ class Hand
    }
 
    /**
+    * Accessor for an individual card.  Returns a card 
+    * with errorFlag = true if k is bad.
     * @param k
-    * @return
+    * @return card
     */
    public Card inspectCard(int k)
    {
@@ -473,6 +485,8 @@ class Deck
    private int numPacks;
 
    /**
+    *  a constructor that populates the arrays 
+    *  and assigns initial values to members
     * @param numPacks
     */
    public Deck(int numPacks)
@@ -489,7 +503,7 @@ class Deck
    }
 
    /*
-    * 
+    * default constructor, sets to one pack
     */
    public Deck()
    {
@@ -497,6 +511,8 @@ class Deck
    }
 
    /**
+    * re-populate cards[] with the standard 
+    * 52 × numPacks cards.
     * @param numPacks
     */
    public void init(int numPacks)
@@ -511,7 +527,8 @@ class Deck
    }
 
    /**
-    * 
+    * mixes up the cards with the help of the standard 
+    * random number generator.
     */
    public void shuffle()
    {
@@ -526,6 +543,8 @@ class Deck
    }
 
    /**
+    * returns and removes the card in the top occupied 
+    * position of cards[].
     * @return card
     */
    public Card dealCard()
@@ -537,7 +556,7 @@ class Deck
    }
 
    /**
-    * @return
+    * @return topCard
     */
    public int getTopCard()
    {
@@ -546,7 +565,8 @@ class Deck
 
    /**
     * @param k
-    * @return
+    * Accessor for an individual card.  Returns a card with 
+    * errorFlag = true if k is bad
     */
    public Card inspectCard(int k)
    {
@@ -563,7 +583,10 @@ class Deck
    }
 
    
-   
+   /*
+    * called by the constructor, but only once. holds master values for
+    * all cards in a pack
+    */
    private static void allocateMasterPack()
    {
       char[] validValues =
