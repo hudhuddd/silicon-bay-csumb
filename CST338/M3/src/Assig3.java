@@ -20,7 +20,7 @@ public class Assig3
 
    public static void main(String[] args)
    {
-   
+
       // Test of Card class
       System.out.println("*************** TEST OF CARD CLASS ***************");
       Card aceOfSpades = new Card();
@@ -120,68 +120,75 @@ public class Assig3
          Card playCard = deck.dealCard();
          System.out.println(playCard.toString());
       }
-      
-      //Phase 4 *****************************************      
-      Deck cardDeck = new Deck(1);
-      
+
+      // Phase 4 *****************************************
       int players = getPlayers();
 
+      Deck cardDeck = new Deck(1);
+
       Hand[] gameHands = new Hand[players];
-      //initialize hands array
-      for ( int i = 0; i < gameHands.length; i++)
-         gameHands[i] = new Hand( ); 
-      
-      //deal and display unshuffled deck
+      // initialize hands array
+      for (int i = 0; i < gameHands.length; i++)
+         gameHands[i] = new Hand();
+
+      // deal and display unshuffled deck
       gameHands = dealPlayers(gameHands, cardDeck, players);
       System.out.println("Here are our hands, from unshuffled deck:\n");
       showHands(gameHands);
-      
-      //reset deck and hands
+
+      // reset deck and hands
       cardDeck.init(1);
       for (int i = 0; i < gameHands.length; i++)
-          gameHands[i].resetHand();   
-      
-      //shuffle, re-deal, re-print
+         gameHands[i].resetHand();
+
+      // shuffle, re-deal, re-print
       cardDeck.shuffle();
       gameHands = dealPlayers(gameHands, cardDeck, players);
       System.out.println("Here are our hands, from shuffled deck:\n");
-      showHands(gameHands);      
+      showHands(gameHands);
    }
-   
-   
-   /*Accepts hand array, drawing deck, and number of players. loops
-    * through each hand object in array, drawing card, until there are
-    * no deck cards left. returns Hand array 
+
+   /*
+    * Accepts hand array, drawing deck, and number of players. loops through
+    * each hand object in array, drawing card, until there are no deck cards
+    * left. returns Hand array
     */
-   public static Hand[] dealPlayers(Hand[] gameHands, Deck cardDeck, int players){
-	   int n = 0;
-	   while (cardDeck.getTopCard() > 0){
-	      if (n < players){
-	         gameHands[n].takeCard(cardDeck.dealCard());
-	         n++;
-	         if (n == players)
-	            n = 0;
-	      }
-	   } 
-	   return gameHands;
+   public static Hand[] dealPlayers(Hand[] gameHands, Deck cardDeck,
+         int players)
+   {
+      int n = 0;
+      while (cardDeck.getTopCard() > 0)
+      {
+         if (n < players)
+         {
+            gameHands[n].takeCard(cardDeck.dealCard());
+            n++;
+            if (n == players)
+               n = 0;
+         }
+      }
+      return gameHands;
    }
-   
+
    /*
     * Displays all hands in Hand array, looping through array and then through
     * each card in array, calling inspectCard() and toString() to print
     */
-   public static void showHands(Hand[] gameHands){
-	   for (int i = 0; i < gameHands.length; i++){
-	      System.out.println("Hand:\n");
-	      String handString = "";
-	      for (int k = 0; k < gameHands[i].getNumCards(); k++){
-	         handString += gameHands[i].inspectCard(k).toString();
-	      	 handString += ", ";
-	      }
-	      System.out.println(handString + "\n");
-	   }
+   public static void showHands(Hand[] gameHands)
+   {
+      for (int i = 0; i < gameHands.length; i++)
+      {
+         System.out.println("Hand:\n");
+         String handString = "";
+         for (int k = 0; k < gameHands[i].getNumCards(); k++)
+         {
+            handString += gameHands[i].inspectCard(k).toString();
+            handString += ", ";
+         }
+         System.out.println(handString + "\n");
+      }
    }
-   
+
    /*
     * Asks for number of players. Validates correct answer and returns int
     */
@@ -194,31 +201,39 @@ public class Assig3
       while (players <= 0 || players > 10)
       {
          System.out.println(message);
-         players = scanner.nextInt();
-         if (players > 0 && players <= 10)
-            break;
-         else
-            System.out.println(errorMessage);
+         if (scanner.hasNextInt())
+         {
+            players = scanner.nextInt();
+            if (players > 0 && players <= 10)
+            {
+               break;
+            }
+         } else
+         {
+            scanner.next();
+         }
+         System.out.println(errorMessage);
+
       }
       return players;
    }
 }
 
 /**
- *Card objects contain chars for the face value
- *and suit strings. the class contains accessors, mutators
- *toString to display the card values, equals() to check
- *card equivalence, and private helpers methods
+ * Card objects contain chars for the face value and suit strings. the class
+ * contains accessors, mutators toString to display the card values, equals() to
+ * check card equivalence, and private helpers methods
  */
 class Card
 {
    /**
-   *array of constants for suit values
-   */
+    * array of constants for suit values
+    */
    public enum Suit
    {
       clubs, diamonds, hearts, spades;
    }
+
    /*
     * Array of card face values
     */
@@ -232,7 +247,6 @@ class Card
    /**
     * @param value
     * @param suit
-    * @param SPADES
     */
 
    Card(char theValue, Suit theSuit)
@@ -240,7 +254,7 @@ class Card
       set(theValue, theSuit);
    }
 
-   //default constructor
+   // default constructor
    Card()
    {
       set('A', Suit.spades);
@@ -402,8 +416,8 @@ class Hand
    }
 
    /**
-    * adds a card to the next available position 
-    * in the myCards array
+    * adds a card to the next available position in the myCards array
+    * 
     * @param card
     * @returns bool value
     */
@@ -431,8 +445,8 @@ class Hand
    }
 
    /**
-    *  a stringizer that the client can use prior to displaying 
-    *  the entire hand.
+    * a stringizer that the client can use prior to displaying the entire hand.
+    * 
     * @return string
     */
    public String toString()
@@ -453,8 +467,9 @@ class Hand
    }
 
    /**
-    * Accessor for an individual card.  Returns a card 
-    * with errorFlag = true if k is bad.
+    * Accessor for an individual card. Returns a card with errorFlag = true if k
+    * is bad.
+    * 
     * @param k
     * @return card
     */
@@ -485,8 +500,9 @@ class Deck
    private int numPacks;
 
    /**
-    *  a constructor that populates the arrays 
-    *  and assigns initial values to members
+    * a constructor that populates the arrays and assigns initial values to
+    * members
+    * 
     * @param numPacks
     */
    public Deck(int numPacks)
@@ -511,8 +527,8 @@ class Deck
    }
 
    /**
-    * re-populate cards[] with the standard 
-    * 52 × numPacks cards.
+    * re-populate cards[] with the standard 52 × numPacks cards.
+    * 
     * @param numPacks
     */
    public void init(int numPacks)
@@ -527,8 +543,7 @@ class Deck
    }
 
    /**
-    * mixes up the cards with the help of the standard 
-    * random number generator.
+    * mixes up the cards with the help of the standard random number generator.
     */
    public void shuffle()
    {
@@ -543,8 +558,8 @@ class Deck
    }
 
    /**
-    * returns and removes the card in the top occupied 
-    * position of cards[].
+    * returns and removes the card in the top occupied position of cards[].
+    * 
     * @return card
     */
    public Card dealCard()
@@ -564,9 +579,10 @@ class Deck
    }
 
    /**
+    * Accessor for an individual card. Returns a card with errorFlag = true if k
+    * is bad
+    * 
     * @param k
-    * Accessor for an individual card.  Returns a card with 
-    * errorFlag = true if k is bad
     */
    public Card inspectCard(int k)
    {
@@ -582,10 +598,9 @@ class Deck
       }
    }
 
-   
    /*
-    * called by the constructor, but only once. holds master values for
-    * all cards in a pack
+    * called by the constructor, but only once. holds master values for all
+    * cards in a pack
     */
    private static void allocateMasterPack()
    {
