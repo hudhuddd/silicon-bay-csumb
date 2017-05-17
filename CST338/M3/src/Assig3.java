@@ -131,17 +131,8 @@ public class Assig3
       for ( int i = 0; i < gameHands.length; i++)
          gameHands[i] = new Hand( ); 
       
-      //deal all hands         
-      int n = 0;
-      while (cardDeck.getTopCard() > 0){
-         if (n < players){
-            gameHands[n].takeCard(cardDeck.dealCard());
-            n++;
-            if (n == players)
-               n = 0;
-         }
-      } 
-      //print all hands
+      //deal and display unshuffled deck
+      gameHands = dealPlayers(gameHands, cardDeck, players);
       System.out.println("Here are our hands, from unshuffled deck:\n");
       showHands(gameHands);
       
@@ -152,21 +143,33 @@ public class Assig3
       
       //shuffle, re-deal, re-print
       cardDeck.shuffle();
-      n = 0;
-      while (cardDeck.getTopCard() > 0){
-         if (n < players){
-            gameHands[n].takeCard(cardDeck.dealCard());
-            n++;
-            if (n == players)
-               n = 0;
-         }
-      } 
-      
+      gameHands = dealPlayers(gameHands, cardDeck, players);
       System.out.println("Here are our hands, from shuffled deck:\n");
       showHands(gameHands);      
    }
    
    
+   /*Accepts hand array, drawing deck, and number of players. loops
+    * through each hand object in array, drawing card, until there are
+    * no deck cards left. returns Hand array 
+    */
+   public static Hand[] dealPlayers(Hand[] gameHands, Deck cardDeck, int players){
+	   int n = 0;
+	   while (cardDeck.getTopCard() > 0){
+	      if (n < players){
+	         gameHands[n].takeCard(cardDeck.dealCard());
+	         n++;
+	         if (n == players)
+	            n = 0;
+	      }
+	   } 
+	   return gameHands;
+   }
+   
+   /*
+    * Displays all hands in Hand array, looping through array and then through
+    * each card in array, calling inspectCard() and toString() to print
+    */
    public static void showHands(Hand[] gameHands){
 	   for (int i = 0; i < gameHands.length; i++){
 	      System.out.println("Hand:\n");
@@ -179,6 +182,9 @@ public class Assig3
 	   }
    }
    
+   /*
+    * Asks for number of players. Validates correct answer and returns int
+    */
    public static int getPlayers()
    {
       String message = "Enter number of players (1 to 10):";
