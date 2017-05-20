@@ -14,7 +14,10 @@ public class Assig4
 
    public static void main(String[] args)
    {
-
+      BarcodeImage barcodeImage = new BarcodeImage(
+            TestString.validFromAssignment2);
+      barcodeImage.displayToConsole();
+      barcodeImage.clone();
    }
 
 }
@@ -23,7 +26,7 @@ public class Assig4
  * Any class that implements BarcodeIO is expected to store some version of an
  * image and some version of the text associated with that image.
  */
-public interface BarcodeIO
+interface BarcodeIO
 {
    /**
     * Accepts some image, represented as a BarcodeImage object, and stores a
@@ -34,7 +37,7 @@ public interface BarcodeIO
     * class is not touched, updated or defined during the scan.
     * 
     * @param bc a BarcodeImage object that will be scanned.
-    * @return boolean depending if scan was successfull
+    * @return boolean depending if scan was successful
     */
    public boolean scan(BarcodeImage bc);
 
@@ -94,6 +97,10 @@ class BarcodeImage implements Cloneable
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
 
+   // TODO: STILL NEED TO VERIFY THAT THESE NUMBERS ARE VALID
+   public static final int MIN_HEIGHT = 2; //
+   public static final int MIN_WIDTH = 2;
+
    private boolean[][] image_data;
 
    /**
@@ -119,7 +126,30 @@ class BarcodeImage implements Cloneable
     */
    public BarcodeImage(String[] strData)
    {
-      // TODO: Complete constructor
+      boolean valid = checkSize(strData); // TODO determine what to do if data
+      // is invalid
+      if (!valid)
+      {
+         System.out.println("The data is not valid, we are not responsible for"
+               + " anything that happens after this.");
+      }
+      this.image_data = new boolean[MAX_HEIGHT][MAX_WIDTH];
+
+      for (int i = 0; i < strData.length; i++)
+      {
+         String row = strData[i];
+         for (int k = 0; k < row.length(); k++)
+         {
+            if (row.charAt(k) == DataMatrix.BLACK_CHAR)
+            {
+               image_data[i][k] = true;
+            } else
+            {
+               image_data[i][k] = false;
+            }
+         }
+      }
+
    }
 
    /**
@@ -145,8 +175,14 @@ class BarcodeImage implements Cloneable
     */
    boolean setPixel(int row, int col, boolean value)
    {
-      image_data[row][col] = value;
-      return true; // TODO: Determine instances where we might return false
+      if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
+      {
+         return false;
+      } else
+      {
+         image_data[row][col] = value;
+         return true;
+      }
    }
 
    /**
@@ -154,20 +190,88 @@ class BarcodeImage implements Cloneable
     * or null error. Smaller is okay. Bigger or null is not.
     * 
     * @param data incoming data which will be verified for size
+    * @return false if data is incorrect
     */
    private boolean checkSize(String[] data)
    {
-      return false; // TODO:
+      if (data == null)
+      {
+         System.out.println("The data is null, unable to do anything");
+         return false;
+      }
+      if (data.length > MAX_HEIGHT)
+      {
+         System.out.println("There are too many rows");
+         return false;
+      }
+      if (data.length < MIN_HEIGHT)
+      {
+         System.out.println("There are not enough rows");
+         return false;
+      }
+      int lengthOfFirstRow = data[0].length();
+      for (int i = 1; i < data.length; i++)
+      {
+         if (data[i].length() != lengthOfFirstRow)
+         {
+            System.out.println("The row length is not consistent");
+            return false;
+         }
+      }
+      if (lengthOfFirstRow > MAX_WIDTH)
+      {
+         System.out.println("There are too many columns");
+         return false;
+      }
+      if (data.length < MIN_WIDTH)
+      {
+         System.out.println("There are not enough columns");
+         return false;
+      }
+      for (int i = 0; i < data.length; i++)
+      {
+         String row = data[i];
+         for (int k = 0; k < row.length(); k++)
+         {
+            if (row.charAt(k) != DataMatrix.BLACK_CHAR
+                  && row.charAt(k) != DataMatrix.WHITE_CHAR)
+            {
+               System.out.println("Some characters are not black or white");
+               return false;
+            }
+         }
+      }
+      return true;
    }
 
    /**
     * Display barcode image to console
     */
-   private void displayToConsole()
+   public void displayToConsole()
    {
-      // TODO
+      for (int i = 0; i < image_data.length; i++)
+      {
+         for (int k = 0; k < image_data[i].length; k++)
+         {
+            if (image_data[i][k])
+            {
+               System.out.print(DataMatrix.BLACK_CHAR);
+            } else
+            {
+               System.out.print(DataMatrix.WHITE_CHAR);
+            }
+         }
+         System.out.println("");
+      }
    }
 
+   public BarcodeImage clone()
+   {
+      BarcodeImage cloneBarImg = new BarcodeImage();
+      cloneBarImg.image_data = this.image_data.clone();
+      cloneBarImg.setPixel(0, 0, true);
+      return cloneBarImg;
+   }
 }
 
 /**
@@ -410,4 +514,154 @@ class DataMatrix implements BarcodeIO
    {
       // TODO Auto-generated method stub
    }
+}
+
+class TestString
+{
+   // Data from assignment
+   static String[] validFromAssignment2 =
+   { "                                               ",
+         "                                               ",
+         "                                               ",
+         "     * * * * * * * * * * * * * * * * * * * * * ",
+         "     *                                       * ",
+         "     ****** **** ****** ******* ** *** *****   ",
+         "     *     *    ****************************** ",
+         "     * **    * *        **  *    * * *   *     ",
+         "     *   *    *  *****    *   * *   *  **  *** ",
+         "     *  **     * *** **   **  *    **  ***  *  ",
+         "     ***  * **   **  *   ****    *  *  ** * ** ",
+         "     *****  ***  *  * *   ** ** **  *   * *    ",
+         "     ***************************************** ",
+         "                                               ",
+         "                                               ",
+         "                                               "
+
+   };
+
+   // Data from assignment
+   static String[] validFromAssignment3 =
+   { "                                          ",
+         "                                          ",
+         "* * * * * * * * * * * * * * * * * * *     ",
+         "*                                    *    ",
+         "**** *** **   ***** ****   *********      ",
+         "* ************ ************ **********    ",
+         "** *      *    *  * * *         * *       ",
+         "***   *  *           * **    *      **    ",
+         "* ** * *  *   * * * **  *   ***   ***     ",
+         "* *           **    *****  *   **   **    ",
+         "****  *  * *  * **  ** *   ** *  * *      ",
+         "**************************************    ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          "
+
+   };
+
+   // Data from assignment
+   static String[] validFromAssignment1 =
+   { "* * * * * * * * * * * * * * * * *    ",
+         "*                                *   ",
+         "****   * ***** **** **** ********    ",
+         "*   *** ***************** ********   ",
+         "*  * **  *   *   *  *    * **        ",
+         "* *       * *  **    * * *    ****   ",
+         "*     *   *    ** * *  *  *  ** *    ",
+         "** * *** *****  **     * *      **   ",
+         "****  *   **** ** *   *   *  * *     ",
+         "**********************************   " };
+
+   // Data from assignment
+   static String[] validFromAssignment =
+   { "       * * * * * * * * * * * * * * * * * *",
+         "       *                                 *",
+         "       ***** ** * **** ****** ** **** **  ",
+         "       * **************      *************",
+         "       **  *  *        *  *   *        *  ",
+         "       * **  *     **    * *   * ****   **",
+         "       **         ****   * ** ** ***   ** ",
+         "       *   *  *   ***  *       *  ***   **",
+         "       *  ** ** * ***  ***  *  *  *** *   ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          "
+
+   };
+
+   // Null String
+   static String[] errorNullString = null;
+
+   // Too many rows
+   static String[] errorTooManyRows =
+   { "       * * * * * * * * * * * * * * * * * *",
+         "       *                                 *",
+         "       ***** ** * **** ****** ** **** **  ",
+         "       * **************      *************",
+         "       **  *  *        *  *   *        *  ",
+         "       * **  *     **    * *   * ****   **",
+         "       **         ****   * ** ** ***   ** ",
+         "       *   *  *   ***  *       *  ***   **",
+         "       *  ** ** * ***  ***  *  *  *** *   ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+
+   };
+
+   // Too many columns
+   static String[] errorTooManyColumsn =
+   { "* *                                                                 ",
+         "***                                                                 ",
+         "*                                                                   ",
+         "***                                                                 ",
+         "*                                                                   ",
+         "***                                                                 ",
+         "*                                                                   ",
+         "***                                                                 ",
+         "*                                                                   ",
+         "***                                                                 "
+
+   };
+
+   // Empty
+   static String[] validEmpty =
+   { "* ", "**", "* ", "**", "* ", "**", "* ", "**", "* ", "**" };
+
+   // Empty
+   static String[] validEmpty2 =
+   { "* ", "**"
+
+   };
+
+   // Inconsistent Length
+   static String[] errorInconsistentLength =
+   { "* ", "**", "* ", "**", "* ", "**", "* ", "**", "*", "**" };
+
+   // One character
+   static String[] oneCharacter =
+   { "* *", "***", "*  ", "***", "*  ", "***", "*  ", "***", "*  ", "***" };
 }
