@@ -23,7 +23,7 @@ public class Assig4
  * Any class that implements BarcodeIO is expected to store some version of an
  * image and some version of the text associated with that image.
  */
-interface BarcodeIO
+public interface BarcodeIO
 {
    /**
     * Accepts some image, represented as a BarcodeImage object, and stores a
