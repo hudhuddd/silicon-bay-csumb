@@ -97,8 +97,7 @@ class BarcodeImage implements Cloneable
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
 
-   // TODO: STILL NEED TO VERIFY THAT THESE NUMBERS ARE VALID
-   public static final int MIN_HEIGHT = 2; //
+   public static final int MIN_HEIGHT = 2;
    public static final int MIN_WIDTH = 2;
 
    private boolean[][] image_data;
@@ -126,8 +125,7 @@ class BarcodeImage implements Cloneable
     */
    public BarcodeImage(String[] strData)
    {
-      boolean valid = checkSize(strData); // TODO determine what to do if data
-      // is invalid
+      boolean valid = checkSize(strData);
       if (!valid)
       {
          System.out.println("The data is not valid, we are not responsible for"
@@ -162,6 +160,10 @@ class BarcodeImage implements Cloneable
     */
    boolean getPixel(int row, int col)
    {
+      if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
+      {
+         return false;
+      }
       return image_data[row][col];
    }
 
@@ -223,7 +225,7 @@ class BarcodeImage implements Cloneable
          System.out.println("There are too many columns");
          return false;
       }
-      if (data.length < MIN_WIDTH)
+      if (lengthOfFirstRow < MIN_WIDTH)
       {
          System.out.println("There are not enough columns");
          return false;
@@ -268,8 +270,11 @@ class BarcodeImage implements Cloneable
    public BarcodeImage clone()
    {
       BarcodeImage cloneBarImg = new BarcodeImage();
-      cloneBarImg.image_data = this.image_data.clone();
-      cloneBarImg.setPixel(0, 0, true);
+      cloneBarImg.image_data = new boolean[image_data.length][];
+      for (int i = 0; i < this.image_data.length; i++)
+      {
+         cloneBarImg.image_data[i] = this.image_data[i].clone();
+      }
       return cloneBarImg;
    }
 }
