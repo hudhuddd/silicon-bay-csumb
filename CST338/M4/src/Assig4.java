@@ -303,7 +303,10 @@ class DataMatrix implements BarcodeIO
     */
    public DataMatrix()
    {
-      // TODO Auto-generated method stub
+	   image = new BarcodeImage();
+	   text = "";
+	   actualWidth = 0;
+	   actualHeight = 0;
    }
 
    /**
@@ -314,7 +317,7 @@ class DataMatrix implements BarcodeIO
    public DataMatrix(BarcodeImage image)
    {
       scan(image);
-      // TODO Auto-generated method stub
+      text = "";
    }
 
    /**
@@ -325,7 +328,10 @@ class DataMatrix implements BarcodeIO
     */
    public DataMatrix(String text)
    {
-      // TODO Auto-generated method stub
+      image = new BarcodeImage();
+      actualHeight = 0;
+      actualWidth = 0;
+      //to do: write and call readText()
    }
 
    /**
@@ -338,8 +344,14 @@ class DataMatrix implements BarcodeIO
     */
    public boolean scan(BarcodeImage bc)
    {
-      // TODO Auto-generated method stub
-      cleanImage();
+      try{
+    	  this.image = image.clone();
+    	  cleanImage(); 
+    	  actualHeight = computeSignalHeight();
+    	  actualWidth = computeSignalWidth();
+      }
+      catch(Exception CloneNotSupportedException){
+      }
       return false;
    }
 
@@ -348,6 +360,7 @@ class DataMatrix implements BarcodeIO
     */
    public int getActualWidth()
    {
+	   
       return actualWidth;
    }
 
@@ -449,7 +462,12 @@ class DataMatrix implements BarcodeIO
     */
    private int computeSignalWidth()
    {
-      // TODO Auto-generated method stub
+      int width = BarcodeImage.MAX_WIDTH;
+      for (int i = BarcodeImage.MAX_WIDTH - 1; i > 0; i--){
+    	  if (image.getPixel(image.MAX_HEIGHT - 1, i))
+    		  return width;
+    	  width--;
+      }
       return 0;
    }
 
@@ -461,7 +479,12 @@ class DataMatrix implements BarcodeIO
     */
    private int computeSignalHeight()
    {
-      // TODO Auto-generated method stub
+      int height = BarcodeImage.MAX_HEIGHT;
+	  for (int i = 0; i < image.MAX_HEIGHT; i ++){
+	     if (image.getPixel(i, 0))
+	        return height;
+	     height--;
+	  }    
       return 0;
    }
 
@@ -472,7 +495,7 @@ class DataMatrix implements BarcodeIO
     */
    private void cleanImage()
    {
-      // TODO Auto-generated method stub
+	   moveImageToLowerLeft();
    }
 
    /**
@@ -480,9 +503,31 @@ class DataMatrix implements BarcodeIO
     */
    private void moveImageToLowerLeft()
    {
-      // TODO Auto-generated method stub
+	   shiftImageDown(findYOffset());
+	   shiftImageLeft(findXOffset());
    }
 
+   /**
+    * returns the # of rows the image needs to be shifted down. loops up
+    * from bottom row, checking for any true values in the pixels
+    * At the end of each row check, it increments the offset tally
+    * If it finds a true pixel representing the bottom border, it 
+    * returns offset
+    * 
+    */
+   
+   private int findYOffset(){
+	   int offset = 0;
+	   for(int i = BarcodeImage.MAX_HEIGHT - 1; i > 0; i--){
+		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
+			   if (image.getPixel(i, k))
+				   return offset;
+		   }
+		   offset++;
+	   }
+	   return offset;
+   }
+   
    /**
     * Move the signal a certain number of pixels down in a BarcodeImage
     * 
@@ -490,23 +535,55 @@ class DataMatrix implements BarcodeIO
     */
    private void shiftImageDown(int offset)
    {
-      // TODO Auto-generated method stub
+	   for(int i = BarcodeImage.MAX_HEIGHT - 1; i > 0; i--){
+		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
+			   image.setPixel(i, k, image.getPixel(i + offset, k));
+		   }
+	   }
    }
 
+   
+   /**
+    * returns the # of rows the image needs to be shifted down. loops up
+    * from bottom row, checking for any true values in the pixels
+    * At the end of each row check, it increments the offset tally
+    * If it finds a true pixel representing the bottom border, it 
+    * returns offset
+    * 
+    */
+   
+   private int findXOffset(){
+	   int offset = 0;
+	   for(int i = 0; i < BarcodeImage.MAX_HEIGHT; i++){
+		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
+			   if (image.getPixel(i, k))
+				   return offset;
+			   offset++;
+		   }
+		   offset = 0;
+	   }
+	   return offset;
+   }
    /**
     * Move the signal a certain number of pixels left in a BarcodeImage
     * 
     * @param offset The numbers of pixels to move the signal left
     */
+   
    private void shiftImageLeft(int offset)
    {
-      // TODO Auto-generated method stub
+	   for(int i = 0; i < BarcodeImage.MAX_HEIGHT; i++){
+		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
+			   image.setPixel(i, k, image.getPixel(i, k + offset));
+		   }
+	   }
    }
 
    /**
     * Show the full image data including the blank top and right. It is a useful
     * debugging tool.
     */
+   
    public void displayRawImage()
    {
       // TODO Auto-generated method stub
