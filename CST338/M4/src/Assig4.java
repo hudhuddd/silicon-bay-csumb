@@ -71,11 +71,12 @@ public class Assig4
       dm.displayTextToConsole();
       dm.displayImageToConsole();
       
-      // create your own message
+      // create you own message
       dm.readText("What a great resume builder this is!");
       dm.generateImageFromText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
+      System.out.println("Translated back from the image:");
       dm.translateImageToText();
       dm.displayTextToConsole();
    } 
@@ -439,6 +440,7 @@ class DataMatrix implements BarcodeIO
     */
    public boolean readText(String text)
    {
+	  this.text = " ";
       if(text.length() < BarcodeImage.MAX_WIDTH - 2){
          this.text = text;
          return true;
@@ -459,6 +461,7 @@ class DataMatrix implements BarcodeIO
     */
    public boolean generateImageFromText()
    {
+	  clearImage();
 	  //create bottom border
       setBottomBorder();
       actualWidth = computeSignalWidth();
@@ -477,6 +480,14 @@ class DataMatrix implements BarcodeIO
    }
    
    
+   
+   private void clearImage(){
+	   for(int i = 0; i < BarcodeImage.MAX_HEIGHT; i++){
+		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
+			   image.setPixel(i, k, false);
+		   }
+	   }
+   }
    /*
     * sets bottom border of image, equal to length of text plus two cells
     * for left and right borders
