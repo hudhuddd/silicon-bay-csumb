@@ -37,7 +37,9 @@ public class Assig4
 	     
 	      BarcodeImage bc = new BarcodeImage(sImageIn);
 	      DataMatrix dm = new DataMatrix(bc);
-	      
+	      dm.displayTextToConsole();
+	      dm.displayImageToConsole();
+
 	 //     dm.displayRawImage();
 	     
 	/*      // First secret message
@@ -358,7 +360,7 @@ class DataMatrix implements BarcodeIO
    {
       this.image  = new BarcodeImage();
 	  scan(image);
-      text = "";
+      text = " ";
    }
 
    /**
@@ -486,11 +488,12 @@ class DataMatrix implements BarcodeIO
 
    /**
     * Prints out the text string to the console.
+    * Adds two spaces to beginning of string to allow for spine and
+    * border
     */
    public void displayTextToConsole()
    {
-      // TODO Auto-generated method stub
-
+	   System.out.println("  " + text);
    }
 
    /**
@@ -499,7 +502,27 @@ class DataMatrix implements BarcodeIO
     */
    public void displayImageToConsole()
    {
-      // TODO Auto-generated method stub
+      String topBorder = "--";
+      for (int i = 0; i < actualWidth; i++){
+    	  topBorder += "-";
+      }
+      System.out.println(topBorder);
+
+      int startRow = BarcodeImage.MAX_HEIGHT - actualHeight;
+      String oneRow;
+      for(int i = startRow; i < BarcodeImage.MAX_HEIGHT; i++){
+    	  oneRow = "|";
+    	  for(int k = 0; k < actualWidth; k++){
+    		  if(image.getPixel(i, k)){
+    			  oneRow += BLACK_CHAR;
+    		  }
+    		  else{
+    			  oneRow += WHITE_CHAR;
+    		  }
+    	  }
+    	  oneRow += "|";
+    	  System.out.println(oneRow);
+      }
    }
 
    /**
