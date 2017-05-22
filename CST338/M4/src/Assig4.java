@@ -12,13 +12,53 @@
 public class Assig4
 {
 
-   public static void main(String[] args)
-   {
-      BarcodeImage barcodeImage = new BarcodeImage(
-            TestString.validFromAssignment2);
-      barcodeImage.displayToConsole();
-      barcodeImage.clone();
-   }
+	public static void main(String[] args)
+	   {
+	      String[] sImageIn =
+	      {
+	         "                                               ",
+	         "                                               ",
+	         "                                               ",
+	         "     * * * * * * * * * * * * * * * * * * * * * ",
+	         "     *                                       * ",
+	         "     ****** **** ****** ******* ** *** *****   ",
+	         "     *     *    ****************************** ",
+	         "     * **    * *        **  *    * * *   *     ",
+	         "     *   *    *  *****    *   * *   *  **  *** ",
+	         "     *  **     * *** **   **  *    **  ***  *  ",
+	         "     ***  * **   **  *   ****    *  *  ** * ** ",
+	         "     *****  ***  *  * *   ** ** **  *   * *    ",
+	         "     ***************************************** ",  
+	         "                                               ",
+	         "                                               ",
+	         "                                               "
+
+	      };      
+	     
+	      BarcodeImage bc = new BarcodeImage(sImageIn);
+	      DataMatrix dm = new DataMatrix(bc);
+	      
+	 //     dm.displayRawImage();
+	     
+	/*      // First secret message
+	      dm.translateImageToText();
+	      dm.displayTextToConsole();
+	      dm.displayImageToConsole();
+	      
+	      // second secret message
+	      bc = new BarcodeImage(sImageIn_2);
+	      dm.scan(bc);
+	      dm.translateImageToText();
+	      dm.displayTextToConsole();
+	      dm.displayImageToConsole();
+	      
+	      // create your own message
+	      dm.readText("What a great resume builder this is!");
+	      dm.generateImageFromText();
+	      dm.displayTextToConsole();
+	      dm.displayImageToConsole();
+	      */
+	   }   
 
 }
 
@@ -59,7 +99,7 @@ interface BarcodeIO
     * object to contain a fully-defined image and text that are in agreement
     * with each other.
     * 
-    * @return true if image generation was succesfull and false otherwise
+    * @return true if image generation was succesful and false otherwise
     */
    public boolean generateImageFromText();
 
@@ -316,7 +356,8 @@ class DataMatrix implements BarcodeIO
     */
    public DataMatrix(BarcodeImage image)
    {
-      scan(image);
+      this.image  = new BarcodeImage();
+	  scan(image);
       text = "";
    }
 
@@ -329,9 +370,9 @@ class DataMatrix implements BarcodeIO
    public DataMatrix(String text)
    {
       image = new BarcodeImage();
+      readText(text);
       actualHeight = 0;
       actualWidth = 0;
-      //to do: write and call readText()
    }
 
    /**
@@ -345,7 +386,8 @@ class DataMatrix implements BarcodeIO
    public boolean scan(BarcodeImage bc)
    {
       try{
-    	  this.image = image.clone();
+    	  
+    	  this.image = bc.clone();
     	  cleanImage(); 
     	  actualHeight = computeSignalHeight();
     	  actualWidth = computeSignalWidth();
@@ -353,14 +395,14 @@ class DataMatrix implements BarcodeIO
       catch(Exception CloneNotSupportedException){
       }
       return false;
+      //to do: define true/false conditions, check try/catch syntax
    }
 
    /**
     * @return Return the width of the BarcodeImage
     */
    public int getActualWidth()
-   {
-	   
+   {   
       return actualWidth;
    }
 
@@ -379,7 +421,13 @@ class DataMatrix implements BarcodeIO
     */
    public boolean readText(String text)
    {
-      // TODO Auto-generated method stub
+	  if(text.length() < BarcodeImage.MAX_WIDTH - 2){
+	     this.text = text;
+	     return true;
+	  }
+	  else{
+		  System.out.println("Error. Text string is too long");   
+	  }
       return false;
    }
 
@@ -404,11 +452,11 @@ class DataMatrix implements BarcodeIO
     * @param char The char that will be written.
     * @return true if char was written to column
     */
-   private boolean writeCharToCol(int col, char car)
+ /*  private boolean writeCharToCol(int col, char car)
    {
       // TODO Auto-generated method stubs
       return false;
-   }
+   }*/
 
    /**
     * Looks at the internal image stored in the implementing class, and produces
@@ -430,11 +478,11 @@ class DataMatrix implements BarcodeIO
     * @param col The column from which the char will be determined.
     * @return A char
     */
-   private char readCharFromCol(int col)
+/*   private char readCharFromCol(int col)
    {
       // TODO Auto-generated method stub
       return 'a';
-   }
+   }*/
 
    /**
     * Prints out the text string to the console.
@@ -464,7 +512,7 @@ class DataMatrix implements BarcodeIO
    {
       int width = BarcodeImage.MAX_WIDTH;
       for (int i = BarcodeImage.MAX_WIDTH - 1; i > 0; i--){
-    	  if (image.getPixel(image.MAX_HEIGHT - 1, i))
+    	  if (image.getPixel(BarcodeImage.MAX_HEIGHT - 1, i))
     		  return width;
     	  width--;
       }
@@ -480,7 +528,7 @@ class DataMatrix implements BarcodeIO
    private int computeSignalHeight()
    {
       int height = BarcodeImage.MAX_HEIGHT;
-	  for (int i = 0; i < image.MAX_HEIGHT; i ++){
+	  for (int i = 0; i < BarcodeImage.MAX_HEIGHT; i ++){
 	     if (image.getPixel(i, 0))
 	        return height;
 	     height--;
@@ -535,9 +583,9 @@ class DataMatrix implements BarcodeIO
     */
    private void shiftImageDown(int offset)
    {
-	   for(int i = BarcodeImage.MAX_HEIGHT - 1; i > 0; i--){
+	   for(int i = BarcodeImage.MAX_HEIGHT - 1; i >= 0; i--){
 		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
-			   image.setPixel(i, k, image.getPixel(i + offset, k));
+			   this.image.setPixel(i, k, this.image.getPixel(i - offset, k));
 		   }
 	   }
    }
@@ -586,16 +634,18 @@ class DataMatrix implements BarcodeIO
    
    public void displayRawImage()
    {
-      // TODO Auto-generated method stub
+	   System.out.println("-");
+      image.displayToConsole();
+      System.out.println("-");
    }
 
    /**
     * Utility method that sets the image to white = false.
     */
-   private void clearImage()
+/*   private void clearImage()
    {
       // TODO Auto-generated method stub
-   }
+   }*/
 }
 
 class TestString
