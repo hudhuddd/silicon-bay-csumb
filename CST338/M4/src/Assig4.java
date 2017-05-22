@@ -12,56 +12,73 @@
 
 public class Assig4
 {
-
-	public static void main(String[] args)
-	   {
-	      String[] sImageIn =
-	      {
-	         "                                               ",
-	         "                                               ",
-	         "                                               ",
-	         "     * * * * * * * * * * * * * * * * * * * * * ",
-	         "     *                                       * ",
-	         "     ****** **** ****** ******* ** *** *****   ",
-	         "     *     *    ****************************** ",
-	         "     * **    * *        **  *    * * *   *     ",
-	         "     *   *    *  *****    *   * *   *  **  *** ",
-	         "     *  **     * *** **   **  *    **  ***  *  ",
-	         "     ***  * **   **  *   ****    *  *  ** * ** ",
-	         "     *****  ***  *  * *   ** ** **  *   * *    ",
-	         "     ***************************************** ",  
-	         "                                               ",
-	         "                                               ",
-	         "                                               "
-
+   public static void main(String[] args)
+   {
+      String[] sImageIn =
+      {
+         "                                               ",
+         "                                               ",
+         "                                               ",
+         "     * * * * * * * * * * * * * * * * * * * * * ",
+         "     *                                       * ",
+         "     ****** **** ****** ******* ** *** *****   ",
+         "     *     *    ****************************** ",
+         "     * **    * *        **  *    * * *   *     ",
+         "     *   *    *  *****    *   * *   *  **  *** ",
+         "     *  **     * *** **   **  *    **  ***  *  ",
+         "     ***  * **   **  *   ****    *  *  ** * ** ",
+         "     *****  ***  *  * *   ** ** **  *   * *    ",
+         "     ***************************************** ",  
+         "                                               ",
+         "                                               ",
+         "                                               "
 	      };      
-	     
-	      BarcodeImage bc = new BarcodeImage(sImageIn);
-	      DataMatrix dm = new DataMatrix(bc);
-	      dm.translateImageToText();
-	      dm.displayTextToConsole();
-	      dm.displayImageToConsole();
-
-	 //     dm.displayRawImage();
-	     
-	/*      // First secret message
-	      
-	      
-	      // second secret message
-	      bc = new BarcodeImage(sImageIn_2);
-	      dm.scan(bc);
-	      dm.translateImageToText();
-	      dm.displayTextToConsole();
-	      dm.displayImageToConsole();
-	      
-	      // create your own message
-	      dm.readText("What a great resume builder this is!");
-	      dm.generateImageFromText();
-	      dm.displayTextToConsole();
-	      dm.displayImageToConsole();
-	      */
-	   }   
-
+            
+         
+      
+      String[] sImageIn_2 =
+      {
+            "                                          ",
+            "                                          ",
+            "* * * * * * * * * * * * * * * * * * *     ",
+            "*                                    *    ",
+            "**** *** **   ***** ****   *********      ",
+            "* ************ ************ **********    ",
+            "** *      *    *  * * *         * *       ",
+            "***   *  *           * **    *      **    ",
+            "* ** * *  *   * * * **  *   ***   ***     ",
+            "* *           **    *****  *   **   **    ",
+            "****  *  * *  * **  ** *   ** *  * *      ",
+            "**************************************    ",
+            "                                          ",
+            "                                          ",
+            "                                          ",
+            "                                          "
+	      };
+     
+      BarcodeImage bc = new BarcodeImage(sImageIn);
+      DataMatrix dm = new DataMatrix(bc);
+     
+      // First secret message
+      dm.translateImageToText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      
+      // second secret message
+      bc = new BarcodeImage(sImageIn_2);
+      dm.scan(bc);
+      dm.translateImageToText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      
+      // create your own message
+      dm.readText("What a great resume builder this is!");
+      dm.generateImageFromText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      dm.translateImageToText();
+      dm.displayTextToConsole();
+   } 
 }
 
 /**
@@ -422,13 +439,13 @@ class DataMatrix implements BarcodeIO
     */
    public boolean readText(String text)
    {
-	  if(text.length() < BarcodeImage.MAX_WIDTH - 2){
-	     this.text = text;
-	     return true;
-	  }
-	  else{
-		  System.out.println("Error. Text string is too long");   
-	  }
+      if(text.length() < BarcodeImage.MAX_WIDTH - 2){
+         this.text = text;
+         return true;
+      }
+      else{
+         System.out.println("Error. Text string is too long");   
+      }
       return false;
    }
 
@@ -442,10 +459,61 @@ class DataMatrix implements BarcodeIO
     */
    public boolean generateImageFromText()
    {
-      // TODO Auto-generated method stub
+	  //create bottom border
+      setBottomBorder();
+      actualWidth = computeSignalWidth();
+
+      //set data values in image
+      for (int i = 1; i < text.length(); i++){//change back to text.length()
+    	  writeCharToCol(i, text.charAt(i-1));
+      }
+      actualHeight = 10;//otherwise not sure how to compute signal height. 
+      	//spec says use the spine to calculate height, but im trying to use height
+      	//to set the spine
+      setLeftBorder();
+      setTopBorder();
+      setRightBorder();
       return false;
    }
-
+   
+   
+   /*
+    * sets bottom border of image, equal to length of text plus two cells
+    * for left and right borders
+    */
+   private boolean setBottomBorder(){
+	   for (int n = 0; n < text.length() + 2; n++){
+	       image.setPixel(BarcodeImage.MAX_HEIGHT - 1, n, true);
+	   }
+	   return false;
+   }
+   
+   private boolean setTopBorder(){
+	   int topIndex = BarcodeImage.MAX_HEIGHT - actualHeight;
+	   for (int n = 0; n < text.length() + 2; n++){
+		   if((n % 2) == 0)
+	          image.setPixel(topIndex, n, true);
+	   }
+	   return false;
+   }
+   
+   private boolean setRightBorder(){
+	   int rightIndex = actualWidth - 1;
+	   int topIndex = BarcodeImage.MAX_HEIGHT - actualHeight + 1;
+	   for (int n = topIndex; n < BarcodeImage.MAX_HEIGHT; n++){
+		   if((n % 2) == 1)
+	          image.setPixel(n, rightIndex, true);
+	   }
+	   return false;
+   }
+   
+   private boolean setLeftBorder(){
+	   int start = BarcodeImage.MAX_HEIGHT - actualHeight + 2;
+	   for (int n = start; n < BarcodeImage.MAX_HEIGHT -1; n++){
+	       image.setPixel(n, 0, true);
+	   }
+	   return false;
+   }
    /**
     * Given a char write a column representing that char.
     * 
@@ -453,11 +521,23 @@ class DataMatrix implements BarcodeIO
     * @param char The char that will be written.
     * @return true if char was written to column
     */
- /*  private boolean writeCharToCol(int col, char car)
+   private boolean writeCharToCol(int col, char ch)
    {
-      // TODO Auto-generated method stubs
+      int asciiValue = (int)(ch);
+      int topLine = BarcodeImage.MAX_HEIGHT - 2;
+      int power;
+      
+      for(int i = 1; i <= topLine; i++){ //loop through all row except top and bottom for borders
+         power = topLine - i;
+    	 if(asciiValue/(int)(Math.pow(2, power)) == 1){
+    	    image.setPixel(i, col, true);
+    	    asciiValue = asciiValue % (int)(Math.pow(2, power));
+    	 }    
+    	 else
+    		 image.setPixel(i, col, false);
+      }
       return false;
-   }*/
+   }
 
    /**
     * Looks at the internal image stored in the implementing class, and produces
@@ -469,9 +549,10 @@ class DataMatrix implements BarcodeIO
     */
    public boolean translateImageToText()
    {
-	  for (int i = 1; i < actualWidth - 2; i++){
-		  text += readCharFromCol(i);
-	  }
+	  text = "";
+      for (int i = 1; i < actualWidth - 2; i++){
+         text += readCharFromCol(i);
+      }
       return false;
    }
 
@@ -483,11 +564,11 @@ class DataMatrix implements BarcodeIO
     */
    private char readCharFromCol(int col)
    {
-	  int asciiValue = 0;
+      int asciiValue = 0;
       for(int i = 0; i < actualHeight - 2; i++){
-    	  if(image.getPixel(BarcodeImage.MAX_HEIGHT - 2 - i, col)){
-    		  asciiValue += (Math.pow(2, i));
-    	  }
+         if(image.getPixel(BarcodeImage.MAX_HEIGHT - 2 - i, col)){
+    	    asciiValue += (Math.pow(2, i));
+    	 }
       }
       char letter = (char)(asciiValue);
       return letter;
@@ -500,7 +581,7 @@ class DataMatrix implements BarcodeIO
     */
    public void displayTextToConsole()
    {
-	   System.out.println("  " + text);
+      System.out.println("  " + text);
    }
 
    /**
@@ -573,7 +654,7 @@ class DataMatrix implements BarcodeIO
     */
    private void cleanImage()
    {
-	   moveImageToLowerLeft();
+      moveImageToLowerLeft();
    }
 
    /**
@@ -581,8 +662,8 @@ class DataMatrix implements BarcodeIO
     */
    private void moveImageToLowerLeft()
    {
-	   shiftImageDown(findYOffset());
-	   shiftImageLeft(findXOffset());
+      shiftImageDown(findYOffset());
+      shiftImageLeft(findXOffset());
    }
 
    /**
@@ -650,11 +731,11 @@ class DataMatrix implements BarcodeIO
    
    private void shiftImageLeft(int offset)
    {
-	   for(int i = 0; i < BarcodeImage.MAX_HEIGHT; i++){
-		   for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
-			   image.setPixel(i, k, image.getPixel(i, k + offset));
-		   }
-	   }
+      for(int i = 0; i < BarcodeImage.MAX_HEIGHT; i++){
+         for(int k = 0; k < BarcodeImage.MAX_WIDTH; k++){
+            image.setPixel(i, k, image.getPixel(i, k + offset));
+         }
+      }
    }
 
    /**
@@ -664,7 +745,7 @@ class DataMatrix implements BarcodeIO
    
    public void displayRawImage()
    {
-	   System.out.println("-");
+      System.out.println("-");
       image.displayToConsole();
       System.out.println("-");
    }
