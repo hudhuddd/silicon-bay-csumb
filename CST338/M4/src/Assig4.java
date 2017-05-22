@@ -9,6 +9,7 @@
 * Professor Cecil
 ***********************************
 */
+
 public class Assig4
 {
 
@@ -37,15 +38,14 @@ public class Assig4
 	     
 	      BarcodeImage bc = new BarcodeImage(sImageIn);
 	      DataMatrix dm = new DataMatrix(bc);
+	      dm.translateImageToText();
 	      dm.displayTextToConsole();
 	      dm.displayImageToConsole();
 
 	 //     dm.displayRawImage();
 	     
 	/*      // First secret message
-	      dm.translateImageToText();
-	      dm.displayTextToConsole();
-	      dm.displayImageToConsole();
+	      
 	      
 	      // second secret message
 	      bc = new BarcodeImage(sImageIn_2);
@@ -388,7 +388,6 @@ class DataMatrix implements BarcodeIO
    public boolean scan(BarcodeImage bc)
    {
       try{
-    	  
     	  this.image = bc.clone();
     	  cleanImage(); 
     	  actualHeight = computeSignalHeight();
@@ -470,7 +469,9 @@ class DataMatrix implements BarcodeIO
     */
    public boolean translateImageToText()
    {
-      // TODO Auto-generated method stub
+	  for (int i = 1; i < actualWidth - 2; i++){
+		  text += readCharFromCol(i);
+	  }
       return false;
    }
 
@@ -480,11 +481,17 @@ class DataMatrix implements BarcodeIO
     * @param col The column from which the char will be determined.
     * @return A char
     */
-/*   private char readCharFromCol(int col)
+   private char readCharFromCol(int col)
    {
-      // TODO Auto-generated method stub
-      return 'a';
-   }*/
+	  int asciiValue = 0;
+      for(int i = 0; i < actualHeight - 2; i++){
+    	  if(image.getPixel(BarcodeImage.MAX_HEIGHT - 2 - i, col)){
+    		  asciiValue += (Math.pow(2, i));
+    	  }
+      }
+      char letter = (char)(asciiValue);
+      return letter;
+   }
 
    /**
     * Prints out the text string to the console.
