@@ -355,7 +355,7 @@ class DataMatrix implements BarcodeIO
 
    public static final char BLACK_CHAR = '*';
    public static final char WHITE_CHAR = ' ';
-   private static final String BLANK_TEXT = "";
+   private static final String BLANK_TEXT = "";//do these need to be private?
    private static final int MAX_SIGNAL_HEIGHT = 10;
    private BarcodeImage image;
    private String text;
@@ -483,7 +483,7 @@ class DataMatrix implements BarcodeIO
 
       // set data values in image
       for (int i = 0; i < text.length(); i++)
-      {// change back to text.length()
+      {
          int colInSignal = i + 1;
          writeCharToCol(colInSignal, text.charAt(i));
       }
@@ -556,7 +556,7 @@ class DataMatrix implements BarcodeIO
     */
    private boolean writeCharToCol(int col, char ch)
    {
-      int asciiValue = (int) (ch);
+      int asciiValue = (int)(ch);
       int topLine = BarcodeImage.MAX_HEIGHT - 2;
       int power;
 
@@ -607,7 +607,7 @@ class DataMatrix implements BarcodeIO
             asciiValue += (Math.pow(2, i));
          }
       }
-      char letter = (char) (asciiValue);
+      char letter = (char)(asciiValue);
       return letter;
    }
 
