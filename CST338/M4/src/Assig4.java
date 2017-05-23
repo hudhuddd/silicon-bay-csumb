@@ -559,6 +559,9 @@ class DataMatrix implements BarcodeIO
     */
    private boolean writeCharToCol(int col, char ch)
    {
+	  if((int)(ch) > 255 || col >= actualWidth)
+		  return false;
+	  
       int asciiValue = (int)(ch);
       int bottomRow = BarcodeImage.MAX_HEIGHT - 2;
       int power;
@@ -570,10 +573,11 @@ class DataMatrix implements BarcodeIO
          {
             image.setPixel(i, col, true);
             asciiValue = asciiValue % (int) (Math.pow(2, power));
-         } else
+         } 
+         else
             image.setPixel(i, col, false);
       }
-      return false;
+      return true;
    }
 
    /**
@@ -586,12 +590,13 @@ class DataMatrix implements BarcodeIO
     */
    public boolean translateImageToText()
    {
+	  //what would be our false condition?
       text = BLANK_TEXT;
       for (int i = 1; i < actualWidth - 1; i++)
       {
          text += readCharFromCol(i);
       }
-      return false;
+      return true;
    }
 
    /**
