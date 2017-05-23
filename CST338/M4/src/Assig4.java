@@ -418,12 +418,11 @@ class DataMatrix implements BarcodeIO
          actualHeight = computeSignalHeight();
          actualWidth = computeSignalWidth();
          return true;
-      } catch (CloneNotSupportedException e)
+      } 
+      catch (CloneNotSupportedException e)
       {
+    	  return false;
       }
-      return false;
-      // TODO: define true/false conditions, check try/catch syntax. Caleb asked
-      // this question in the forum so wait for the response.
    }
 
    /**
