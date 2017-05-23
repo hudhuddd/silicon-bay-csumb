@@ -218,7 +218,7 @@ class BarcodeImage implements Cloneable
     * @return Use the return value for both the actual data and also the error
     *         condition. If there is an error; we just return false.
     */
-   boolean getPixel(int row, int col)
+   public boolean getPixel(int row, int col)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
       {
@@ -235,7 +235,7 @@ class BarcodeImage implements Cloneable
     * @param value The value the pixel will be set.
     * @return true if pixel was set, and false otherwise.
     */
-   boolean setPixel(int row, int col, boolean value)
+   public boolean setPixel(int row, int col, boolean value)
    {
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
       {
