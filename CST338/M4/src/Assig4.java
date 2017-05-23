@@ -14,49 +14,97 @@ public class Assig4
 {
    public static void main(String[] args)
    {
-      String[] sImageIn =
-      {
-         "                                               ",
-         "                                               ",
-         "                                               ",
-         "     * * * * * * * * * * * * * * * * * * * * * ",
-         "     *                                       * ",
-         "     ****** **** ****** ******* ** *** *****   ",
-         "     *     *    ****************************** ",
-         "     * **    * *        **  *    * * *   *     ",
-         "     *   *    *  *****    *   * *   *  **  *** ",
-         "     *  **     * *** **   **  *    **  ***  *  ",
-         "     ***  * **   **  *   ****    *  *  ** * ** ",
-         "     *****  ***  *  * *   ** ** **  *   * *    ",
-         "     ***************************************** ",  
-         "                                               ",
-         "                                               ",
-         "                                               "
-	      };      
-            
-         
-      
-      String[] sImageIn_2 =
-      {
-            "                                          ",
-            "                                          ",
-            "* * * * * * * * * * * * * * * * * * *     ",
-            "*                                    *    ",
-            "**** *** **   ***** ****   *********      ",
-            "* ************ ************ **********    ",
-            "** *      *    *  * * *         * *       ",
-            "***   *  *           * **    *      **    ",
-            "* ** * *  *   * * * **  *   ***   ***     ",
-            "* *           **    *****  *   **   **    ",
-            "****  *  * *  * **  ** *   ** *  * *      ",
-            "**************************************    ",
-            "                                          ",
-            "                                          ",
-            "                                          ",
-            "                                          "
-	      };
-     
-      BarcodeImage bc = new BarcodeImage(sImageIn);
+      DataMatrix dataMatrix = new DataMatrix(
+            new BarcodeImage(TestString.oneCharacter));
+      dataMatrix.displayRawImage();
+      dataMatrix.displayImageToConsole();
+      dataMatrix.translateImageToText();
+      dataMatrix.displayTextToConsole();
+      dataMatrix.generateImageFromText();
+      dataMatrix.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix1 = new DataMatrix(
+            new BarcodeImage(TestString.validEmpty));
+      dataMatrix1.displayRawImage();
+      dataMatrix1.displayImageToConsole();
+      dataMatrix1.translateImageToText();
+      dataMatrix1.displayTextToConsole();
+      dataMatrix1.generateImageFromText();
+      dataMatrix1.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix2 = new DataMatrix(
+            new BarcodeImage(TestString.validFromAssignment));
+      dataMatrix2.displayRawImage();
+      dataMatrix2.displayImageToConsole();
+      dataMatrix2.translateImageToText();
+      dataMatrix2.displayTextToConsole();
+      dataMatrix2.generateImageFromText();
+      dataMatrix2.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix3 = new DataMatrix(
+            new BarcodeImage(TestString.validFromAssignment1));
+      dataMatrix3.displayRawImage();
+      dataMatrix3.displayImageToConsole();
+      dataMatrix3.translateImageToText();
+      dataMatrix3.displayTextToConsole();
+      dataMatrix3.generateImageFromText();
+      dataMatrix3.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix4 = new DataMatrix(
+            new BarcodeImage(TestString.validFromAssignment2));
+      dataMatrix4.displayRawImage();
+      dataMatrix4.displayImageToConsole();
+      dataMatrix4.translateImageToText();
+      dataMatrix4.displayTextToConsole();
+      dataMatrix4.generateImageFromText();
+      dataMatrix4.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix5 = new DataMatrix(
+            new BarcodeImage(TestString.validFromAssignment3));
+      dataMatrix5.displayRawImage();
+      dataMatrix5.displayImageToConsole();
+      dataMatrix5.translateImageToText();
+      dataMatrix5.displayTextToConsole();
+      dataMatrix5.generateImageFromText();
+      dataMatrix5.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix6 = new DataMatrix(
+            new BarcodeImage(TestString.validEmpty2));
+      dataMatrix6.displayRawImage();
+      dataMatrix6.displayImageToConsole();
+      dataMatrix6.translateImageToText();
+      dataMatrix6.displayTextToConsole();
+      dataMatrix6.generateImageFromText();
+      dataMatrix6.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix7 = new DataMatrix(
+            new BarcodeImage(TestString.validLessThan10Height));
+      dataMatrix7.displayRawImage();
+      dataMatrix7.displayImageToConsole();
+      dataMatrix7.translateImageToText();
+      dataMatrix7.displayTextToConsole();
+      dataMatrix7.generateImageFromText();
+      dataMatrix7.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix8 = new DataMatrix(
+            new BarcodeImage(TestString.validMoreThan10Height));
+      dataMatrix8.displayRawImage();
+      dataMatrix8.displayImageToConsole();
+      dataMatrix8.translateImageToText();
+      dataMatrix8.displayTextToConsole();
+      dataMatrix8.generateImageFromText();
+      dataMatrix8.displayImageToConsole();
+      System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+      DataMatrix dataMatrix9 = new DataMatrix(
+            new BarcodeImage(TestString.validFull));
+      dataMatrix9.displayRawImage();
+      dataMatrix9.displayImageToConsole();
+      dataMatrix9.translateImageToText();
+      dataMatrix9.displayTextToConsole();
+      dataMatrix9.generateImageFromText();
+      dataMatrix9.displayImageToConsole();
+      System.out.println("+++++++++++++++++++++++OUTPUT++++++++++++++++++++++");
+      BarcodeImage bc = new BarcodeImage(TestString.validFromAssignment2);
       DataMatrix dm = new DataMatrix(bc);
 
       // First secret message
@@ -65,13 +113,12 @@ public class Assig4
       dm.displayImageToConsole();
 
       // second secret message
-      bc = new BarcodeImage(sImageIn_2);
+      bc = new BarcodeImage(TestString.validFromAssignment3);
       dm.scan(bc);
       dm.translateImageToText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
 
-      // create you own message
       dm.readText("What a great resume builder this is!");
       dm.generateImageFromText();
       dm.displayTextToConsole();
@@ -198,12 +245,14 @@ class BarcodeImage implements Cloneable
          String row = strData[i];
          for (int k = 0; k < row.length(); k++)
          {
+            int shiftToBottom = MAX_HEIGHT - (strData.length - i);
             if (row.charAt(k) == DataMatrix.BLACK_CHAR)
             {
-               image_data[i][k] = true;
-            } else
+               image_data[shiftToBottom][k] = true;
+            }
+            else
             {
-               image_data[i][k] = false;
+               image_data[shiftToBottom][k] = false;
             }
          }
       }
@@ -240,7 +289,8 @@ class BarcodeImage implements Cloneable
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
       {
          return false;
-      } else
+      }
+      else
       {
          image_data[row][col] = value;
          return true;
@@ -318,7 +368,8 @@ class BarcodeImage implements Cloneable
             if (image_data[i][k])
             {
                System.out.print(DataMatrix.BLACK_CHAR);
-            } else
+            }
+            else
             {
                System.out.print(DataMatrix.WHITE_CHAR);
             }
@@ -355,7 +406,7 @@ class DataMatrix implements BarcodeIO
 
    public static final char BLACK_CHAR = '*';
    public static final char WHITE_CHAR = ' ';
-   private static final String BLANK_TEXT = "";//do these need to be private?
+   private static final String BLANK_TEXT = "";
    private static final int MAX_SIGNAL_HEIGHT = 10;
    private BarcodeImage image;
    private String text;
@@ -409,20 +460,24 @@ class DataMatrix implements BarcodeIO
     * 
     * @param bc The BarcodeImage that is going to be copied scanned.s
     */
-   public boolean scan(BarcodeImage bc)//needs boolean returns
+   public boolean scan(BarcodeImage bc)
    {
       try
       {
          this.image = bc.clone();
+         if (this.image == null)
+         {
+            return false;
+         }
          cleanImage();
-         actualHeight = computeSignalHeight();
+         actualHeight = Math.min(computeSignalHeight(), MAX_SIGNAL_HEIGHT);
          actualWidth = computeSignalWidth();
          return true;
-      } 
+      }
       catch (CloneNotSupportedException e)
       {
-    	  return false;
       }
+      return false;
    }
 
    /**
@@ -459,7 +514,8 @@ class DataMatrix implements BarcodeIO
       if (text.length() <= BarcodeImage.MAX_WIDTH - 2)
       {
          this.text = text;
-      } else
+      }
+      else
       {
          this.text = text.substring(0, BarcodeImage.MAX_WIDTH - 2);
       }
@@ -476,9 +532,10 @@ class DataMatrix implements BarcodeIO
     */
    public boolean generateImageFromText()
    {
-	  if (text == BLANK_TEXT)
+      if (text == BLANK_TEXT)
          return false;
-	  else{
+      else
+      {
          clearImage();
          setBottomBorder();
          actualHeight = MAX_SIGNAL_HEIGHT;
@@ -489,12 +546,12 @@ class DataMatrix implements BarcodeIO
          {
             int colInSignal = i + 1;
             writeCharToCol(colInSignal, text.charAt(i));
-         }   
+         }
          setLeftBorder();
          setTopBorder();
          setRightBorder();
          return true;
-	  }
+      }
    }
 
    private void clearImage()
@@ -554,15 +611,15 @@ class DataMatrix implements BarcodeIO
     * Given a char write a column representing that char.
     * 
     * @param col The column where the char will be written.
-    * @param char The char that will be written.
+    * @param ch The char that will be written.
     * @return true if char was written to column
     */
    private boolean writeCharToCol(int col, char ch)
    {
-	  if((int)(ch) > 255 || col >= actualWidth)
-		  return false;
-	  
-      int asciiValue = (int)(ch);
+      if ((int) (ch) > 255 || col >= actualWidth)
+         return false;
+
+      int asciiValue = (int) (ch);
       int bottomRow = BarcodeImage.MAX_HEIGHT - 2;
       int power;
 
@@ -573,7 +630,7 @@ class DataMatrix implements BarcodeIO
          {
             image.setPixel(i, col, true);
             asciiValue = asciiValue % (int) (Math.pow(2, power));
-         } 
+         }
          else
             image.setPixel(i, col, false);
       }
@@ -590,7 +647,6 @@ class DataMatrix implements BarcodeIO
     */
    public boolean translateImageToText()
    {
-	  //what would be our false condition?
       text = BLANK_TEXT;
       for (int i = 1; i < actualWidth - 1; i++)
       {
@@ -615,7 +671,7 @@ class DataMatrix implements BarcodeIO
             asciiValue += (Math.pow(2, i));
          }
       }
-      char letter = (char)(asciiValue);
+      char letter = (char) (asciiValue);
       return letter;
    }
 
@@ -651,7 +707,8 @@ class DataMatrix implements BarcodeIO
             if (image.getPixel(i, k))
             {
                oneRow += BLACK_CHAR;
-            } else
+            }
+            else
             {
                oneRow += WHITE_CHAR;
             }
@@ -809,13 +866,6 @@ class DataMatrix implements BarcodeIO
       image.displayToConsole();
       System.out.println("-");
    }
-
-   /**
-    * Utility method that sets the image to white = false.
-    */
-   /*
-    * private void clearImage() { // TODO Auto-generated method stub }
-    */
 }
 
 class TestString
@@ -886,7 +936,7 @@ class TestString
          "       **         ****   * ** ** ***   ** ",
          "       *   *  *   ***  *       *  ***   **",
          "       *  ** ** * ***  ***  *  *  *** *   ",
-         "                                          ",
+         "       ***********************************",
          "                                          ",
          "                                          ",
          "                                          "
@@ -966,4 +1016,70 @@ class TestString
    // One character
    static String[] oneCharacter =
    { "* *", "***", "*  ", "***", "*  ", "***", "*  ", "***", "*  ", "***" };
+
+   static String[] validLessThan10Height =
+   { "       * * * * * * * * * * * * * * * * * *",
+         "       ***********************************",
+         "       **  ** * * *  * ** * * * *    * *  ",
+         "       * **  * * * ** *  * * * * **** * **",
+         "       **         ****   * ** ** ***   ** ",
+         "       *   *  *   ***  *       *  ***   **",
+         "       *  ** ** * ***  ***  *  *  *** *   ",
+         "       ***********************************",
+         "                                          ",
+         "                                          ",
+         "                                          " };
+
+   // Should still say This is a good SAMPLE to look at.
+   static String[] validMoreThan10Height =
+   { "       * * * * * * * * * * * * * * * * * *",
+         "       * * * * * * * * * * * * * * * * * *",
+         "       * * * * * * * * * * * * * * * * * *",
+         "       * * * * * * * * * * * * * * * * * *",
+         "       *                                 *",
+         "       ***** ** * **** ****** ** **** **  ",
+         "       * **************      *************",
+         "       **  *  *        *  *   *        *  ",
+         "       * **  *     **    * *   * ****   **",
+         "       **         ****   * ** ** ***   ** ",
+         "       *   *  *   ***  *       *  ***   **",
+         "       *  ** ** * ***  ***  *  *  *** *   ",
+         "       ***********************************",
+         "                                          ",
+         "                                          ",
+         "                                          "
+
+   };
+
+   static String[] validFull =
+   { "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "*                                                                ",
+         "*****************************************************************",
+         "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  ",
+         "** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "**************************************************************** ",
+         "*****************************************************************",
+         "*****************************************************************", };
 }
