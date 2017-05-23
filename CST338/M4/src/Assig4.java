@@ -201,8 +201,7 @@ class BarcodeImage implements Cloneable
             if (row.charAt(k) == DataMatrix.BLACK_CHAR)
             {
                image_data[i][k] = true;
-            } 
-            else
+            } else
             {
                image_data[i][k] = false;
             }
@@ -241,8 +240,7 @@ class BarcodeImage implements Cloneable
       if (row < 0 || row >= MAX_HEIGHT || col < 0 || col >= MAX_WIDTH)
       {
          return false;
-      } 
-      else
+      } else
       {
          image_data[row][col] = value;
          return true;
@@ -263,19 +261,16 @@ class BarcodeImage implements Cloneable
          System.out.println("The data is null, unable to do anything");
          return false;
       }
-      
       if (data.length > MAX_HEIGHT)
       {
          System.out.println("There are too many rows");
          return false;
       }
-      
       if (data.length < MIN_HEIGHT)
       {
          System.out.println("There are not enough rows");
          return false;
       }
-      
       int lengthOfFirstRow = data[0].length();
       for (int i = 1; i < data.length; i++)
       {
@@ -285,19 +280,16 @@ class BarcodeImage implements Cloneable
             return false;
          }
       }
-      
       if (lengthOfFirstRow > MAX_WIDTH)
       {
          System.out.println("There are too many columns");
          return false;
       }
-      
       if (lengthOfFirstRow < MIN_WIDTH)
       {
          System.out.println("There are not enough columns");
          return false;
       }
-      
       for (int i = 0; i < data.length; i++)
       {
          String row = data[i];
@@ -326,8 +318,7 @@ class BarcodeImage implements Cloneable
             if (image_data[i][k])
             {
                System.out.print(DataMatrix.BLACK_CHAR);
-            } 
-            else
+            } else
             {
                System.out.print(DataMatrix.WHITE_CHAR);
             }
@@ -418,7 +409,7 @@ class DataMatrix implements BarcodeIO
     * 
     * @param bc The BarcodeImage that is going to be copied scanned.s
     */
-   public boolean scan(BarcodeImage bc)
+   public boolean scan(BarcodeImage bc)//needs boolean returns
    {
       try
       {
@@ -426,8 +417,8 @@ class DataMatrix implements BarcodeIO
          cleanImage();
          actualHeight = computeSignalHeight();
          actualWidth = computeSignalWidth();
-      } 
-      catch (CloneNotSupportedException e)
+         return true;
+      } catch (CloneNotSupportedException e)
       {
       }
       return false;
@@ -469,8 +460,7 @@ class DataMatrix implements BarcodeIO
       if (text.length() <= BarcodeImage.MAX_WIDTH - 2)
       {
          this.text = text;
-      } 
-      else
+      } else
       {
          this.text = text.substring(0, BarcodeImage.MAX_WIDTH - 2);
       }
@@ -487,22 +477,25 @@ class DataMatrix implements BarcodeIO
     */
    public boolean generateImageFromText()
    {
-      clearImage();
-      // create bottom border
-      setBottomBorder();
-      actualWidth = computeSignalWidth();
+	  if (text == BLANK_TEXT)
+         return false;
+	  else{
+         clearImage();
+         setBottomBorder();
+         actualHeight = MAX_SIGNAL_HEIGHT;
+         actualWidth = computeSignalWidth();
 
-      // set data values in image
-      for (int i = 0; i < text.length(); i++)
-      {
-         int colInSignal = i + 1;
-         writeCharToCol(colInSignal, text.charAt(i));
-      }
-      actualHeight = MAX_SIGNAL_HEIGHT;
-      setLeftBorder();
-      setTopBorder();
-      setRightBorder();
-      return false;
+         // set data values in image
+         for (int i = 0; i < text.length(); i++)
+         {
+            int colInSignal = i + 1;
+            writeCharToCol(colInSignal, text.charAt(i));
+         }   
+         setLeftBorder();
+         setTopBorder();
+         setRightBorder();
+         return true;
+	  }
    }
 
    private void clearImage()
@@ -568,18 +561,17 @@ class DataMatrix implements BarcodeIO
    private boolean writeCharToCol(int col, char ch)
    {
       int asciiValue = (int)(ch);
-      int topLine = BarcodeImage.MAX_HEIGHT - 2;
+      int bottomRow = BarcodeImage.MAX_HEIGHT - 2;
       int power;
 
-      for (int i = 1; i <= topLine; i++)
+      for (int i = 1; i <= bottomRow; i++)
       { // loop through all row except top and bottom for borders
-         power = topLine - i;
+         power = bottomRow - i;
          if (asciiValue / (int) (Math.pow(2, power)) == 1)
          {
             image.setPixel(i, col, true);
             asciiValue = asciiValue % (int) (Math.pow(2, power));
-         } 
-         else
+         } else
             image.setPixel(i, col, false);
       }
       return false;
@@ -655,8 +647,7 @@ class DataMatrix implements BarcodeIO
             if (image.getPixel(i, k))
             {
                oneRow += BLACK_CHAR;
-            } 
-            else
+            } else
             {
                oneRow += WHITE_CHAR;
             }
@@ -819,7 +810,7 @@ class DataMatrix implements BarcodeIO
     * Utility method that sets the image to white = false.
     */
    /*
-    * private void clearImage() { // TODO Auto-generated method stub *** NOTE THIS FUNCTION IS DEFINED ON LINE 497.*** }
+    * private void clearImage() { // TODO Auto-generated method stub }
     */
 }
 
@@ -940,7 +931,7 @@ class TestString
    };
 
    // Too many columns
-   static String[] errorTooManyColumns =
+   static String[] errorTooManyColumsn =
    { "* *                                                                 ",
          "***                                                                 ",
          "*                                                                   ",
