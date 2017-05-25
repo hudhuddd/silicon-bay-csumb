@@ -194,17 +194,21 @@ class GUICard
    }
 }
 
-class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
-// TODO: UPDATE THIS CODE FOR ANY POINTS THAT WERE DEDUCTED FROM ASSIGNMENT
+/**
+ *Card objects contain chars for the face value
+ *and suit strings. the class contains accessors, mutators
+ *toString to display the card values, equals() to check
+ *card equivalence, and private helpers methods
+ */
+class Card
 {
    /**
-    * array of constants for suit values
-    */
+   *array of constants for suit values
+   */
    public enum Suit
    {
       clubs, diamonds, hearts, spades;
    }
-
    /*
     * Array of card face values
     */
@@ -218,6 +222,7 @@ class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
    /**
     * @param value
     * @param suit
+    * @param SPADES
     */
 
    Card(char theValue, Suit theSuit)
@@ -225,7 +230,7 @@ class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
       set(theValue, theSuit);
    }
 
-   // default constructor
+   //default constructor
    Card()
    {
       set('A', Suit.spades);
@@ -247,8 +252,7 @@ class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
       if (errorFlag)
       {
          return "** illegal **";
-      }
-      else
+      } else
       {
          return value + " of " + suit;
       }
@@ -273,8 +277,7 @@ class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
          this.suit = suit;
          errorFlag = false;
          return true;
-      }
-      else
+      } else
       {
          errorFlag = true;
          return false;
@@ -314,11 +317,10 @@ class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
     */
    public boolean equals(Card card)
    {
-      if (this.suit == card.suit && this.value == card.value)
+      if (!errorFlag && this.suit == card.suit && this.value == card.value)
       {
          return true;
-      }
-      else
+      } else
       {
          return false;
       }
@@ -347,10 +349,258 @@ class Card // TODO: UPDATE THIS CLASS FOR THE NEW REQUIREMENTS
       return false;
    }
 
-   public boolean setErrorFlag(boolean errorFlag)
+}
+
+/**
+ *
+ */
+class Hand
+{
+   public static int MAX_CARDS = 52;
+   private Card[] myCards;
+   private int numCards;
+
+   /**
+    * default constructor
+    */
+   public Hand()
    {
-      this.errorFlag = errorFlag;
-      return true;
+      myCards = new Card[MAX_CARDS];
+      numCards = 0;
+   }
+
+   /**
+    * resets entire array of cards in hand to new Cards
+    */
+   public void resetHand()
+   {
+      myCards = new Card[MAX_CARDS];
+      numCards = 0;
+   }
+
+   /**
+    * @return numCards
+    */
+   public int getNumCards()
+   {
+      return numCards;
+   }
+
+   /**
+    * adds a card to the next available position 
+    * in the myCards array
+    * @param card
+    * @returns bool value
+    */
+   public boolean takeCard(Card card)
+   {
+      if (numCards < MAX_CARDS)
+      {
+         myCards[numCards] = new Card(card.getValue(), card.getSuit());
+         numCards++;
+         return true;
+      } else
+      {
+         return false;
+      }
+   }
+
+   /**
+    * @return card and remove from hand
+    */
+   public Card playCard()
+   {
+	  if(numCards > 0){
+         numCards--;
+         Card card = myCards[numCards];
+         return card;
+	  }else
+      {
+	     Card errorCard = new Card();
+	     errorCard.set('E', Card.Suit.spades);
+	     return errorCard;
+	  }
+   }
+
+   /**
+    *  a stringizer that the client can use prior to displaying 
+    *  the entire hand.
+    * @return string
+    */
+   public String toString()
+   {
+      String returnString = "Hand = ( ";
+      for (int i = 0; i < numCards; i++)
+      {
+         if (i != numCards - 1)
+         {
+            returnString = returnString + myCards[i].toString() + ", ";
+         } else
+         {
+            returnString = returnString + myCards[i].toString();
+         }
+      }
+      returnString = returnString + " )";
+      return returnString;
+   }
+
+   /**
+    * Accessor for an individual card.  Returns a card 
+    * with errorFlag = true if k is bad.
+    * @param k
+    * @return card
+    */
+   public Card inspectCard(int k)
+   {
+      if (k < numCards && k >= 0)
+      {
+         return new Card(myCards[k].getValue(), myCards[k].getSuit());
+      } else
+      {
+         Card errorCard = new Card();
+         errorCard.set('E', Card.Suit.spades);
+         return errorCard;
+      }
+   }
+}
+
+/**
+ *
+ */
+class Deck
+{
+   public final int MAX_CARDS = 6 * 52;
+   private static Card[] masterPack = new Card[52];
+
+   private Card[] cards;
+   private int topCard;
+   private int numPacks;
+   private static boolean masterPackLoaded = false;
+
+   /**
+    *  a constructor that populates the arrays 
+    *  and assigns initial values to members
+    * @param numPacks
+    */
+   public Deck(int numPacks)
+   {
+      allocateMasterPack();
+      init(numPacks);
+
+   }
+
+   /*
+    * default constructor, sets to one pack
+    */
+   public Deck()
+   {
+      this(1);
+   }
+
+   /**
+    * re-populate cards[] with the standard 
+    * 52 × numPacks cards.
+    * @param numPacks
+    */
+   public void init(int numPacks)
+   {
+	  if(numPacks > 0 && numPacks <= 6)
+	  {
+         this.numPacks = numPacks;
+         topCard = numPacks * 52;
+         cards = new Card[topCard];
+         for (int i = 0; i < topCard; i++)
+         {
+            cards[i] = masterPack[i % 52];
+         }
+	  }
+	  //what should else case be? 
+   }
+
+   /**
+    * mixes up the cards with the help of the standard 
+    * random number generator.
+    */
+   public void shuffle()
+   {
+      Random rndGenerator = new Random();
+      for (int i = cards.length - 1; i > 0; i--)
+      {
+         int index = rndGenerator.nextInt(i + 1);
+         Card card = cards[index];
+         cards[index] = cards[i];
+         cards[i] = card;
+      }
+   }
+
+   /**
+    * returns and removes the card in the top occupied 
+    * position of cards[].
+    * @return card
+    */
+   public Card dealCard()
+   {
+      if (topCard > 0){
+	     Card card = cards[topCard - 1];
+         topCard--;
+         cards = Arrays.copyOf(cards, cards.length - 1);
+         return card;
+      }
+      else
+    	  return null;
+   }
+
+   /**
+    * @return topCard
+    */
+   public int getTopCard()
+   {
+      return topCard;
+   }
+
+   /**
+    * @param k
+    * Accessor for an individual card.  Returns a card with 
+    * errorFlag = true if k is bad
+    */
+   public Card inspectCard(int k)
+   {
+      if (k >= topCard || k < 0)
+      {
+         Card errorCard = new Card();
+         errorCard.set('E', Card.Suit.spades);
+         return errorCard;
+      } else
+      {
+         return new Card(cards[k].getValue(), cards[k].getSuit());
+
+      }
+   }
+
+   
+   /*
+    * called by the constructor, but only once. holds master values for
+    * all cards in a pack
+    */
+
+   private static void allocateMasterPack()
+   {
+	  if(!masterPackLoaded)
+	  {
+         char[] validValues =
+         { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K' };
+
+         int i = 0;
+         for (Card.Suit suit : Card.Suit.values())
+         {
+            for (char value : validValues)
+            {
+               masterPack[i] = new Card(value, suit);
+               i++;
+            }
+            masterPackLoaded = true;
+         }
+      }
    }
 }
 // ****************CODE FROM PHASE 1****************
