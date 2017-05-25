@@ -12,7 +12,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 
 public class Assig5Phase1
 {
