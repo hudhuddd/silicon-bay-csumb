@@ -53,13 +53,16 @@ public class Assig5Phase2
       for (k = 0; k < NUM_CARDS_PER_HAND; k++)
       {
          tempIcon = GUICard.getIcon(generateRandomCard());
-         playedCardLabels[k] = new JLabel(tempIcon);
+         if (k < 2) // temporary fix
+         {
+         	playedCardLabels[k] = new JLabel(tempIcon);
+         }
          
-         if (k > 0)
+         if (k == 1) // Temporary fix
          {
             playLabelText[k] = new JLabel("You", JLabel.CENTER);
          }
-         else
+         if (k == 0) // Temporary fix
          {
             playLabelText[k] = new JLabel("Computer" + k + 1, JLabel.CENTER);
          }
@@ -274,18 +277,22 @@ class GUICard
       {
       case clubs:
          theSuit = 0;
+         break;
       case diamonds:
          theSuit = 1;
+         break;
       case hearts:
          theSuit = 2;
+         break;
       case spades:
          theSuit = 3;
+         break;
       }
-
+      
       int theValue = -1;
       char value = card.getValue();
       if (Character.getNumericValue(value) >= 2
-            || Character.getNumericValue(value) <= 9)
+            && Character.getNumericValue(value) <= 9)
       {
          theValue = Character.getNumericValue(value) - 1;
       }
@@ -295,19 +302,25 @@ class GUICard
          {
          case 'A':
             theValue = 0;
+            break;
          case 'T':
             theValue = 9;
+            break;
          case 'J':
             theValue = 10;
+            break;
          case 'Q':
             theValue = 11;
+            break;
          case 'K':
             theValue = 12;
+            break;
          case 'X':
             theValue = 13;
+            break;
          }
       }
-
+      
       return iconCards[theValue][theSuit];
    }
 
@@ -778,7 +791,7 @@ class Deck
    }
 
    /**
-    * re-populate cards[] with the standard 56 � numPacks cards.
+    * re-populate cards[] with the standard 56 x numPacks cards.
     * 
     * @param numPacks
     */
