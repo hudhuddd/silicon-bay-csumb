@@ -12,6 +12,7 @@
 */
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 import java.awt.*;
 import java.io.File;
@@ -31,6 +32,7 @@ public class Assig5Phase2
    {
       int k;
       Icon tempIcon;
+      GUICard.loadCardIcons();
 
       // establish main frame in which program will run
       CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND,
@@ -39,23 +41,66 @@ public class Assig5Phase2
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      // show everything to the user
-      myCardTable.setVisible(true);
-
       // CREATE LABELS ----------------------------------------------------
-      // code goes here ...
+      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
+      {
+         tempIcon = GUICard.getIcon(generateRandomCard());
+         humanLabels[k] = new JLabel(tempIcon);
+         computerLabels[k] = new JLabel(GUICard.getBackCardIcon());
+         myCardTable.pnlComputerHand.add(computerLabels[k]);
+         myCardTable.pnlHumanHand.add(humanLabels[k]);
+      }
+      
+      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
+      {
+         tempIcon = GUICard.getIcon(generateRandomCard());
+         playedCardLabels[k] = new JLabel(tempIcon);
+         
+         if (k > 0)
+         {
+            playLabelText[k] = new JLabel("You", JLabel.CENTER);
+         }
+         else
+         {
+            playLabelText[k] = new JLabel("Computer" + k + 1, JLabel.CENTER);
+         }
+      }
 
       // ADD LABELS TO PANELS -----------------------------------------
-      // code goes here ...
+      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
+      {
+         myCardTable.pnlComputerHand.add(computerLabels[k]);
+         myCardTable.pnlHumanHand.add(humanLabels[k]);
+      }
 
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
+      for (k = 0; k < NUM_PLAYERS*2; k++)
+      {
+         if (k < NUM_PLAYERS)
+         {
+            myCardTable.pnlPlayArea.add(playedCardLabels[k]);
+         }
+         else
+         {
+            myCardTable.pnlPlayArea.add(playLabelText[k - NUM_PLAYERS]);
+         }
+      }
 
       // show everything to the user
       myCardTable.setVisible(true);
    }
+ 
 
-   static Card generateRandomCard()
+   private static void add(JLabel label1)
+   {
+      // TODO Auto-generated method stub
+      // not sure if this is needed. See lines 140-142 
+      
+   }
+
+
+   public static Card generateRandomCard()
    {
       Card.Suit suit = Card.Suit.values()[new Random().nextInt(4)];
       char c = Card.validValues[new Random().nextInt(14)];
@@ -67,6 +112,8 @@ class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2; // for now, we only allow 2 person games
+   static int DEFAULT_CARDS_PER_HAND = 5;
+   static int DEFAULT_PLAYERS = 2;
 
    private int numCardsPerHand;
    private int numPlayers;
@@ -83,48 +130,39 @@ class CardTable extends JFrame
     */
    public CardTable(String title, int numCardsPerHand, int numPlayers)
    {
-      String frameTitle = filterTitle(title);
-      this.numCardsPerHand = filterNumCardsPerHand(numCardsPerHand);
-      this.numPlayers = filternumPlayers(numPlayers);
-   }
-
-   /**
-    * Verify input, if invalid do error correction and return a valid input.
-    * 
-    * @param numPlayers2 the unverified number of players
-    * @return an int will be returned. If input was valid then it will be
-    *         returned otherwise some int will be selected.
-    */
-   private int filternumPlayers(int numPlayers2)
-   {
-      // TODO Auto-generated method stub
-      return numPlayers2;
-   }
-
-   /**
-    * Verify input, if invalid do error correction and return a valid input.
-    * 
-    * @param numCardsPerHand2 the unverified number of cards per hand
-    * @return an int will be returned. If input was valid then it will be
-    *         returned otherwise some int will be selected.
-    */
-   private int filterNumCardsPerHand(int numCardsPerHand2)
-   {
-      // TODO Auto-generated method stub
-      return numCardsPerHand2;
-   }
-
-   /**
-    * Verify input, if invalid do error correction and return a valid input.
-    * 
-    * @param title the unverified title.
-    * @return a string will be returned. If input was valid then it will be
-    *         returned, otherwise some default string is returned.
-    */
-   private String filterTitle(String title)
-   {
-      // TODO Auto-generated method stub
-      return title;
+      super(title);
+      
+      if(numCardsPerHand < 0 || numCardsPerHand > MAX_CARDS_PER_HAND)
+      {
+         this.numCardsPerHand = DEFAULT_CARDS_PER_HAND;
+      }
+      else
+      {
+         this.numCardsPerHand = numCardsPerHand;
+      }
+      
+      if(numPlayers <= 0 || numPlayers > MAX_PLAYERS)
+      {
+         this.numPlayers = DEFAULT_PLAYERS;
+      }
+      else
+      {
+         this.numPlayers = numPlayers;
+      }
+      
+      pnlComputerHand = new JPanel(new GridLayout(1, 1, 10, 10));
+      pnlHumanHand = new JPanel(new GridLayout(1, 1, 10, 10));
+      pnlPlayArea = new JPanel(new GridLayout(2, 2, 20, 20));
+      
+      setLayout (new BorderLayout(10, 10));
+      add(pnlComputerHand, BorderLayout.NORTH);
+      add(pnlHumanHand, BorderLayout.SOUTH);
+      add(pnlPlayArea, BorderLayout.CENTER);
+      
+      pnlComputerHand.setBorder(new TitledBorder("Computer Hand"));
+      pnlHumanHand.setBorder(new TitledBorder("Your Hand"));
+      pnlPlayArea.setBorder(new TitledBorder("Playing Area"));
+      
    }
 
    /**
@@ -150,7 +188,10 @@ class CardTable extends JFrame
 
 class GUICard
 {
-   private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K +
+   public static final int NUM_SUITS = 4;
+   public static final int MAX_VALUES = 14;
+   
+   private static Icon[][] iconCards = new ImageIcon[MAX_VALUES][NUM_SUITS]; // 14 = A thru K +
                                                              // joker
    private static Icon iconBack;
    private static boolean iconsLoaded = false;
@@ -158,25 +199,27 @@ class GUICard
    /**
     * 
     */
-   private static void loadCardIcons()
+   public static void loadCardIcons()
    {
       if (!iconsLoaded)
       {
          String relativePath = "./images/";
          String extension = ".gif";
-         for (int j = 0; j <= 3; j++)
+         for (int j = 0; j < NUM_SUITS; j++)
          {
-            for (int k = 0; k <= 13; k++)
+            for (int k = 0; k < MAX_VALUES; k++)
             {
                ImageIcon image = new ImageIcon(
                      relativePath + turnIntIntoCardValue(k)
                            + turnIntIntoCardSuit(j) + extension);
                iconCards[k][j] = image;
             }
+            //do something here?
          }
          iconBack = new ImageIcon(relativePath + "BK" + extension);
          iconsLoaded = true;
       }
+      
    }
 
    /**
@@ -258,6 +301,7 @@ class GUICard
       }
 
       return iconCards[theValue][theSuit];
+      
    }
 
    /**
