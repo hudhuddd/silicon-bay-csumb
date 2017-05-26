@@ -15,7 +15,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import java.awt.*;
-import java.io.File;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -91,16 +90,7 @@ public class Assig5Phase2
       myCardTable.setVisible(true);
    }
  
-
-   private static void add(JLabel label1)
-   {
-      // TODO Auto-generated method stub
-      // not sure if this is needed. See lines 140-142 
-      
-   }
-
-
-   public static Card generateRandomCard()
+   static Card generateRandomCard()
    {
       Card.Suit suit = Card.Suit.values()[new Random().nextInt(4)];
       char c = Card.validValues[new Random().nextInt(14)];
@@ -112,8 +102,6 @@ class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2; // for now, we only allow 2 person games
-   static int DEFAULT_CARDS_PER_HAND = 5;
-   static int DEFAULT_PLAYERS = 2;
 
    private int numCardsPerHand;
    private int numPlayers;
@@ -130,25 +118,9 @@ class CardTable extends JFrame
     */
    public CardTable(String title, int numCardsPerHand, int numPlayers)
    {
-      super(title);
-      
-      if(numCardsPerHand < 0 || numCardsPerHand > MAX_CARDS_PER_HAND)
-      {
-         this.numCardsPerHand = DEFAULT_CARDS_PER_HAND;
-      }
-      else
-      {
-         this.numCardsPerHand = numCardsPerHand;
-      }
-      
-      if(numPlayers <= 0 || numPlayers > MAX_PLAYERS)
-      {
-         this.numPlayers = DEFAULT_PLAYERS;
-      }
-      else
-      {
-         this.numPlayers = numPlayers;
-      }
+      String frameTitle = filterTitle(title);
+      this.numCardsPerHand = filterNumCardsPerHand(numCardsPerHand);
+      this.numPlayers = filternumPlayers(numPlayers);
       
       pnlComputerHand = new JPanel(new GridLayout(1, 1, 10, 10));
       pnlHumanHand = new JPanel(new GridLayout(1, 1, 10, 10));
@@ -162,7 +134,48 @@ class CardTable extends JFrame
       pnlComputerHand.setBorder(new TitledBorder("Computer Hand"));
       pnlHumanHand.setBorder(new TitledBorder("Your Hand"));
       pnlPlayArea.setBorder(new TitledBorder("Playing Area"));
-      
+   }
+
+   /**
+    * Verify input, if invalid do error correction and return a valid input.
+    * 
+    * @param numPlayers2 the unverified number of players
+    * @return an int will be returned. If input was valid then it will be
+    *         returned otherwise some int will be selected.
+    */
+   private int filternumPlayers(int numPlayers2)
+   {
+      if (numPlayers2 != MAX_PLAYERS)
+        return MAX_PLAYERS;
+      return numPlayers2;
+   }
+
+   /**
+    * Verify input, if invalid do error correction and return a valid input.
+    * 
+    * @param numCardsPerHand2 the unverified number of cards per hand
+    * @return an int will be returned. If input was valid then it will be
+    *         returned otherwise some int will be selected.
+    */
+   private int filterNumCardsPerHand(int numCardsPerHand2)
+   {
+    if (numCardsPerHand <= 0 || numCardsPerHand > MAX_CARDS_PER_HAND)
+      return 5;
+      return numCardsPerHand2;
+   }
+
+   /**
+    * Verify input, if invalid do error correction and return a valid input.
+    * 
+    * @param title the unverified title.
+    * @return a string will be returned. If input was valid then it will be
+    *         returned, otherwise some default string is returned.
+    */
+   private String filterTitle(String title)
+   {
+    if (title.length() == 0)
+      return "GUI Card Game";
+      return title;
    }
 
    /**
@@ -188,10 +201,7 @@ class CardTable extends JFrame
 
 class GUICard
 {
-   public static final int NUM_SUITS = 4;
-   public static final int MAX_VALUES = 14;
-   
-   private static Icon[][] iconCards = new ImageIcon[MAX_VALUES][NUM_SUITS]; // 14 = A thru K +
+   private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K +
                                                              // joker
    private static Icon iconBack;
    private static boolean iconsLoaded = false;
@@ -205,21 +215,19 @@ class GUICard
       {
          String relativePath = "./images/";
          String extension = ".gif";
-         for (int j = 0; j < NUM_SUITS; j++)
+         for (int j = 0; j <= 3; j++)
          {
-            for (int k = 0; k < MAX_VALUES; k++)
+            for (int k = 0; k <= 13; k++)
             {
                ImageIcon image = new ImageIcon(
                      relativePath + turnIntIntoCardValue(k)
                            + turnIntIntoCardSuit(j) + extension);
                iconCards[k][j] = image;
             }
-            //do something here?
          }
          iconBack = new ImageIcon(relativePath + "BK" + extension);
          iconsLoaded = true;
       }
-      
    }
 
    /**
@@ -279,7 +287,7 @@ class GUICard
       if (Character.getNumericValue(value) >= 2
             || Character.getNumericValue(value) <= 9)
       {
-         theValue = Character.getNumericValue(value);
+         theValue = Character.getNumericValue(value) - 1;
       }
       else
       {
@@ -301,7 +309,6 @@ class GUICard
       }
 
       return iconCards[theValue][theSuit];
-      
    }
 
    /**
@@ -771,7 +778,7 @@ class Deck
    }
 
    /**
-    * re-populate cards[] with the standard 56 × numPacks cards.
+    * re-populate cards[] with the standard 56 � numPacks cards.
     * 
     * @param numPacks
     */
