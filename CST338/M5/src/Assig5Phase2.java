@@ -177,9 +177,48 @@ class GUICard
     */
    public static Icon getIcon(Card card)
    {
-      loadCardIcons();
-      return null; // TODO: Complete Method
-
+   	loadCardIcons();
+   	
+   	int theSuit = -1;
+   	Card.Suit suit = card.getSuit();
+   	switch(suit)
+   	{
+   	case clubs:
+   		theSuit = 0;
+   	case diamonds:
+   		theSuit = 1;
+   	case hearts:
+   		theSuit = 2;
+   	case spades:
+   		theSuit = 3;
+   	}
+   	
+   	int theValue = -1;
+   	char value = card.getValue();
+   	if(Character.getNumericValue(value) >= 2 || Character.getNumericValue(value) <= 9)
+   	{
+   		theValue = Character.getNumericValue(value);
+   	}
+   	else
+   	{
+   		switch(value)
+   		{
+   		case 'A':
+   			theValue = 0;
+   		case 'T':
+   			theValue = 9;
+   		case 'J':
+   			theValue = 10;
+   		case 'Q':
+   			theValue = 11;
+   		case 'K':
+   			theValue = 12;
+   		case 'X':
+   			theValue = 13;
+   		}
+   	}
+      
+      return iconCards[theValue][theSuit];
    }
 
    /**
@@ -499,7 +538,7 @@ class Deck
 
    /**
     * re-populate cards[] with the standard 
-    * 52 × numPacks cards.
+    * 52 x numPacks cards.
     * @param numPacks
     */
    public void init(int numPacks)
