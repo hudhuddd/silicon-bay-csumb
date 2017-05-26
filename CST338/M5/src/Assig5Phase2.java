@@ -97,7 +97,8 @@ class CardTable extends JFrame
     */
    private int filternumPlayers(int numPlayers2)
    {
-      // TODO Auto-generated method stub
+      if (numPlayers2 != MAX_PLAYERS)
+      	return MAX_PLAYERS;
       return numPlayers2;
    }
 
@@ -110,7 +111,8 @@ class CardTable extends JFrame
     */
    private int filterNumCardsPerHand(int numCardsPerHand2)
    {
-      // TODO Auto-generated method stub
+   	if (numCardsPerHand <= 0 || numCardsPerHand > MAX_CARDS_PER_HAND)
+   		return 5;
       return numCardsPerHand2;
    }
 
@@ -123,7 +125,8 @@ class CardTable extends JFrame
     */
    private String filterTitle(String title)
    {
-      // TODO Auto-generated method stub
+   	if (title.length() == 0)
+   		return "GUI Card Game";
       return title;
    }
 
@@ -236,7 +239,7 @@ class GUICard
       if (Character.getNumericValue(value) >= 2
             || Character.getNumericValue(value) <= 9)
       {
-         theValue = Character.getNumericValue(value);
+         theValue = Character.getNumericValue(value) - 1;
       }
       else
       {
@@ -727,7 +730,7 @@ class Deck
    }
 
    /**
-    * re-populate cards[] with the standard 56 Ã— numPacks cards.
+    * re-populate cards[] with the standard 56 × numPacks cards.
     * 
     * @param numPacks
     */
@@ -828,3 +831,4 @@ class Deck
       }
    }
 }
+
