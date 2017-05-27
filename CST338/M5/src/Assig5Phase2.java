@@ -60,7 +60,7 @@ public class Assig5Phase2
          }
          else
          {
-            playLabelText[k] = new JLabel("Computer" + k + 1, JLabel.CENTER);
+            playLabelText[k] = new JLabel("Computer", JLabel.CENTER);
          }
       }
 
