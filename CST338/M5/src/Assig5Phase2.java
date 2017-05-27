@@ -1,4 +1,3 @@
-
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -50,19 +49,16 @@ public class Assig5Phase2
          myCardTable.pnlHumanHand.add(humanLabels[k]);
       }
       
-      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
+      for (k = 0; k < NUM_PLAYERS; k++)
       {
          tempIcon = GUICard.getIcon(generateRandomCard());
-         if (k < 2) // temporary fix
-         {
-         	playedCardLabels[k] = new JLabel(tempIcon);
-         }
+         playedCardLabels[k] = new JLabel(tempIcon);
          
-         if (k == 1) // Temporary fix
+         if (k == 1)
          {
             playLabelText[k] = new JLabel("You", JLabel.CENTER);
          }
-         if (k == 0) // Temporary fix
+         else
          {
             playLabelText[k] = new JLabel("Computer" + k + 1, JLabel.CENTER);
          }
@@ -241,7 +237,9 @@ class GUICard
     */
    private static String turnIntIntoCardValue(int k)
    {
-      // TODO: Add verification and throw IllegalArgumentException if it fails
+   	if (k < 0 || k > 13) {
+         throw new IllegalArgumentException("k is outside the range of card values, k: " + k);
+       }
       String[] values =
       { "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "X" };
       return values[k];
@@ -255,7 +253,9 @@ class GUICard
     */
    private static String turnIntIntoCardSuit(int j)
    {
-      // TODO: Add verification and throw IllegalArgumentException if it fails
+   	if (j < 0 || j > 3) {
+         throw new IllegalArgumentException("j is outside the range of card values, j: " + j);
+       }
       String[] suits =
       { "C", "D", "H", "S" };
       return suits[j];
