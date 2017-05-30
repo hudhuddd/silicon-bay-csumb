@@ -119,7 +119,9 @@ class CardButton extends JButton
       }
 
       // upon receiving action event, triggers game logic, stores altered hand
-      // data, and updates and refreshes game table GUI
+      // data, and updates and refreshes game table GUI. player always plays
+      // their card first, but semi-random behavior from the computer player
+      // ensures that the computer won't always win
       public void actionPerformed(ActionEvent e)
       {
          // clears play areas so cards dont keep adding on
@@ -179,7 +181,7 @@ class CardButton extends JButton
          }
       }
 
-      // defines behavior of the computer player. based on random coin flip,
+      // defines behavior of the computer player. based on random object,
       // either throws the hand by sending lowest card, or tries to win by
       // sending the lowest card that will beat the player's card
       private Card getComputerPlay(CardGameFramework highCardGame,
