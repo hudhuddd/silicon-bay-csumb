@@ -129,7 +129,7 @@ class CardButton extends JButton
          playerCard = highCardGame.playCard(0, cardIndex);
          // call computer logic function and play returned hand
          computerCard = getComputerPlay(highCardGame, playerCard);
-
+         
          // compares card values, declares winner in announcementBox and stores
          // won cards in appropriate winnings array(in Hand object)
          if (playerCard.compareTo(computerCard) == 1)
@@ -138,7 +138,7 @@ class CardButton extends JButton
             playerWinnings.takeCard(playerCard);
             playerWinnings.takeCard(computerCard);
          }
-         else
+         else if (playerCard.compareTo(computerCard) == -1)
          {
             AnnouncementBox winner = new AnnouncementBox(
                   "Computer wins this hand");
@@ -227,15 +227,19 @@ class AnnouncementBox
       window = new JFrame();
       window.setSize(WIDTH, HEIGHT);
       window.setLocationRelativeTo(null);
-      window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      window.setDefaultCloseOperation(window.DISPOSE_ON_CLOSE);
 
       window.setLayout(new BorderLayout(10, 10));
 
       text = new JLabel(input);
+      text.setHorizontalAlignment(SwingConstants.CENTER);
+      text.setVerticalAlignment(SwingConstants.CENTER);
       window.add(text, BorderLayout.CENTER);
       JButton endButton = new JButton("OK");
       EndingListener buttonEar = new EndingListener(window);
       endButton.addActionListener(buttonEar);
+      endButton.setHorizontalAlignment(SwingConstants.CENTER);
+      endButton.setVerticalAlignment(SwingConstants.CENTER);
       window.add(endButton, BorderLayout.SOUTH);
       window.setVisible(true);
 
@@ -625,7 +629,11 @@ class Card implements Comparable<Card>
    { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };
 
    public static char[] valuRanks =
-   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };;
+   { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };
+   
+   public static Suit[] suitRanks = {Suit.clubs, Suit.diamonds, 
+		   Suit.hearts, Suit.spades};
+   
    private char value;
    private Suit suit;
    private boolean errorFlag;
@@ -809,9 +817,36 @@ class Card implements Comparable<Card>
             thatVal++;
          }
       }
-      if (thisVal == thatVal)
+      if (thisVal == thatVal)//if values are equal, compare suits
       {
-         return 0;
+         int thisSuit = 0;
+         for (Suit i : suitRanks)
+         {
+            if (i == this.suit)
+            {
+               break;
+            }
+            else
+            {
+               thisSuit++;
+            }
+         }
+         int thatSuit = 0;
+         for (Suit i : suitRanks)
+         {
+            if (i == thatCard.suit)
+            {
+               break;
+            }
+            else
+            {
+               thatSuit++;
+            }
+         }
+         if (thisSuit > thatSuit)
+        	 return 1;
+         else
+        	 return -1;
       }
       else if (thisVal > thatVal)
       {
