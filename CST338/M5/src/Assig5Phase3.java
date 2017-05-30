@@ -63,10 +63,10 @@ public class Assig5Phase3
 }
 
 /*
- class CardButton defines the buttons that display in frame as the
- user's playable hand. it uses the GUIcard icons and presents it in a button
- that fires to the inner CardListener class. 
-*/
+ * class CardButton defines the buttons that display in frame as the user's
+ * playable hand. it uses the GUIcard icons and presents it in a button that
+ * fires to the inner CardListener class.
+ */
 class CardButton extends JButton
 {
    static final int NUM_PLAYERS = 2;
@@ -82,9 +82,10 @@ class CardButton extends JButton
             computerHand, playerHand, highCardGame, playerWinnings,
             computerWinnings, playerCard, computerCard));
    }
+
    /*
-   listener for the cardButton action event
-   */
+    * listener for the cardButton action event
+    */
    class CardListener implements ActionListener
    {
       private HandTable table;
@@ -98,7 +99,8 @@ class CardButton extends JButton
       private Hand playerWinnings;
       private Hand computerWinnings;
 
-      //receives and stores all the parameters for actionPerformed() functionality
+      // receives and stores all the parameters for actionPerformed()
+      // functionality
       public CardListener(int cardIndex, int numCardsPerHand, HandTable table,
             JLabel[] computerHand, CardButton[] playerHand,
             CardGameFramework highCardGame, Hand playerWinnings,
@@ -115,9 +117,9 @@ class CardButton extends JButton
          this.playerWinnings = playerWinnings;
          this.computerWinnings = computerWinnings;
       }
-      
-      //upon receiving action event, triggers game logic, stores altered hand 
-      //data, and updates and refreshes game table GUI
+
+      // upon receiving action event, triggers game logic, stores altered hand
+      // data, and updates and refreshes game table GUI
       public void actionPerformed(ActionEvent e)
       {
          // clears play areas so cards dont keep adding on
@@ -129,7 +131,7 @@ class CardButton extends JButton
          playerCard = highCardGame.playCard(0, cardIndex);
          // call computer logic function and play returned hand
          computerCard = getComputerPlay(highCardGame, playerCard);
-         
+
          // compares card values, declares winner in announcementBox and stores
          // won cards in appropriate winnings array(in Hand object)
          if (playerCard.compareTo(computerCard) == 1)
@@ -177,9 +179,9 @@ class CardButton extends JButton
          }
       }
 
-      //defines behavior of the computer player. based on random coin flip,
-      //either throws the hand by sending lowest card, or tries to win by
-      //sending the lowest card that will beat the player's card
+      // defines behavior of the computer player. based on random coin flip,
+      // either throws the hand by sending lowest card, or tries to win by
+      // sending the lowest card that will beat the player's card
       private Card getComputerPlay(CardGameFramework highCardGame,
             Card playerCard)
       {
@@ -205,15 +207,15 @@ class CardButton extends JButton
          }
          else
          {
-        	 return highCardGame.playCard(1, 0);
+            return highCardGame.playCard(1, 0);
          }
       }
    }
 }
 
 /*
-defines pop-up message box
-*/
+ * defines pop-up message box
+ */
 class AnnouncementBox
 {
    static int HEIGHT = 200;
@@ -221,7 +223,7 @@ class AnnouncementBox
    private JFrame window;
    private JLabel text;
 
-   //constructor
+   // constructor
    AnnouncementBox(String input)
    {
       window = new JFrame();
@@ -244,8 +246,8 @@ class AnnouncementBox
       window.setVisible(true);
 
    }
-   
-   //on button click, closes window
+
+   // on button click, closes window
    class EndingListener implements ActionListener
    {
       JFrame window;
@@ -263,9 +265,8 @@ class AnnouncementBox
 }
 
 /*
- defines layout of playing table GUI, validating that all parameters
- are legal
-*/
+ * defines layout of playing table GUI, validating that all parameters are legal
+ */
 class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
@@ -367,13 +368,14 @@ class CardTable extends JFrame
    }
 }
 
-
 /*
- extends CardTable to allow it to be responsive to changes fired from the game. 
-*/
+ * extends CardTable to allow it to be responsive to changes fired from the
+ * game.
+ */
 class HandTable extends CardTable
 {
-   //constructor when no played cards are received and play area should be empty
+   // constructor when no played cards are received and play area should be
+   // empty
    public HandTable(String title, int numCardsPerHand, int numPlayers,
          JLabel[] computerLabels, CardButton[] humanLabels,
          CardGameFramework highCardGame, Hand playerWinnings,
@@ -384,7 +386,7 @@ class HandTable extends CardTable
             playerWinnings, computerWinnings);
    }
 
-   //constructor when played cards are received and should populate play area
+   // constructor when played cards are received and should populate play area
    public HandTable(String title, int numCardsPerHand, int numPlayers,
          JLabel[] computerLabels, CardButton[] humanLabels,
          CardGameFramework highCardGame, Hand playerWinnings,
@@ -395,8 +397,8 @@ class HandTable extends CardTable
       addPlayPanel(humanPlayedCard, computerPlayedCard);
    }
 
-   //receives the two played cards, stores them in labels, and adds icon labels
-   //and text labels to center play area
+   // receives the two played cards, stores them in labels, and adds icon labels
+   // and text labels to center play area
    public void addPlayPanel(Card humanPlayedCard, Card computerPlayedCard)
    {
       Icon tempIcon;
@@ -414,8 +416,8 @@ class HandTable extends CardTable
       pnlPlayArea.add(computerCardText);
    }
 
-   //receives arrays of labels(computer) or CardButtons(player) and displays
-   //them in the "hands" areas of the card table GUI
+   // receives arrays of labels(computer) or CardButtons(player) and displays
+   // them in the "hands" areas of the card table GUI
    public void addHandPanels(int numCardsPerHand, JLabel[] computerLabels,
          CardButton[] humanLabels, CardGameFramework highCardGame,
          Hand playerWinnings, Hand computerWinnings)
@@ -446,19 +448,19 @@ class HandTable extends CardTable
       }
    }
 
-   //resets play area display
+   // resets play area display
    public void clearPlayArea()
    {
       pnlPlayArea.removeAll();
    }
 
-   //resets computer hand area display
+   // resets computer hand area display
    public void clearComputerHand()
    {
       pnlComputerHand.removeAll();
    }
-   
-   //resets player hand area display
+
+   // resets player hand area display
    public void clearPlayerHand()
    {
       pnlHumanHand.removeAll();
@@ -630,10 +632,10 @@ class Card implements Comparable<Card>
 
    public static char[] valuRanks =
    { 'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X' };
-   
-   public static Suit[] suitRanks = {Suit.clubs, Suit.diamonds, 
-		   Suit.hearts, Suit.spades};
-   
+
+   public static Suit[] suitRanks =
+   { Suit.clubs, Suit.diamonds, Suit.hearts, Suit.spades };
+
    private char value;
    private Suit suit;
    private boolean errorFlag;
@@ -817,7 +819,7 @@ class Card implements Comparable<Card>
             thatVal++;
          }
       }
-      if (thisVal == thatVal)//if values are equal, compare suits
+      if (thisVal == thatVal)// if values are equal, compare suits
       {
          int thisSuit = 0;
          for (Suit i : suitRanks)
@@ -844,9 +846,9 @@ class Card implements Comparable<Card>
             }
          }
          if (thisSuit > thatSuit)
-        	 return 1;
+            return 1;
          else
-        	 return -1;
+            return -1;
       }
       else if (thisVal > thatVal)
       {
@@ -915,8 +917,8 @@ class Hand
       }
    }
 
-   //returns a card at a specific index in the hand and removes it from the
-   //array
+   // returns a card at a specific index in the hand and removes it from the
+   // array
    public Card playCard(int location)
    {
       if (numCards != 0)
@@ -931,9 +933,9 @@ class Hand
       }
    }
 
-   //returns a card at an index, replaces that index element with last card
-   //in array, sets final array element to null, and decreases hand size
-   //by decrementing numCards
+   // returns a card at an index, replaces that index element with last card
+   // in array, sets final array element to null, and decreases hand size
+   // by decrementing numCards
    private Card removeCard(int index)
    {
       Card cardToReturn = myCards[index];

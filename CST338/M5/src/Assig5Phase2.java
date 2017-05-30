@@ -1,3 +1,4 @@
+
 /*
 ***********************************
 * Alejandro Guzman-Vega
@@ -48,12 +49,12 @@ public class Assig5Phase2
          myCardTable.pnlComputerHand.add(computerLabels[k]);
          myCardTable.pnlHumanHand.add(humanLabels[k]);
       }
-      
+
       for (k = 0; k < NUM_PLAYERS; k++)
       {
          tempIcon = GUICard.getIcon(generateRandomCard());
          playedCardLabels[k] = new JLabel(tempIcon);
-         
+
          if (k == 1)
          {
             playLabelText[k] = new JLabel("You", JLabel.CENTER);
@@ -73,7 +74,7 @@ public class Assig5Phase2
 
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
-      for (k = 0; k < NUM_PLAYERS*2; k++)
+      for (k = 0; k < NUM_PLAYERS * 2; k++)
       {
          if (k < NUM_PLAYERS)
          {
@@ -88,7 +89,7 @@ public class Assig5Phase2
       // show everything to the user
       myCardTable.setVisible(true);
    }
- 
+
    static Card generateRandomCard()
    {
       Card.Suit suit = Card.Suit.values()[new Random().nextInt(4)];
@@ -120,16 +121,16 @@ class CardTable extends JFrame
       String frameTitle = filterTitle(title);
       this.numCardsPerHand = filterNumCardsPerHand(numCardsPerHand);
       this.numPlayers = filternumPlayers(numPlayers);
-      
+
       pnlComputerHand = new JPanel(new GridLayout(1, 1, 10, 10));
       pnlHumanHand = new JPanel(new GridLayout(1, 1, 10, 10));
       pnlPlayArea = new JPanel(new GridLayout(2, 2, 20, 20));
-      
-      setLayout (new BorderLayout(10, 10));
+
+      setLayout(new BorderLayout(10, 10));
       add(pnlComputerHand, BorderLayout.NORTH);
       add(pnlHumanHand, BorderLayout.SOUTH);
       add(pnlPlayArea, BorderLayout.CENTER);
-      
+
       pnlComputerHand.setBorder(new TitledBorder("Computer Hand"));
       pnlHumanHand.setBorder(new TitledBorder("Your Hand"));
       pnlPlayArea.setBorder(new TitledBorder("Playing Area"));
@@ -145,7 +146,7 @@ class CardTable extends JFrame
    private int filternumPlayers(int numPlayers2)
    {
       if (numPlayers2 != MAX_PLAYERS)
-        return MAX_PLAYERS;
+         return MAX_PLAYERS;
       return numPlayers2;
    }
 
@@ -158,8 +159,8 @@ class CardTable extends JFrame
     */
    private int filterNumCardsPerHand(int numCardsPerHand2)
    {
-    if (numCardsPerHand <= 0 || numCardsPerHand > MAX_CARDS_PER_HAND)
-      return 5;
+      if (numCardsPerHand <= 0 || numCardsPerHand > MAX_CARDS_PER_HAND)
+         return 5;
       return numCardsPerHand2;
    }
 
@@ -172,8 +173,8 @@ class CardTable extends JFrame
     */
    private String filterTitle(String title)
    {
-    if (title.length() == 0)
-      return "GUI Card Game";
+      if (title.length() == 0)
+         return "GUI Card Game";
       return title;
    }
 
@@ -237,9 +238,11 @@ class GUICard
     */
    private static String turnIntIntoCardValue(int k)
    {
-   	if (k < 0 || k > 13) {
-         throw new IllegalArgumentException("k is outside the range of card values, k: " + k);
-       }
+      if (k < 0 || k > 13)
+      {
+         throw new IllegalArgumentException(
+               "k is outside the range of card values, k: " + k);
+      }
       String[] values =
       { "A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "X" };
       return values[k];
@@ -253,9 +256,11 @@ class GUICard
     */
    private static String turnIntIntoCardSuit(int j)
    {
-   	if (j < 0 || j > 3) {
-         throw new IllegalArgumentException("j is outside the range of card values, j: " + j);
-       }
+      if (j < 0 || j > 3)
+      {
+         throw new IllegalArgumentException(
+               "j is outside the range of card values, j: " + j);
+      }
       String[] suits =
       { "C", "D", "H", "S" };
       return suits[j];
@@ -288,7 +293,7 @@ class GUICard
          theSuit = 3;
          break;
       }
-      
+
       int theValue = -1;
       char value = card.getValue();
       if (Character.getNumericValue(value) >= 2
@@ -320,7 +325,7 @@ class GUICard
             break;
          }
       }
-      
+
       return iconCards[theValue][theSuit];
    }
 
