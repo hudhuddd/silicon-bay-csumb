@@ -184,17 +184,13 @@ class CardButton extends JButton
             Card playerCard)
       {
          Random randomGenerator = new Random();
-         int randCard = randomGenerator.nextInt(2);
+         int randCard = randomGenerator.nextInt(3);
          Card tempCard;
 
          Hand computerHand = highCardGame.getHand(1);
          computerHand.sort();
          // coin flip determines behavior: lowest card or lowest beating card
          if (randCard == 0)
-         {
-            return highCardGame.playCard(1, 0);
-         }
-         else
          {
             for (int i = 0; i < computerHand.getNumCards(); i++)
             {
@@ -206,6 +202,10 @@ class CardButton extends JButton
             }
             // if no winning card is found, returns the lowest
             return highCardGame.playCard(1, 0);
+         }
+         else
+         {
+        	 return highCardGame.playCard(1, 0);
          }
       }
    }
