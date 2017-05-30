@@ -111,14 +111,18 @@ class CardButton extends JButton
       
       public void actionPerformed(ActionEvent e)
       {	   
+    	  //clears play areas so cards dont keep adding on
     	  table.clearPlayArea();
     	  table.clearComputerHand();
     	  table.clearPlayerHand();
     	  
-    	  //get random card in computer hands array
-    	  int randCard = (int)(Math.random() * highCardGame.getHand(1).getNumCards());
+    	  //pass index of selected card to play and remove from hand
     	  playerCard = highCardGame.playCard(0, cardIndex);
-    	  computerCard = highCardGame.playCard(1, randCard); //computer plays a random card
+    	  //call computer logic function and play returned hand
+    	  computerCard = getComputerPlay(highCardGame, playerCard);
+    	  
+    	  //compares card values, declares winner in announcementBox and stores won 
+    	  //cards in appropriate winnings array(in Hand object)
     	  if(playerCard.compareTo(computerCard) == 1){
     		  AnnouncementBox winner = new AnnouncementBox("You win this hand!");
     		  playerWinnings.takeCard(playerCard);
@@ -130,12 +134,15 @@ class CardButton extends JButton
     		  computerWinnings.takeCard(playerCard);
     		  computerWinnings.takeCard(computerCard);
     	  }
+    	  
+    	  //update card table with played cards in center and reduced hands
     	  table.addPlayPanel(playerCard, computerCard);
     	  table.addHandPanels(cards, computerHand, playerHand, highCardGame,
     			  playerWinnings, computerWinnings);
     	  table.revalidate();
     	  table.repaint();
     	  
+    	  //when all cards have been played, announcementBox declares final winner
     	  if(cards == 0){
     		  if(playerWinnings.getNumCards() > computerWinnings.getNumCards())
     		  {
@@ -152,6 +159,33 @@ class CardButton extends JButton
     		  }
     	 
     	  }
+      }
+      
+      private Card getComputerPlay(CardGameFramework highCardGame, Card playerCard)
+      {
+  		Random randomGenerator = new Random();
+		int randCard = randomGenerator.nextInt(2);
+		Card tempCard;
+		
+		Hand computerHand = highCardGame.getHand(1);
+		computerHand.sort();
+		//coin flip determines behavior: lowest card or lowest beating card
+		if(randCard == 0){
+			return highCardGame.playCard(1, 0);
+		}
+		else
+		{
+			for(int i = 0; i < computerHand.getNumCards(); i++)
+			{
+				tempCard = computerHand.inspectCard(i);
+				if(tempCard.compareTo(playerCard) == 1)
+				{
+					return highCardGame.playCard(1, i);
+				}
+			}
+			//if no winning card is found, returns the lowest
+			return highCardGame.playCard(1, 0);
+		}
       }
    }
 }
