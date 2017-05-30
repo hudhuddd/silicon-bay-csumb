@@ -14,6 +14,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -22,15 +24,11 @@ public class Assig5Phase3
    static int NUM_CARDS_PER_HAND = 7;
    static int NUM_PLAYERS = 2;
    static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] playedCardLabels = new JLabel[NUM_PLAYERS];
+   static CardButton[] humanLabels = new CardButton[NUM_CARDS_PER_HAND];
    static JLabel[] playLabelText = new JLabel[NUM_PLAYERS];
 
    public static void main(String[] args)
    {
-      int k;
-      Icon tempIcon;
-      GUICard.loadCardIcons();
       int numPacksPerDeck = 1;
       int numJokersPerPack = 0;
       int numUnusedCardsPerPack = 0;
@@ -40,65 +38,26 @@ public class Assig5Phase3
 	            numPacksPerDeck, numJokersPerPack,  
 	            numUnusedCardsPerPack, unusedCardsPerPack, 
 	            NUM_PLAYERS, NUM_CARDS_PER_HAND);
+      GUICard.loadCardIcons(); //import all the gifs
+      highCardGame.deal(); //deal out the hands
 
       // establish main frame in which program will run
-      CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND,
-            NUM_PLAYERS);
+      HandTable myCardTable = new HandTable("CardTable", NUM_CARDS_PER_HAND,
+            NUM_PLAYERS, computerLabels, humanLabels, highCardGame);
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      
-      highCardGame.deal();
-      // CREATE LABELS ----------------------------------------------------
-      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
-      {
-         tempIcon = GUICard.getIcon(highCardGame.getHand(0).inspectCard(k));
-         humanLabels[k] = new JLabel(tempIcon);
-         computerLabels[k] = new JLabel(GUICard.getBackCardIcon());
-         myCardTable.pnlComputerHand.add(computerLabels[k]);
-         myCardTable.pnlHumanHand.add(humanLabels[k]);
-      }
-      
-      for (k = 0; k < NUM_PLAYERS; k++)
-      {
-         tempIcon = GUICard.getIcon(generateRandomCard());
-         playedCardLabels[k] = new JLabel(tempIcon);
-         
-         if (k == 1)
-         {
-            playLabelText[k] = new JLabel("You", JLabel.CENTER);
-         }
-         else
-         {
-            playLabelText[k] = new JLabel("Computer", JLabel.CENTER);
-         }
-      }
-
-      // ADD LABELS TO PANELS -----------------------------------------
-      for (k = 0; k < NUM_CARDS_PER_HAND; k++)
-      {
-         myCardTable.pnlComputerHand.add(computerLabels[k]);
-         myCardTable.pnlHumanHand.add(humanLabels[k]);
-      }
-
-      // and two random cards in the play region (simulating a computer/hum ply)
-      // code goes here ...
-      for (k = 0; k < NUM_PLAYERS*2; k++)
-      {
-         if (k < NUM_PLAYERS)
-         {
-            myCardTable.pnlPlayArea.add(playedCardLabels[k]);
-         }
-         else
-         {
-            myCardTable.pnlPlayArea.add(playLabelText[k - NUM_PLAYERS]);
-         }
-      }
 
       // show everything to the user
       myCardTable.setVisible(true);
    }
  
+   static int playRound(Card player1Card, Card player2Card)
+   {
+	   int winner = 0;
+	   
+	   return winner;
+   }
    static Card generateRandomCard()
    {
       Card.Suit suit = Card.Suit.values()[new Random().nextInt(4)];
@@ -106,6 +65,117 @@ public class Assig5Phase3
       return new Card(c, suit);
    }
 }
+
+class CardButton extends JButton
+{
+   static final int NUM_PLAYERS = 2;
+   static final String title = "Cardtable";
+   
+   CardButton(Icon icon, int cardIndex, int numCardsPerHand, HandTable table,
+ 		  JLabel[] computerHand, CardButton[] playerHand,
+ 		  CardGameFramework highCardGame,
+ 		  Card playerCard, Card computerCard)
+   {
+	   super(icon);	   
+	   addActionListener(new CardListener(cardIndex, numCardsPerHand-1, table, 
+			   computerHand, playerHand, highCardGame, 
+			   playerCard, computerCard));
+   }
+   
+   class CardListener implements ActionListener
+   {
+	  private HandTable table;
+	  private Card playerCard;
+	  private Card computerCard;
+	  private int cards;
+	  private int cardIndex;
+	  private JLabel[] computerHand;
+	  private CardButton[] playerHand;
+	  private CardGameFramework highCardGame;
+	  
+      public CardListener(int cardIndex, int numCardsPerHand, HandTable table,
+    		  JLabel[] computerHand, CardButton[] playerHand,
+    		  CardGameFramework highCardGame,
+    		  Card playerCard, Card computerCard)
+   	  {
+    	  this.table = table;
+    	  this.playerCard = playerCard;
+    	  this.computerCard = computerCard;
+    	  this.cards = numCardsPerHand;
+    	  this.computerHand = computerHand;
+    	  this.playerHand = playerHand;
+    	  this.highCardGame = highCardGame;
+    	  this.cardIndex = cardIndex;
+   	  }
+      
+      public void actionPerformed(ActionEvent e)
+      {	
+    	  
+    	  table.clearPlayArea();
+    	  table.clearComputerHand();
+    	  table.clearPlayerHand();
+    	  
+    	  //get random card in computer hands array
+    	  int randCard = (int)(Math.random() * highCardGame.getHand(1).getNumCards());
+    	  playerCard = highCardGame.playCard(0, cardIndex);
+    	  computerCard = highCardGame.playCard(1, randCard); //computer plays a random card
+    	  if(playerCard.compareTo(computerCard) == 1){
+    		  AnnouncementBox winner = new AnnouncementBox("You win!");
+    	  }
+    	  else
+    	  {
+    		  AnnouncementBox winner = new AnnouncementBox("Computer wins");
+    	  }
+    	  table.addPlayPanel(playerCard, computerCard);
+    	  table.addHandPanels(cards, computerHand, playerHand, highCardGame);
+    	  table.revalidate();
+    	  table.repaint();
+      }
+   }
+}
+
+class AnnouncementBox
+{
+	static int HEIGHT = 200;
+	static int WIDTH = 300;
+	private JFrame window;
+	private JLabel text;
+	
+	AnnouncementBox(String input)
+	{
+		window = new JFrame();
+		window.setSize(WIDTH, HEIGHT);
+		window.setLocationRelativeTo(null);
+	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    window.setLayout (new BorderLayout(10, 10));
+
+		text = new JLabel(input);
+		window.add(text, BorderLayout.CENTER);
+		JButton endButton = new JButton("OK");
+		EndingListener buttonEar = new EndingListener(window);
+		endButton.addActionListener(buttonEar);
+		window.add(endButton, BorderLayout.SOUTH);
+		window.setVisible( true);
+		
+	}
+	
+   class EndingListener implements ActionListener
+   {  
+		JFrame window;
+		
+		EndingListener(JFrame window)
+		{
+			this.window = window;
+		}
+		
+	    public void actionPerformed(ActionEvent e)
+	    {
+	    	window.dispose();
+	    }
+   }
+}
+
 
 class CardTable extends JFrame
 {
@@ -206,6 +276,87 @@ class CardTable extends JFrame
    {
       return numPlayers;
    }
+}
+
+class HandTable extends CardTable 
+{
+
+	public HandTable(String title, int numCardsPerHand, int numPlayers, 
+			JLabel[] computerLabels, CardButton[] humanLabels, 
+			CardGameFramework highCardGame)
+	{
+		super(title, numCardsPerHand, numPlayers);
+		addHandPanels(numCardsPerHand, computerLabels, humanLabels, highCardGame);
+	}
+	
+	public HandTable(String title, int numCardsPerHand, int numPlayers, 
+	  			JLabel[] computerLabels, CardButton[] humanLabels, 
+	  			CardGameFramework highCardGame, Card humanPlayedCard,
+	  			Card computerPlayedCard)
+	{
+		this(title, numCardsPerHand, numPlayers, computerLabels,
+				humanLabels, highCardGame);
+        addPlayPanel(humanPlayedCard, computerPlayedCard);
+	}
+	
+	public void addPlayPanel(Card humanPlayedCard, Card computerPlayedCard)
+	{
+		Icon tempIcon;
+		tempIcon = GUICard.getIcon(humanPlayedCard);
+        JLabel humanCardLabel = new JLabel(tempIcon);
+        JLabel humanCardText = new JLabel("You", JLabel.CENTER);
+	         
+        tempIcon = GUICard.getIcon(computerPlayedCard);
+        JLabel computerCardLabel = new JLabel(tempIcon);
+        JLabel computerCardText = new JLabel("Computer", JLabel.CENTER);
+        
+        pnlPlayArea.add(humanCardLabel);
+        pnlPlayArea.add(computerCardLabel);
+        pnlPlayArea.add(humanCardText);
+        pnlPlayArea.add(computerCardText);
+	}
+	
+	public void addHandPanels(int numCardsPerHand, JLabel[] computerLabels, 
+			CardButton[] humanLabels, CardGameFramework highCardGame)
+	{
+		int k;
+	    Icon tempIcon;
+		// CREATE LABELS ----------------------------------------------------
+	    for (k = 0; k < numCardsPerHand; k++)
+	    {
+	       //add back of card icon to all computer hand
+	       computerLabels[k] = new JLabel(GUICard.getBackCardIcon());
+	       this.pnlComputerHand.add(computerLabels[k]);
+	         
+	       //find the value of each card and convert to icon
+	       tempIcon = GUICard.getIcon(highCardGame.getHand(0).inspectCard(k));
+	       humanLabels[k] = new CardButton(tempIcon, k, numCardsPerHand, this, 
+	    		   computerLabels, humanLabels, highCardGame,
+	    		   highCardGame.getHand(0).inspectCard(k), 
+	    		   highCardGame.getHand(1).inspectCard(k));
+	       this.pnlHumanHand.add(humanLabels[k]);
+	      }
+	          
+	      // ADD LABELS TO PANELS -----------------------------------------
+	      for (k = 0; k < numCardsPerHand; k++)
+	      {
+	         this.pnlComputerHand.add(computerLabels[k]);
+	         this.pnlHumanHand.add(humanLabels[k]);
+	      }
+	}
+	
+	public void clearPlayArea()
+	{
+		pnlPlayArea.removeAll();
+	}
+	
+	public void clearComputerHand(){
+		pnlComputerHand.removeAll();
+	}
+	
+	public void clearPlayerHand(){
+		pnlHumanHand.removeAll();
+	}
 }
 
 class GUICard
@@ -356,7 +507,7 @@ class Card implements Comparable<Card>
    /**
     * array of constants for suit values
     */
-   public enum Suit
+   public static enum Suit
    {
       clubs, diamonds, hearts, spades;
    }
@@ -575,6 +726,7 @@ class Hand
    public static int MAX_CARDS = 56;
    private Card[] myCards;
    private int numCards;
+   private boolean arrayLoaded = false;
 
    /**
     * default constructor
@@ -643,10 +795,11 @@ class Hand
    
    public Card playCard(int location)
    {
-      if (numCards > 0)
+      if (numCards != 0)
       {
          numCards--;
          Card card = myCards[location];
+         removeCard(location);
          return card;
       }
       else
@@ -655,6 +808,34 @@ class Hand
          errorCard.set('E', Card.Suit.spades);
          return errorCard;
       }
+   }
+   
+   private void removeCard(int index)
+   {
+	  int sourceIndex=0;
+	  char value;
+	  Card.Suit suit;
+	  Card tempCard;
+	  if(!arrayLoaded)
+         this.numCards++;
+	  Card[] temp = new Card[numCards];
+	  
+	  for(int i = 0; i < temp.length; i++){
+		 if(i == index)
+		    sourceIndex++;
+	     tempCard = inspectCard(sourceIndex);
+		 value = tempCard.getValue();
+		 suit = tempCard.getSuit();
+		 temp[i] = new Card(value, suit);
+	     sourceIndex++;	
+	  }
+	  
+	  resetHand();
+	  for(int k = 0; k < temp.length; k++){
+		  tempCard = temp[k];
+		  takeCard(tempCard);
+	  }
+	  arrayLoaded = true;
    }
 
    /**
