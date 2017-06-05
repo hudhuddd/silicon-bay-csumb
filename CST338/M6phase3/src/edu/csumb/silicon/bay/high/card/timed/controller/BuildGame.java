@@ -223,13 +223,15 @@ public class BuildGame extends CardGameFramework
    		Card card = computerHand.inspectCard(i);
    		if (validMoveStack2(card))
          {
-            cardStackIndex2++;
+   			computerHand.playCard(i);
+   			cardStackIndex2++;
             cardStack2[cardStackIndex2] = card;
             getComputerHand().takeCard(getCardFromDeck());
             return true;
          }
          else if (validMoveStack1(card))
          {
+         	computerHand.playCard(i);
          	cardStackIndex1++;
          	cardStack1[cardStackIndex1] = card;
          	getComputerHand().takeCard(getCardFromDeck());
