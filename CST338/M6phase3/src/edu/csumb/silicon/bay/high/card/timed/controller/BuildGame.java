@@ -217,9 +217,26 @@ public class BuildGame extends CardGameFramework
 
    private boolean computerPlayCard()
    {
-      return false;
-      // TODO Auto-generated method stub
-
-   }
-
+   	int numCards = computerHand.getNumCards();
+   	for (int i = 0; i < numCards; i++)
+   	{
+   		Card card = computerHand.inspectCard(i);
+   		if (validMoveStack2(card))
+         {
+            cardStackIndex2++;
+            cardStack2[cardStackIndex2] = card;
+            getComputerHand().takeCard(getCardFromDeck());
+            return true;
+         }
+         else if (validMoveStack1(card))
+         {
+         	cardStackIndex1++;
+         	cardStack1[cardStackIndex1] = card;
+         	getComputerHand().takeCard(getCardFromDeck());
+         	return true;
+         }
+   	}
+   	computerSkips++;
+   	return false;
+      }
 }
