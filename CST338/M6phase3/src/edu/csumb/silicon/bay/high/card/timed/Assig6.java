@@ -1,3 +1,5 @@
+package edu.csumb.silicon.bay.high.card.timed;
+
 /*
  ***********************************
  * Alejandro Guzman-Vega
@@ -12,11 +14,11 @@
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Assig6
 {
@@ -31,24 +33,21 @@ public class Assig6
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
 
-      //create new build game and deal the hands
+      // create new build game and deal the hands
       BuildGame build = new BuildGame(numPacksPerDeck, numJokersPerPack,
-           numUnusedCardsPerPack, unusedCardsPerPack, NUM_CARDS_PER_HAND);
-      build.deal(); 
+            numUnusedCardsPerPack, unusedCardsPerPack, NUM_CARDS_PER_HAND);
+      build.deal();
 
-      //import the card gifs
-      GUICard.loadCardIcons(); 
-		      
-      //pull the first two cards
-      Card stack1card, stack2card;
-      stack1card = build.getCardFromDeck();
-      stack2card = build.getCardFromDeck();
+      // import the card gifs
+      GUICard.loadCardIcons();
+
+      // pull the first two cards
       HandTable myCardTable = new HandTable("CardTable", NUM_CARDS_PER_HAND,
-             NUM_PLAYERS, build, stack1card, stack2card);
+            NUM_PLAYERS, build);
       myCardTable.setSize(1200, 700);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    
+
       timer = new Timer(myCardTable);
 
       myCardTable.setVisible(true);
@@ -63,7 +62,8 @@ class CardTable extends JFrame
    private int numCardsPerHand;
    private int numPlayers;
 
-   public JPanel pnlTimer, pnlComputerHand, pnlHumanHand, pnlPlayArea, centerPanel, pnlScoreBoard;
+   public JPanel pnlTimer, pnlComputerHand, pnlHumanHand, pnlPlayArea,
+         centerPanel, pnlScoreBoard;
 
    /**
     * The constructor filters input, adds any panels to the JFrame, and
@@ -85,7 +85,7 @@ class CardTable extends JFrame
       pnlTimer = new JPanel();
       pnlScoreBoard = new JPanel();
       centerPanel = new JPanel(new BorderLayout());
-      
+
       setLayout(new BorderLayout(10, 10));
       add(pnlComputerHand, BorderLayout.NORTH);
       add(pnlHumanHand, BorderLayout.SOUTH);
@@ -180,16 +180,9 @@ class HandTable extends CardTable
          BuildGame build)
    {
       super(title, numCardsPerHand, numPlayers);
-	  this.build = build;
+      this.build = build;
       addHandPanels(computerLabels, humanLabels, build);
-   }
-
-   // constructor when played cards are received and should populate play area
-   public HandTable(String title, int numCardsPerHand, int numPlayers,
-         BuildGame build, Card cardStack1, Card cardStack2)
-   {
-      this(title, numCardsPerHand, numPlayers, build);
-      addPlayPanel(cardStack1, cardStack2);
+      addPlayPanel(build.peekTopCardStack1(), build.peekTopCardStack2());
    }
 
    // receives the two played cards, stores them in labels, and adds icon labels
@@ -209,52 +202,54 @@ class HandTable extends CardTable
       pnlPlayArea.add(stack2Label);
       pnlPlayArea.add(stack1Text);
       pnlPlayArea.add(stack2Text);
-      
-      JLabel instructions = new JLabel("First click the stack to add to, then play your card");
+
+      JLabel instructions = new JLabel(
+            "First click the stack to add to, then play your card");
       JButton noMoves = new JButton("I can't play any cards");
       noMoves.addActionListener(new noMovesListener(build, this));
 
       centerPanel.add(instructions, BorderLayout.NORTH);
       centerPanel.add(pnlPlayArea, BorderLayout.CENTER);
       centerPanel.add(noMoves, BorderLayout.SOUTH);
-      
+
       pnlScoreBoard.add(scoreBoard);
    }
 
    // receives arrays of labels(computer) or CardButtons(player) and displays
    // them in the "hands" areas of the card table GUI
-   public void addHandPanels(JLabel[] computerLabels,
-         CardButton[] humanLabels, BuildGame build)
+   public void addHandPanels(JLabel[] computerLabels, CardButton[] humanLabels,
+         BuildGame build)
    {
       int k;
       int numComputerCards = build.getHand(0).getNumCards();
       int numPlayerCards = build.getHand(1).getNumCards();
       computerLabels = new JLabel[numComputerCards];
       humanLabels = new CardButton[numPlayerCards];
-      
+
       Icon tempIcon;
       // CREATE LABELS ----------------------------------------------------
       for (k = 0; k < numComputerCards; k++)
       {
-         // add back of card icon to all computer hand and add to computer hand panel
+         // add back of card icon to all computer hand and add to computer hand
+         // panel
          computerLabels[k] = new JLabel(GUICard.getBackCardIcon());
          this.pnlComputerHand.add(computerLabels[k]);
          this.pnlComputerHand.add(computerLabels[k]);
       }
       for (k = 0; k < numPlayerCards; k++)
       {
-          tempIcon = GUICard.getIcon(build.getHand(1).inspectCard(k));
-          humanLabels[k] = new CardButton(tempIcon, k, this, build);
-          this.pnlHumanHand.add(humanLabels[k]);
+         tempIcon = GUICard.getIcon(build.getHand(1).inspectCard(k));
+         humanLabels[k] = new CardButton(tempIcon, k, this, build);
+         this.pnlHumanHand.add(humanLabels[k]);
       }
 
    }
-   
+
    private void addScoreBoard()
    {
-	   scoreBoard.updateScore(0, build.computerSkips);
-	   scoreBoard.updateScore(1, build.playerSkips);
-	   pnlScoreBoard.add(scoreBoard);
+      scoreBoard.updateScore(0, build.computerSkips);
+      scoreBoard.updateScore(1, build.playerSkips);
+      pnlScoreBoard.add(scoreBoard);
    }
 
    // resets play area display
@@ -274,28 +269,28 @@ class HandTable extends CardTable
    {
       pnlHumanHand.removeAll();
    }
-   
+
    private void clearScoreBoard()
    {
       pnlScoreBoard.removeAll();
    }
-   
+
    public void clearTable()
    {
-	   clearPlayArea();
-	   clearComputerHand();
-	   clearPlayerHand();
-	   clearScoreBoard();
+      clearPlayArea();
+      clearComputerHand();
+      clearPlayerHand();
+      clearScoreBoard();
    }
-   
+
    public void updateTable()
    {
-	  clearTable();
-      addPlayPanel(build.peekTopCardStack1(), build.peekTopCardStack2());//figure out a way to access the card that is on top of each stack
-	  addHandPanels(computerLabels, humanLabels, build);
-	  addScoreBoard();
-	  revalidate();
-	  repaint();
+      clearTable();
+      addPlayPanel(build.peekTopCardStack1(), build.peekTopCardStack2());
+      addHandPanels(computerLabels, humanLabels, build);
+      addScoreBoard();
+      revalidate();
+      repaint();
    }
 }
 
@@ -454,16 +449,17 @@ class StackListener implements ActionListener
 {
    private BuildGame build;
    private int stackIndex;
-   
+
    StackListener(BuildGame build, int stackIndex)
    {
       this.build = build;
       this.stackIndex = stackIndex;
    }
+
    public void actionPerformed(ActionEvent e)
    {
       build.setStackIndex(stackIndex);
-   }	
+   }
 }
 
 class CardButton extends JButton
@@ -498,58 +494,150 @@ class CardListener implements ActionListener
    {
       // clears play areas so cards dont keep adding on
       table.clearTable();
-      
-      if(build.getStackIndex() == -1){
-         AnnouncementBox error = new AnnouncementBox("Error: first choose a stack");
+
+      if (build.getStackIndex() == -1)
+      {
+         AnnouncementBox error = new AnnouncementBox(
+               "Error: first choose a stack");
          return;
       }
-      GameState gameState = build.playerPlayCard(cardIndex, build.getStackIndex());
-      
-      //make some logic that if it is a valid move, it goes to the computer hand, if not
-      //it returns the card to the hand with an error message
-      if (gameState == GameState.VALID_MOVE)
+      GameState gameState = build.playerPlayCard(cardIndex,
+            build.getStackIndex());
+      printerComputerCards();
+      printPlayerCards();
+      printStacks();
+      printNumOfCardsInStack();
+      // make some logic that if it is a valid move, it goes to the computer
+      // hand, if not
+      // it returns the card to the hand with an error message
+      if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
       {
-         build.computerPlayCard();
+         new AnnouncementBox("The computer moved as well");
+         System.out.println("The computer moved as well");
+         table.updateTable();
+      }
+      else if (gameState == GameState.COMPUTER_PLAYED)
+      {
+         new AnnouncementBox("The computer played");
+         System.out.println("The computer played");
+         table.updateTable();
+      }
+      else if (gameState == GameState.PLAYER_PLAYED)
+      {
+         System.out.println("That was a valid move");
+         table.updateTable();
+      }
+      else if (gameState == GameState.SKIPPED)
+      {
+         new AnnouncementBox("You both skipped");
+         System.out.println("You both skipped");
          table.updateTable();
       }
       else if (gameState == GameState.ILLEGAL_MOVE)
       {
-    	  System.out.println("illegal move");
-    	  AnnouncementBox error = new AnnouncementBox("That was an illegal move");
+         System.out.println("You cannot place that card there");
+         AnnouncementBox error = new AnnouncementBox(
+               "You cannot place that card there");
+         table.updateTable();
       }
       else if (gameState == GameState.COMPUTER_WON)
       {
          System.out.println("The computer WON");
-         //break;
+         AnnouncementBox error = new AnnouncementBox("The computer WON");
       }
       else if (gameState == GameState.PLAYER_WON)
       {
          System.out.println("You WON!!");
-         //break;
       }
    }
-}
 
+   private void printNumOfCardsInStack()
+   {
+      // TODO Auto-generated method stub
+
+   }
+
+   private void printStacks()
+   {
+      Card topCard1 = build.peekTopCardStack1();
+      Card topCard2 = build.peekTopCardStack2();
+      System.out
+            .println("The card on top of stack 1 is " + topCard1.toString());
+      System.out
+            .println("The card on top of stack 2 is " + topCard2.toString());
+
+   }
+
+   private void printPlayerCards()
+   {
+      System.out.println("Your cards are:");
+      System.out.println(build.getPlayerHand().toString());
+   }
+
+   private void printerComputerCards()
+   {
+      System.out.println("Your cards are:");
+      System.out.println(build.getComputerHand().toString());
+   }
+}
 
 class noMovesListener implements ActionListener
 {
    BuildGame build;
    HandTable table;
-   
+
    noMovesListener(BuildGame build, HandTable table)
    {
-	   this.build = build;
-	   this.table = table;
+      this.build = build;
+      this.table = table;
    }
-   
+
    public void actionPerformed(ActionEvent e)
    {
-	  table.clearTable();
-      build.noMoves(1);//plays noMoves action for human player
+      table.clearTable();
+      GameState gameState = build.playerPlayCard(-1, build.getStackIndex());
+      if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
+      {
+         new AnnouncementBox("The computer moved as well");
+         System.out.println("The computer moved as well");
+         table.updateTable();
+      }
+      else if (gameState == GameState.COMPUTER_PLAYED)
+      {
+         new AnnouncementBox("The computer played");
+         System.out.println("The computer played");
+         table.updateTable();
+      }
+      else if (gameState == GameState.PLAYER_PLAYED)
+      {
+         System.out.println("That was a valid move");
+         table.updateTable();
+      }
+      else if (gameState == GameState.SKIPPED)
+      {
+         new AnnouncementBox("You both skipped");
+         System.out.println("You both skipped");
+         table.updateTable();
+      }
+      else if (gameState == GameState.ILLEGAL_MOVE)
+      {
+         System.out.println("You cannot place that card there");
+         AnnouncementBox error = new AnnouncementBox(
+               "You cannot place that card there");
+         table.updateTable();
+      }
+      else if (gameState == GameState.COMPUTER_WON)
+      {
+         System.out.println("The computer WON");
+         AnnouncementBox error = new AnnouncementBox("The computer WON");
+      }
+      else if (gameState == GameState.PLAYER_WON)
+      {
+         System.out.println("You WON!!");
+      }
       table.updateTable();
-   }	
+   }
 }
-
 
 class AnnouncementBox
 {
@@ -1213,7 +1301,7 @@ class Card implements Comparable<Card>
 
 enum GameState
 {
-   ILLEGAL_MOVE, VALID_MOVE, PLAYER_WON, COMPUTER_WON
+   ILLEGAL_MOVE, VALID_MOVE, PLAYER_WON, COMPUTER_WON, SKIPPED, PLAYER_AND_COMPUTER_PLAYED, PLAYER_PLAYED, COMPUTER_PLAYED;
 }
 
 class CardGameFramework
@@ -1406,15 +1494,16 @@ class BuildGame extends CardGameFramework
    {
       return computerHand;
    }
-   
+
    public boolean setStackIndex(int index)
    {
-      if(index == 1 || index == 2)
+      if (index == 1 || index == 2)
       {
          stackIndex = index;
          return true;
       }
-      else if(index == -1)//to check for errors where a stack hasn't been chosen
+      else if (index == -1)// to check for errors where a stack hasn't been
+                           // chosen
       {
          stackIndex = index;
          return false;
@@ -1425,7 +1514,7 @@ class BuildGame extends CardGameFramework
       }
       return false;
    }
-   
+
    public int getStackIndex()
    {
       return stackIndex;
@@ -1440,8 +1529,9 @@ class BuildGame extends CardGameFramework
    }
 
    public Hand playerHand;
-   public int playerSkips;//*********same as below
-   public int computerSkips;//*****************************change this back to private and make an accessor*********
+   public int playerSkips;// *********same as below
+   public int computerSkips;// *****************************change this back to
+                            // private and make an accessor*********
 
    public BuildGame(int numPacks, int numJokersPerPack,
          int numUnusedCardsPerPack, Card[] unusedCardsPerPack,
@@ -1451,6 +1541,12 @@ class BuildGame extends CardGameFramework
             unusedCardsPerPack, 2, numCardsPerHand);
       this.computerHand = super.getHand(0);
       this.playerHand = super.getHand(1);
+      Card cardFromDeckForStack1 = getCardFromDeck();
+      cardStackIndex1++;
+      cardStack1[cardStackIndex1] = cardFromDeckForStack1;
+      Card cardFromDeckForStack2 = getCardFromDeck();
+      cardStackIndex2++;
+      cardStack2[cardStackIndex2] = cardFromDeckForStack2;
    }
 
    /**
@@ -1553,7 +1649,7 @@ class BuildGame extends CardGameFramework
 
    public GameState playerPlayCard(int cardIndex, int stack1or2)
    {
-      //to correct for the fact that 0 or 1 array index will be passed
+      // to correct for the fact that 0 or 1 array index will be passed
       if (this.getNumCardsRemainingInDeck() <= 0)
       {
          if (playerSkips >= computerSkips)
@@ -1622,86 +1718,97 @@ class BuildGame extends CardGameFramework
             cardStackIndex2++;
             cardStack2[cardStackIndex2] = cardFromDeckForStack2;
          }
-
+         return GameState.SKIPPED;
       }
-      return GameState.VALID_MOVE;
+      if (didComputerPlay && didPlayerPlay)
+      {
+         return GameState.PLAYER_AND_COMPUTER_PLAYED;
+      }
+      else if (didPlayerPlay)
+      {
+         return GameState.PLAYER_PLAYED;
+      }
+      else
+      {
+         return GameState.COMPUTER_PLAYED;
+      }
    }
 
-   public boolean computerPlayCard()
+   private boolean computerPlayCard()
    {
-	   System.out.println("computer plays");
-   	int numCards = computerHand.getNumCards();
-   	for (int i = 0; i < numCards; i++)
-   	{
-   		Card card = computerHand.inspectCard(i);
-   		if (validMoveStack2(card))
+      boolean computerAble = isComputerAbleToPlayCard();
+      if (computerAble)
+      {
+         for (int i = 0; i < computerHand.getNumCards(); i++)
          {
-   			computerHand.playCard(i);
-   			cardStackIndex2++;
-            cardStack2[cardStackIndex2] = card;
-            getComputerHand().takeCard(getCardFromDeck());
+            boolean validStack1 = validMoveStack1(computerHand.inspectCard(i));
+            if (validStack1)
+            {
+               cardStackIndex1++;
+               cardStack1[cardStackIndex1] = computerHand.playCard(i);
+               computerHand.takeCard(getCardFromDeck());
+               return true;
+            }
+            boolean validStack2 = validMoveStack2(computerHand.inspectCard(i));
+            if (validStack2)
+            {
+               cardStackIndex2++;
+               cardStack2[cardStackIndex2] = computerHand.playCard(i);
+               computerHand.takeCard(getCardFromDeck());
+               return true;
+            }
+         }
+         return false;
+      }
+      else
+      {
+         computerSkips++;
+         return false;
+      }
+   }
+
+   private boolean isComputerAbleToPlayCard()
+   {
+      for (int i = 0; i < computerHand.getNumCards(); i++)
+      {
+         boolean validStack1 = validMoveStack1(computerHand.inspectCard(i));
+         boolean validStack2 = validMoveStack2(computerHand.inspectCard(i));
+         if (validStack1 || validStack2)
+         {
             return true;
          }
-         else if (validMoveStack1(card))
-         {
-         	computerHand.playCard(i);
-         	cardStackIndex1++;
-         	cardStack1[cardStackIndex1] = card;
-         	getComputerHand().takeCard(getCardFromDeck());
-         	return true;
-         }
-   	}
-    noMoves(0);
-    computerPlayCard();
-    
-   	return false;
-    }
-   
-   public boolean noMoves(int player)
-   {
-	   if(getNumCardsRemainingInDeck() > 0)
-	   {
-		   if(player == 0)
-		   {
-	         computerHand.takeCard(getCardFromDeck());
-	         computerSkips++;
-	         return true;
-		   }
-		   else if(player == 1)
-		   {
-			   playerHand.takeCard(getCardFromDeck());
-			   playerSkips++;
-			   return true;
-		   }
-		   else
-			   return false;
-	   }
-	   else
-		   return false;//******************************need to trigger the win/lose condition somehow
+      }
+      return false;
    }
 }
 
 /*
- * class defines the display and methods for graphic timer to run
- * in a card table. calling object or program must have a handtable
- * (or child class) object with a JPanel pnlTimer data member, as this
- * class will modify the handtable display to update the graphic timer.
- * table must also have clearTimerArea() and addTimerPanel() methods
+ * class defines the display and methods for graphic timer to run in a card
+ * table. calling object or program must have a handtable (or child class)
+ * object with a JPanel pnlTimer data member, as this class will modify the
+ * handtable display to update the graphic timer. table must also have
+ * clearTimerArea() and addTimerPanel() methods
  */
-class Timer extends Thread {
+class Timer extends Thread
+{
    private JButton startstop = new JButton("Start / Stop");
    public TimerFace face;
    public HandTable table;
    private boolean running = false;
    private int seconds = 0;
    private static int NUM_DIGITS = 10;
-   private static Icon[] clockNums = new ImageIcon[NUM_DIGITS];//holds num icons
-   private static Icon dots;//holds ':' icon
-   private static boolean iconsLoaded = false; //ensures icons are only loaded once
-   private static int FACE_WIDTH = 5; //5 icons on clock face
-   private static JLabel[] timerPanels = new JLabel[FACE_WIDTH];//panels that hold the icons
-   private static int clockBrain[] = {0, 0, 0, 0, 0}; //controls the calculation
-	
+   private static Icon[] clockNums = new ImageIcon[NUM_DIGITS];// holds num
+                                                               // icons
+   private static Icon dots;// holds ':' icon
+   private static boolean iconsLoaded = false; // ensures icons are only loaded
+                                               // once
+   private static int FACE_WIDTH = 5; // 5 icons on clock face
+   private static JLabel[] timerPanels = new JLabel[FACE_WIDTH];// panels that
+                                                                // hold the
+                                                                // icons
+   private static int clockBrain[] =
+   { 0, 0, 0, 0, 0 }; // controls the calculation
+
    Timer(HandTable table)
    {
       this.table = table;
@@ -1710,7 +1817,7 @@ class Timer extends Thread {
       TimerListener listener = new TimerListener();
       startstop.addActionListener(listener);
    }
-	
+
    private static void loadClockIcons()
    {
       String num;
@@ -1728,53 +1835,52 @@ class Timer extends Thread {
          iconsLoaded = true;
       }
    }
-   
+
    private void updateClock(HandTable table)
    {
-      if(seconds == 5999)
-         running = false;  //ensures clock can't run over what fits on the clock face
-      if(running)
-         clockBrain[4]++;//so clock does not advance if start has been pressed
-      if(clockBrain[4] == 10)
+      if (seconds == 5999)
+         running = false; // ensures clock can't run over what fits on the clock
+                          // face
+      if (running)
+         clockBrain[4]++;// so clock does not advance if start has been pressed
+      if (clockBrain[4] == 10)
       {
          clockBrain[4] = 0;
          clockBrain[3]++;
       }
-      if(clockBrain[3] == 6)
+      if (clockBrain[3] == 6)
       {
          clockBrain[3] = 0;
          clockBrain[1]++;
       }
-      if(clockBrain[1] == 10)
+      if (clockBrain[1] == 10)
       {
          clockBrain[1] = 0;
          clockBrain[0]++;
       }
-      
+
       face.updateClockFace(table, clockBrain);
    }
-   
-   
-   //pauses thread for 999 milliseconds before updating clock face
+
+   // pauses thread for 999 milliseconds before updating clock face
    private void doNothing(int milliseconds)
    {
       try
       {
          Thread.sleep(milliseconds);
       }
-      catch(InterruptedException e)
+      catch (InterruptedException e)
       {
          System.out.println("Unexpected interrupt");
          System.exit(0);
-      }      
-   } 
-   
-   
+      }
+   }
+
    public void run()
    {
-      while (seconds < 1800) //max time on timer is 30 minutes
+      while (seconds < 1800) // max time on timer is 30 minutes
       {
-         if(running)
+         if (running)
          {
             doNothing(999);
             updateClock(table);
@@ -1792,51 +1898,52 @@ class Timer extends Thread {
    {
       running = false;
    }
-   
+
    /*
-    * creates an action listener for the start/stop button. if button
-    * has never been clicked, it fires run and changes clicked to true
-    * if clicked again(while click is true), it changes clicked to false
-    * so that run() breaks out of the update loop
+    * creates an action listener for the start/stop button. if button has never
+    * been clicked, it fires run and changes clicked to true if clicked
+    * again(while click is true), it changes clicked to false so that run()
+    * breaks out of the update loop
     */
    private class TimerListener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
       {
-         if(!running){
+         if (!running)
+         {
             running = true;
-            start();       
+            start();
          }
          else
-            running = false;//causes run to break out of loop
+            running = false;// causes run to break out of loop
       }
    }
-   
-   /*TimerFace extends JPanel and handles all updates to the 
-    * clock GUI display 
+
+   /*
+    * TimerFace extends JPanel and handles all updates to the clock GUI display
     */
    private class TimerFace extends JPanel
    {
-      JPanel timerFace = new JPanel(new GridLayout(2,1));
+      JPanel timerFace = new JPanel(new GridLayout(2, 1));
       JPanel numbers;
 
-      //constructor loads the clock face onto the calling HandTable
+      // constructor loads the clock face onto the calling HandTable
       TimerFace(HandTable table)
       {
          loadDisplay(table);
       }
-	   
-      //creates the clock face jpanel and fills it with all 0 icons
-      //adds it to the passed HandTable
+
+      // creates the clock face jpanel and fills it with all 0 icons
+      // adds it to the passed HandTable
       private void loadDisplay(HandTable table)
       {
-         
+
          numbers = new JPanel(new FlowLayout());
          timerFace.setSize(100, 50);
-	
-         for(int i = 0; i < FACE_WIDTH; i++)
+
+         for (int i = 0; i < FACE_WIDTH; i++)
          {
-            if(i != 2)
+            if (i != 2)
                timerPanels[i] = new JLabel(clockNums[0]);
             else
                timerPanels[i] = new JLabel(dots);
@@ -1846,23 +1953,23 @@ class Timer extends Thread {
          timerFace.add(startstop);
          addTimerPanel(table);
       }
-	   
-      //clears the timer face, updates icon to reflect the updated
-      //clockbrain values, clears and replaces the timer on the 
-      //playing table
+
+      // clears the timer face, updates icon to reflect the updated
+      // clockbrain values, clears and replaces the timer on the
+      // playing table
       private void updateClockFace(HandTable table, int[] clock)
       {
          timerFace.removeAll();
          numbers.removeAll();
-         for(int i = 0; i < FACE_WIDTH; i++)
+         for (int i = 0; i < FACE_WIDTH; i++)
          {
-            if(i != 2)
+            if (i != 2)
                timerPanels[i] = new JLabel(clockNums[clock[i]]);
             numbers.add(timerPanels[i]);
          }
-         
+
          timerFace.add(numbers);
-         if(running)
+         if (running)
             timerFace.add(startstop);
 
          clearTimerArea(table);
@@ -1870,14 +1977,14 @@ class Timer extends Thread {
          table.revalidate();
          table.repaint();
       }
-	   
-      //receives the HandTable object and adds the timerFace to the 
-      //designated timer panel
+
+      // receives the HandTable object and adds the timerFace to the
+      // designated timer panel
       public void addTimerPanel(HandTable table)
       {
          table.pnlTimer.add(timerFace);
       }
-	   
+
       // resets timer area display on playing table
       private void clearTimerArea(HandTable table)
       {
@@ -1888,37 +1995,36 @@ class Timer extends Thread {
 
 class ScoreBoard extends JPanel
 {
-	private JLabel computerText = new JLabel("Computer misses");
-	private JLabel playerText = new JLabel("Your misses");
-	private JLabel computerScore;
-	private JLabel playerScore;
+   private JLabel computerText = new JLabel("Computer misses");
+   private JLabel playerText = new JLabel("Your misses");
+   private JLabel computerScore;
+   private JLabel playerScore;
 
-	
-	ScoreBoard()
-	{
-		computerScore = new JLabel("00");
-		playerScore = new JLabel("00");
-		setLayout(new GridLayout(2,2));
-		add(computerText);
-		add(playerText);
-		add(computerScore);
-		add(playerScore);		
-	}
-	
-	public void updateScore(int player, int score)
-	{
-		this.removeAll();
-		String scoreString = Integer.toString(score);
-		if(player == 0)
-			computerScore = new JLabel(scoreString);
-		if(player == 1)
-			playerScore = new JLabel(scoreString);
-		
-		add(computerText);
-		add(playerText);
-		add(computerScore);
-		add(playerScore);	
-		
-	}
+   ScoreBoard()
+   {
+      computerScore = new JLabel("00");
+      playerScore = new JLabel("00");
+      setLayout(new GridLayout(2, 2));
+      add(computerText);
+      add(playerText);
+      add(computerScore);
+      add(playerScore);
+   }
+
+   public void updateScore(int player, int score)
+   {
+      this.removeAll();
+      String scoreString = Integer.toString(score);
+      if (player == 0)
+         computerScore = new JLabel(scoreString);
+      if (player == 1)
+         playerScore = new JLabel(scoreString);
+
+      add(computerText);
+      add(playerText);
+      add(computerScore);
+      add(playerScore);
+
+   }
 
 }
