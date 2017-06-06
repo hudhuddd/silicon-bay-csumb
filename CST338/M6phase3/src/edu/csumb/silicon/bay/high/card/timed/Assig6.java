@@ -1,5 +1,6 @@
 package edu.csumb.silicon.bay.high.card.timed;
 
+
 /*
  ***********************************
  * Alejandro Guzman-Vega
@@ -499,56 +500,57 @@ class CardListener implements ActionListener
       {
          AnnouncementBox error = new AnnouncementBox(
                "Error: first choose a stack");
-         return;
       }
-      GameState gameState = build.playerPlayCard(cardIndex,
-            build.getStackIndex());
-      printerComputerCards();
-      printPlayerCards();
-      printStacks();
-      printNumOfCardsInStack();
-      // make some logic that if it is a valid move, it goes to the computer
-      // hand, if not
-      // it returns the card to the hand with an error message
-      if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
+      else
       {
-         new AnnouncementBox("The computer moved as well");
-         System.out.println("The computer moved as well");
-         table.updateTable();
+	      GameState gameState = build.playerPlayCard(cardIndex,
+	            build.getStackIndex());
+	      printerComputerCards();
+	      printPlayerCards();
+	      printStacks();
+	      printNumOfCardsInStack();
+
+	      if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
+	      {
+	         new AnnouncementBox("The computer moved as well");
+	         System.out.println("The computer moved as well");
+	         table.updateTable();
+	      }
+	      else if (gameState == GameState.COMPUTER_PLAYED)
+	      {
+	         new AnnouncementBox("The computer played");
+	         System.out.println("The computer played");
+	         table.updateTable();
+	      }
+	      else if (gameState == GameState.PLAYER_PLAYED)
+	      {
+	         System.out.println("That was a valid move");
+	         table.updateTable();
+	      }
+	      else if (gameState == GameState.SKIPPED)
+	      {
+	         new AnnouncementBox("You both skipped");
+	         System.out.println("You both skipped");
+	         table.updateTable();
+	      }
+	      else if (gameState == GameState.ILLEGAL_MOVE)
+	      {
+	         System.out.println("You cannot place that card there");
+	         AnnouncementBox error = new AnnouncementBox(
+	               "You cannot place that card there");
+	         table.updateTable();
+	      }
+	      else if (gameState == GameState.COMPUTER_WON)
+	      {
+	         System.out.println("The computer WON");
+	         AnnouncementBox error = new AnnouncementBox("The computer WON");
+	      }
+	      else if (gameState == GameState.PLAYER_WON)
+	      {
+	          AnnouncementBox winner = new AnnouncementBox("Congratulations, you WON");
+	      }
       }
-      else if (gameState == GameState.COMPUTER_PLAYED)
-      {
-         new AnnouncementBox("The computer played");
-         System.out.println("The computer played");
-         table.updateTable();
-      }
-      else if (gameState == GameState.PLAYER_PLAYED)
-      {
-         System.out.println("That was a valid move");
-         table.updateTable();
-      }
-      else if (gameState == GameState.SKIPPED)
-      {
-         new AnnouncementBox("You both skipped");
-         System.out.println("You both skipped");
-         table.updateTable();
-      }
-      else if (gameState == GameState.ILLEGAL_MOVE)
-      {
-         System.out.println("You cannot place that card there");
-         AnnouncementBox error = new AnnouncementBox(
-               "You cannot place that card there");
-         table.updateTable();
-      }
-      else if (gameState == GameState.COMPUTER_WON)
-      {
-         System.out.println("The computer WON");
-         AnnouncementBox error = new AnnouncementBox("The computer WON");
-      }
-      else if (gameState == GameState.PLAYER_WON)
-      {
-         System.out.println("You WON!!");
-      }
+      table.updateTable();
    }
 
    private void printNumOfCardsInStack()
@@ -1506,7 +1508,7 @@ class BuildGame extends CardGameFramework
                            // chosen
       {
          stackIndex = index;
-         return false;
+         return true;
       }
       else
       {
@@ -1649,10 +1651,9 @@ class BuildGame extends CardGameFramework
 
    public GameState playerPlayCard(int cardIndex, int stack1or2)
    {
-      // to correct for the fact that 0 or 1 array index will be passed
       if (this.getNumCardsRemainingInDeck() <= 0)
       {
-         if (playerSkips >= computerSkips)
+         if (playerSkips <= computerSkips)
          {
             return GameState.PLAYER_WON;
          }
@@ -2004,10 +2005,10 @@ class ScoreBoard extends JPanel
    {
       computerScore = new JLabel("00");
       playerScore = new JLabel("00");
-      setLayout(new GridLayout(2, 2));
+      setLayout(new GridLayout(4, 1));
       add(computerText);
-      add(playerText);
       add(computerScore);
+      add(playerText);
       add(playerScore);
    }
 
@@ -2021,10 +2022,8 @@ class ScoreBoard extends JPanel
          playerScore = new JLabel(scoreString);
 
       add(computerText);
-      add(playerText);
       add(computerScore);
+      add(playerText);
       add(playerScore);
-
    }
-
 }
