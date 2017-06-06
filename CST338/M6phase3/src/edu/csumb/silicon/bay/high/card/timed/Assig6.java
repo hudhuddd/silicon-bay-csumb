@@ -1,5 +1,4 @@
-package edu.csumb.silicon.bay.high.card.timed;
-
+//package edu.csumb.silicon.bay.high.card.timed;
 
 /*
  ***********************************
@@ -55,6 +54,9 @@ public class Assig6
    }
 }
 
+/**
+ ********** VIEW **********
+ */
 class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
@@ -503,52 +505,53 @@ class CardListener implements ActionListener
       }
       else
       {
-	      GameState gameState = build.playerPlayCard(cardIndex,
-	            build.getStackIndex());
-	      printerComputerCards();
-	      printPlayerCards();
-	      printStacks();
-	      printNumOfCardsInStack();
+         GameState gameState = build.playerPlayCard(cardIndex,
+               build.getStackIndex());
+         printerComputerCards();
+         printPlayerCards();
+         printStacks();
+         printNumOfCardsInStack();
 
-	      if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
-	      {
-	         new AnnouncementBox("The computer moved as well");
-	         System.out.println("The computer moved as well");
-	         table.updateTable();
-	      }
-	      else if (gameState == GameState.COMPUTER_PLAYED)
-	      {
-	         new AnnouncementBox("The computer played");
-	         System.out.println("The computer played");
-	         table.updateTable();
-	      }
-	      else if (gameState == GameState.PLAYER_PLAYED)
-	      {
-	         System.out.println("That was a valid move");
-	         table.updateTable();
-	      }
-	      else if (gameState == GameState.SKIPPED)
-	      {
-	         new AnnouncementBox("You both skipped");
-	         System.out.println("You both skipped");
-	         table.updateTable();
-	      }
-	      else if (gameState == GameState.ILLEGAL_MOVE)
-	      {
-	         System.out.println("You cannot place that card there");
-	         AnnouncementBox error = new AnnouncementBox(
-	               "You cannot place that card there");
-	         table.updateTable();
-	      }
-	      else if (gameState == GameState.COMPUTER_WON)
-	      {
-	         System.out.println("The computer WON");
-	         AnnouncementBox error = new AnnouncementBox("The computer WON");
-	      }
-	      else if (gameState == GameState.PLAYER_WON)
-	      {
-	          AnnouncementBox winner = new AnnouncementBox("Congratulations, you WON");
-	      }
+         if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
+         {
+            new AnnouncementBox("The computer moved as well");
+            System.out.println("The computer moved as well");
+            table.updateTable();
+         }
+         else if (gameState == GameState.COMPUTER_PLAYED)
+         {
+            new AnnouncementBox("The computer played");
+            System.out.println("The computer played");
+            table.updateTable();
+         }
+         else if (gameState == GameState.PLAYER_PLAYED)
+         {
+            System.out.println("That was a valid move");
+            table.updateTable();
+         }
+         else if (gameState == GameState.SKIPPED)
+         {
+            new AnnouncementBox("You both skipped");
+            System.out.println("You both skipped");
+            table.updateTable();
+         }
+         else if (gameState == GameState.ILLEGAL_MOVE)
+         {
+            System.out.println("You cannot place that card there");
+            AnnouncementBox error = new AnnouncementBox(
+                  "You cannot place that card there");
+            table.updateTable();
+         }
+         else if (gameState == GameState.COMPUTER_WON)
+         {
+            System.out.println("The computer WON");
+            AnnouncementBox error = new AnnouncementBox("The computer WON");
+         }
+         else if (gameState == GameState.PLAYER_WON)
+         {
+            AnnouncementBox winner = new AnnouncementBox(
+                  "Congratulations, you WON");
+         }
       }
       build.setStackIndex(-1);
       table.updateTable();
@@ -690,6 +693,9 @@ class AnnouncementBox
    }
 }
 
+/**
+ ********** MODEL **********
+ */
 /**
  * array of constants for suit values
  */
@@ -1302,6 +1308,9 @@ class Card implements Comparable<Card>
    }
 }
 
+/**
+ ********** CONTROLLER **********
+ */
 enum GameState
 {
    ILLEGAL_MOVE, VALID_MOVE, PLAYER_WON, COMPUTER_WON, SKIPPED, PLAYER_AND_COMPUTER_PLAYED, PLAYER_PLAYED, COMPUTER_PLAYED;
