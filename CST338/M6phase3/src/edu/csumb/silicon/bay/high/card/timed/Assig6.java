@@ -550,6 +550,7 @@ class CardListener implements ActionListener
 	          AnnouncementBox winner = new AnnouncementBox("Congratulations, you WON");
 	      }
       }
+      build.setStackIndex(-1);
       table.updateTable();
    }
 
