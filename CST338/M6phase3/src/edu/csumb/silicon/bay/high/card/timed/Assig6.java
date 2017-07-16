@@ -1,4 +1,3 @@
-//package edu.csumb.silicon.bay.high.card.timed;
 
 /*
  ***********************************
@@ -507,44 +506,34 @@ class CardListener implements ActionListener
       {
          GameState gameState = build.playerPlayCard(cardIndex,
                build.getStackIndex());
-         printerComputerCards();
-         printPlayerCards();
-         printStacks();
-         printNumOfCardsInStack();
 
          if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
          {
             new AnnouncementBox("The computer moved as well");
-            System.out.println("The computer moved as well");
             table.updateTable();
          }
          else if (gameState == GameState.COMPUTER_PLAYED)
          {
             new AnnouncementBox("The computer played");
-            System.out.println("The computer played");
             table.updateTable();
          }
          else if (gameState == GameState.PLAYER_PLAYED)
          {
-            System.out.println("That was a valid move");
             table.updateTable();
          }
          else if (gameState == GameState.SKIPPED)
          {
             new AnnouncementBox("You both skipped");
-            System.out.println("You both skipped");
             table.updateTable();
          }
          else if (gameState == GameState.ILLEGAL_MOVE)
          {
-            System.out.println("You cannot place that card there");
             AnnouncementBox error = new AnnouncementBox(
                   "You cannot place that card there");
             table.updateTable();
          }
          else if (gameState == GameState.COMPUTER_WON)
          {
-            System.out.println("The computer WON");
             AnnouncementBox error = new AnnouncementBox("The computer WON");
          }
          else if (gameState == GameState.PLAYER_WON)
@@ -555,35 +544,6 @@ class CardListener implements ActionListener
       }
       build.setStackIndex(-1);
       table.updateTable();
-   }
-
-   private void printNumOfCardsInStack()
-   {
-      // TODO Auto-generated method stub
-
-   }
-
-   private void printStacks()
-   {
-      Card topCard1 = build.peekTopCardStack1();
-      Card topCard2 = build.peekTopCardStack2();
-      System.out
-            .println("The card on top of stack 1 is " + topCard1.toString());
-      System.out
-            .println("The card on top of stack 2 is " + topCard2.toString());
-
-   }
-
-   private void printPlayerCards()
-   {
-      System.out.println("Your cards are:");
-      System.out.println(build.getPlayerHand().toString());
-   }
-
-   private void printerComputerCards()
-   {
-      System.out.println("Your cards are:");
-      System.out.println(build.getComputerHand().toString());
    }
 }
 
@@ -605,41 +565,36 @@ class noMovesListener implements ActionListener
       if (gameState == GameState.PLAYER_AND_COMPUTER_PLAYED)
       {
          new AnnouncementBox("The computer moved as well");
-         System.out.println("The computer moved as well");
          table.updateTable();
       }
       else if (gameState == GameState.COMPUTER_PLAYED)
       {
          new AnnouncementBox("The computer played");
-         System.out.println("The computer played");
          table.updateTable();
       }
       else if (gameState == GameState.PLAYER_PLAYED)
       {
-         System.out.println("That was a valid move");
          table.updateTable();
       }
       else if (gameState == GameState.SKIPPED)
       {
          new AnnouncementBox("You both skipped");
-         System.out.println("You both skipped");
          table.updateTable();
       }
       else if (gameState == GameState.ILLEGAL_MOVE)
       {
-         System.out.println("You cannot place that card there");
          AnnouncementBox error = new AnnouncementBox(
-               "You cannot place that card there");
+            "You cannot place that card there");
          table.updateTable();
       }
       else if (gameState == GameState.COMPUTER_WON)
       {
-         System.out.println("The computer WON");
          AnnouncementBox error = new AnnouncementBox("The computer WON");
       }
       else if (gameState == GameState.PLAYER_WON)
       {
-         System.out.println("You WON!!");
+         AnnouncementBox winner = new AnnouncementBox(
+            "Congratulations, you WON");
       }
       table.updateTable();
    }
