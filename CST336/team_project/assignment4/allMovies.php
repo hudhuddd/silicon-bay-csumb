@@ -54,14 +54,40 @@ function fetchAllDirectors() {
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>All Moves</title>
+		<style>
+		h1 {
+			text-align:center;
+			font-family:'Palatino';
+		}
+		h3 {
+			font-family:'Palatino';
+		}
+		table {
+			margin: 0 auto;
+		}
+		td {
+			padding: 10px;
+			border: black 1px solid;
+		}
+		#wrapper {
+			width: 900px;
+			margin: 0px auto;
+		}
+
+	</style>
+		<title>All Movies</title>
+		<h1>
+   	   Movies
+   		</h1>
 	</head>
 
 	<body>
+		<div id="wrapper">
 		<table>
 			<tr>
 				<th>Title</th>
 				<th>Year - Sort <a href="allMovies.php?yearSort=ASC">ASC</a> / <a href="allMovies.php?yearSort=DESC">DESC</a></th>
+				<a href="../../assignments/homepage.html"><p style = "text-align:center">Student's Home Page</p></a>
 			</tr>
 			<?php
 			$yearSort = 'ASC';
@@ -81,7 +107,7 @@ function fetchAllDirectors() {
 		<?php
 		$runtimeAverage = fetchRuntimeAverage();
 		$runtimeSum = fetchRuntimeSum();
-		echo "Average Runtime: " . (int) $runtimeAverage['avgRuntime'] ." minutes";
+		echo "<div align='center'>Average Runtime: " . (int) $runtimeAverage['avgRuntime'] ." minutes<div/>";
 		echo "<br>";
 		echo "Sum of Runtime: $runtimeSum[sumRuntime] minutes";
 		?>
@@ -99,5 +125,6 @@ function fetchAllDirectors() {
 			}
 			?>
 		</table>
+		</div>
 	</body>
 </html>
