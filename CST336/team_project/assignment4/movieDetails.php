@@ -1,6 +1,6 @@
 <?php
 require 'db_connection.php';
-?>
+
 
 function fetchMovie($movieId) {
 	global $dbConn;
@@ -23,12 +23,15 @@ function fetchDirector($directorId) {
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<a href="../../assignments/homepage.html"><p style = "text-align:center">Student's Home Page</p></a>
-		<a href="allMovies.php"><p style = "text-align:center">Return to All Movies Page</p></a>
+		<link href="styles.css" rel="stylesheet">
+
+
 		<title>Movie Details</title>
 	</head>
 
 	<body>
+			<a href="../../assignments/homepage.html"><p style = "text-align:center">Student's Home Page</p></a>
+		<a href="allMovies.php"><p style = "text-align:center">Return to All Movies Page</p></a>
 		<?php
 		if (isset($_GET['movieId'])) {
 			$movieId = $_GET['movieId'];
