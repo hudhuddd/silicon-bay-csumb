@@ -73,6 +73,9 @@ function fetchAllDirectors() {
 			width: 900px;
 			margin: 0px auto;
 		}
+		form {
+  		text-align: center;
+		}
 
 	</style>
 		<title>All Movies</title>
@@ -83,10 +86,23 @@ function fetchAllDirectors() {
 
 	<body>
 		
+	<form method="post" action="logout.php" onsubmit="confirmLogout()">
+	<input type="submit" value="Logout" />
+	</form>
+		
 	<form action="updatePassword.php" method="post">
 	<input type="hidden" name="id" value="<?=$password['id']?>" />
 	<input type="submit" name="update" value="Update Password" />
 	</form> 
+	<script>
+	function confirmLogout(event) {
+	var logout = confirm("Do you really want to log out?");
+	if (!logout) {
+	event.preventDefault();
+	}
+	}
+</script>
+
 		<div id="wrapper">
 		<table>
 			<tr>
