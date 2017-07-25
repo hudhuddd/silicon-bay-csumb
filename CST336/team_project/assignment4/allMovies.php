@@ -82,6 +82,11 @@ function fetchAllDirectors() {
 	</head>
 
 	<body>
+		
+	<form action="updatePassword.php" method="post">
+	<input type="hidden" name="id" value="<?=$password['id']?>" />
+	<input type="submit" name="update" value="Update Password" />
+	</form> 
 		<div id="wrapper">
 		<table>
 			<tr>
