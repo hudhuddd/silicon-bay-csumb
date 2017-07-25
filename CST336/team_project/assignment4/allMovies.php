@@ -1,15 +1,17 @@
 <?php
 
 $host = "localhost";
-$dbname = "guzm3592";
+$dbname = "wiel2630";
 
-$username = "guzm3592";
+$username = "wiel2630";
 
-$password = "5028afd";
+$password = "INSERT YOUR PASSWORD HERE";
 
 $dbConn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 
 $dbConn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
 
 function fetchAllMovies($yearSort) {
 	global $dbConn;
@@ -50,50 +52,26 @@ function fetchAllDirectors() {
 	$stmt -> execute();
 	return $stmt -> fetchAll();
 }
+
 ?>
 <!DOCTYPE html>
+<head>
 <html lang="en">
-	<head>
-		<style>
-		h1 {
-			text-align:center;
-			font-family:'Palatino';
-		}
-		h3 {
-			font-family:'Palatino';
-		}
-		table {
-			margin: 0 auto;
-		}
-		td {
-			padding: 10px;
-			border: black 1px solid;
-		}
-		#wrapper {
-			width: 900px;
-			margin: 0px auto;
-		}
-		form {
-  		text-align: center;
-		}
-
-	</style>
+	<link href="./styles.css" rel="stylesheet">
 		<title>All Movies</title>
-		<h1>
-   	   Movies
-   		</h1>
+
 	</head>
 
 	<body>
-		
+
 	<form method="post" action="logout.php" onsubmit="confirmLogout()">
 	<input type="submit" value="Logout" />
 	</form>
-		
+
 	<form action="updatePassword.php" method="post">
-	<input type="hidden" name="id" value="<?=$password['id']?>" />
+	<input type="hidden" name="id" value="1" />
 	<input type="submit" name="update" value="Update Password" />
-	</form> 
+	</form>
 	<script>
 	function confirmLogout(event) {
 	var logout = confirm("Do you really want to log out?");
@@ -107,8 +85,8 @@ function fetchAllDirectors() {
 		<table>
 			<tr>
 				<th>Title</th>
-				<th>Year - Sort <a href="allMovies.php?yearSort=ASC">ASC</a> / <a href="allMovies.php?yearSort=DESC">DESC</a></th>
-				<a href="../../assignments/homepage.html"><p style = "text-align:center">Student's Home Page</p></a>
+				<th>Year - Sort <a href="allMovies.php?yearSort=ASC">Ascending</a> / <a href="allMovies.php?yearSort=DESC">Descending</a></th>
+				<a href="http://hosting.otterlabs.org/wiel2630"><p style = "text-align:center">Student's Home Page</p></a>
 			</tr>
 			<?php
 			$yearSort = 'ASC';
