@@ -15,13 +15,34 @@ $stmt -> execute(array(":username" => $_POST['username'], ":password" => hash("s
 
 $record = $stmt -> fetch();
 
+
+
 if (empty($record)){
 echo "Wrong username/password!";
 } else {
+	$sql = "INSERT INTO signin_log
+	(dateTimeLog)
+	VALUES
+	(:dateTimeLog)";
+	$stmt = $dbConn -> prepare($sql);
+	$stmt -> execute ( array (":dateTimeLog" => date('y-m-d-h-i-s')));
 $_SESSION['username'] = $record['username'];
 $_SESSION['name'] = $record['firstname'] . " " . $record['lastname'];
 header("Location: allMovies.php");
+
 }
+}
+
+if (isset($_POST['reset'])) { //checks whether we're coming from "save data" form
+  require 'db_connection.php';
+
+$sql = "UPDATE movie_admin
+SET password = :password
+WHERE id = :id";
+$stmt = $dbConn -> prepare($sql);
+$stmt -> execute(array(":password"=> hash('sha1', 'secret'), ":id"=>'1'));
+
+echo "RECORD UPDATED!! <br> <br>";
 }
 
 ?>
@@ -34,6 +55,7 @@ header("Location: allMovies.php");
 <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
 Remove this if you use the .htaccess -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link href="styles.css" rel="stylesheet">
 
 <title>Movies</title>
 <meta name="description" content="">
@@ -66,9 +88,12 @@ Password: <input type="password" name="password" /><br />
 <p></p>
 </form>
 <p>
-Username: guzm3592<br />
-Password: 5028afd
+Username: andrea<br />
+Password: secret
 </p>
+<form method="post">
+<input type="submit" name="reset" value="Reset pw to default">
+</form>
 </div>
 </body>
 </html>
