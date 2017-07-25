@@ -1,0 +1,60 @@
+h3, h4, h5, li, p
+{
+	font-family: helvetica;
+	font-weight: bolder;
+	color: gray;
+}
+
+h3, h4, h5
+{
+	text-align: center;
+
+}
+h3
+{
+	text-shadow: 2px 2px 4px lightgray;
+}
+
+table.center
+{
+	box-sizing: border-box;
+	margin: auto;
+}
+
+body 
+{
+	background-color: #f3edfc;
+}
+
+input[type=text] {
+    width: 48%;
+    padding: 9px 15px;
+    margin: 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 4px lightgray;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: #40ede8;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px lightgray;
+}
+
+input[type=submit]:hover {
+    background-color: #35c6c2;
+}
+
+div.inputtable {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
