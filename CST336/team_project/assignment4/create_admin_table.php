@@ -16,6 +16,22 @@ $sql = "INSERT INTO movie_admin
 VALUES
 (:firstname, :lastname, :username, :password)";
 $stmt = $dbConn -> prepare($sql);
-$stmt -> execute ( array (":firstname" => "Student", ":lastname" => "Project", ":username" => "guzm3592", ":password" => hash('sha1', '5028afd')));
+$stmt -> execute ( array (":firstname" => "Student", ":lastname" => "Project", ":username" => "andrea", ":password" => hash('sha1', 'secret')));
 echo "Your admin table is created!";
+
+
+$sql = "CREATE TABLE signin_log (
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+dateTimeLog varchar (50))";
+
+$stmt = $dbConn -> prepare($sql);
+$stmt -> execute();
+
+$sql = "INSERT INTO signin_log
+(dateTimeLog)
+VALUES
+(:dateTimeLog)";
+$stmt = $dbConn -> prepare($sql);
+$stmt -> execute ( array (":dateTimeLog" => date('y-m-d-h-i-s')));
+echo "Your log table is created!";
 ?>
