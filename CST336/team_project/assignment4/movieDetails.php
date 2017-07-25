@@ -1,15 +1,6 @@
 <?php
-
-$host = "localhost";
-$dbname = "guzm3592";
-
-$username = "guzm3592";
-
-$password = "5028afd";
-
-$dbConn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-
-$dbConn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require 'db_connection.php';
+?>
 
 function fetchMovie($movieId) {
 	global $dbConn;
