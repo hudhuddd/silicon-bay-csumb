@@ -19,7 +19,7 @@ CREATE TABLE `server` (
 );
 
 CREATE TABLE `backup` (
-    `backupID`			INT(11)		NOT NULL PRIMARY KEY,
+    `backupID`			INT(11)		NOT NULL	AUTO_INCREMENT	 PRIMARY KEY,
     `serverID`			INT(11)		NOT NULL,
     `backupSource`		LONGTEXT,
     `backupDestination` LONGTEXT,
